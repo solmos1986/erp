@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,10 +18,15 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $table = 'authenticacion';
+    protected $primaryKey = 'authenticacion_id';
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'usuario',
+        'contraseña',
+        'estado',
+        'usuario_id',
     ];
 
     /**
@@ -29,8 +35,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'contraseña',
     ];
 
     /**
@@ -41,4 +46,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function obtener_usuario()
+    {
+        $usuario = DB::table('usuario')
+            ->where('idUsuario', auth()->user()->usuario_id)
+            ->first();
+        return $usuario;
+    }
 }

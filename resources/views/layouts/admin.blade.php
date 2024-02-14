@@ -89,7 +89,7 @@
                             </a>
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <a href="{{ route('auth.logout') }}" class="dropdown-item notify-item">
                                 <i class="fe-log-out me-1"></i>
                                 <span>Logout</span>
                             </a>
@@ -1659,7 +1659,7 @@
                                 <img src="{{ asset('images/users/user-1.jpg') }}" alt="user-image"
                                     class="rounded-circle">
                                 <span class="ms-1 d-none d-md-inline-block">
-                                    Geneva <i class="mdi mdi-chevron-down"></i>
+                                    {{auth()->user()->obtener_usuario()->nomUsuario}} <i class="mdi mdi-chevron-down"></i>
                                 </span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
@@ -1689,7 +1689,7 @@
                                 <div class="dropdown-divider"></div>
 
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <a href="{{ route('auth.logout') }}" class="dropdown-item notify-item">
                                     <i class="fe-log-out"></i>
                                     <span>Logout</span>
                                 </a>

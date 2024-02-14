@@ -18,13 +18,13 @@ use Intervention\Image\Facades\Image;
 
 class EgresoController extends Controller
 {
-     public function __construct()
+    public function __construct()
     {
-
+        $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
     {
-
+        //dd(auth()->user()->obtener_usuario());
     	 if ($request->ajax()) {
             $query=trim($request->get('searchText'));
             $data = DB::table('egresos as e')/* ->get() */

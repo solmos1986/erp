@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
-use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\EgresoController;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\DataTableUserController;
-use App\Http\Controllers\EgresoController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +18,9 @@ use App\Http\Controllers\EgresoController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 // crea todas las rutas posibles que tendrá nuestro sistema
-
 
 Route::get('almacen/categoria', [CategoriaController::class, 'index'])->name('index.categoria');
 Route::post('almacen/categoria', [CategoriaController::class, 'store']);
@@ -35,8 +31,8 @@ Route::delete('almacen/categoria/{id}', [CategoriaController::class, 'destroy'])
 Route::get('almacen/producto', [ProductoController::class, 'index'])->name('index.producto');
 Route::get('almacen/producto/index', [ProductoController::class, 'index']);
 Route::post('almacen/producto', [ProductoController::class, 'store']);
-Route::get('almacen/producto/create',[ProductoController::class,'create'])->name('create.producto');
-Route::post('almacen/producto/update', [ProductoController::class, 'update'])->name('update.producto');;
+Route::get('almacen/producto/create', [ProductoController::class, 'create'])->name('create.producto');
+Route::post('almacen/producto/update', [ProductoController::class, 'update'])->name('update.producto');
 Route::get('almacen/producto/{id}', [ProductoController::class, 'edit'])->name('edita.producto');
 Route::delete('almacen/producto/{id}', [ProductoController::class, 'destroy']);
 //
@@ -67,3 +63,15 @@ Route::get('comercial/compra/create', [EgresoController::class, 'create'])->name
 Route::put('comercial/compra/{id}', [EgresoController::class, 'update']);
 Route::get('comercial/compra/{id}', [EgresoController::class, 'edit'])->name('edita.compra');
 Route::delete('comercial/compra/{id}', [EgresoController::class, 'destroy']);
+
+Route::prefix('auth')->group(function () {
+    Route::get('login', [AuthController::class, 'index'])->name('auth.login');
+    Route::post('login', [AuthController::class, 'verificar'])->name('auth.validate');
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
+    //Route::delete('login', [EgresoController::class, 'destroy']);
+});
+
+Route::get('/', function () {
+    return redirect()->route('index.compra');
+});
+
