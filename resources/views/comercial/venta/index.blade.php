@@ -30,9 +30,9 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="text-lg-end">
-                        <a href="{{ url('comercial/compra/create') }}"><button type="button" id="serchbtn"
+                        <a href="{{ url('comercial/venta/create') }}"><button type="button" id="serchbtn"
                                 class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
-                                Nueva Compra </button></a>
+                                Nueva Venta </button></a>
                         {{-- <button type="button" class="btn btn-light waves-effect mb-2">Export</button> --}}
                     </div>
                 </div>
@@ -49,12 +49,12 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <table id="dtEgresos" class="dtEgresos table dt-responsive nowrap w-100">
+                            <table id="dtIngresos" class="dtIngresos table dt-responsive nowrap w-100">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
                                         <th>Fecha</th>
-                                        <th>Proveedor</th>
+                                        <th>Cliente</th>
                                         <th>Comprobante</th>
                                         <th>Numero</th>
                                         <th>Impuestos</th>
@@ -111,22 +111,22 @@
         /* <!--AJAX CARGA DATA TABLE Function--> */
         $(function() {
 
-            var table = $('.dtEgresos').DataTable({
+            var table = $('.dtIngresos').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('index.compra') }}",
+                ajax: "{{ route('index.venta') }}",
 
                 columns: [{
-                        data: 'idEgreso',
-                        name: 'idEgreso'
+                        data: 'idIngreso',
+                        name: 'idIngreso'
                     },
                     {
-                        data: 'fechaEgreso',
-                        name: 'fechaEgreso'
+                        data: 'fechaIngreso',
+                        name: 'fechaIngreso'
                     },
                     {
-                        data: 'nomProveedor',
-                        name: 'nomProveedor'
+                        data: 'nomCliente',
+                        name: 'nomCliente'
                     },
                     {
                         data: 'nomTipoComprobante',
@@ -137,8 +137,8 @@
                         name: 'numeroComprobante'
                     },
                     {
-                        data: 'impuestoEgreso',
-                        name: 'impuestoEgreso'
+                        data: 'impuestoIngreso',
+                        name: 'impuestoIngreso'
                     },
                     {
                         data: 'nomTipoPago',
@@ -149,17 +149,17 @@
                         name: 'total'
                     },
                     {
-                        data: 'estadoEgreso',
-                        name: 'estadoEgreso'
+                        data: 'estadoIngreso',
+                        name: 'estadoIngreso'
                     },
                     {
-                        data: 'idEgreso',
-                        name: 'idEgreso',
+                        data: 'idIngreso',
+                        name: 'idIngreso',
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row, meta) {
                             console.log("LLEGO FILA", row)
-                            return `<a href="{{ url('almacen/producto/${row.idEgreso}') }}"  data-id="${row.idEgreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idEgreso}" class="delete far fa-trash-alt text-danger"></a>`;
+                            return `<a href="{{ url('almacen/producto/${row.idIngreso}') }}"  data-id="${row.idIngreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idIngreso}" class="delete far fa-trash-alt text-danger"></a>`;
                         }
                     },
                 ],

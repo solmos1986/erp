@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Models\Egreso; //agrega la ruta del modelo
+use App\Models\Egreso;
+use App\Models\Proveedor; //agrega la ruta del modelo
 use App\Models\DetalleEgreso; //agrega la ruta del modelo
 use Illuminate\Support\Facades\Redirect; //para hacer algunas redirecciones
 use App\Http\Requests\EgresoFormRequest; //hace referencia a nuestro request
@@ -30,10 +31,12 @@ class EgresoController extends Controller
             $data = DB::table('egresos as e')/* ->get() */
             ->join('proveedor as p','e.idProveedor','=','p.idProveedor')
             ->join('detalle_egreso as de','e.idEgreso','=','de.idEgreso')
-            ->select('e.idEgreso','e.fechaEgreso','p.nomProveedor','e.tipoComprobante','e.numeroComprobante','e.impuestoEgreso','e.metodoPago',DB::raw('sum(de.cantidadEgreso*precioCompraEgreso) as total'),'e.estadoEgreso')
+            ->join('tipo_comprobante as tc','e.idTipoComprobante','=','tc.idTipoComprobante')
+            ->join('tipopago as tp','e.idTipoPago','=','tp.idTipoPago')
+            ->select('e.idEgreso','e.fechaEgreso','p.nomProveedor','tc.nomTipoComprobante','e.numeroComprobante','e.impuestoEgreso','tp.nomTipoPago',DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'),'e.estadoEgreso')
             ->where('e.numeroComprobante','LIKE','%'.$query.'%')
 
-            ->groupBy('e.idEgreso','e.fechaEgreso','p.nomProveedor','e.tipoComprobante','e.numeroComprobante','e.impuestoEgreso','e.metodoPago','e.estadoEgreso')
+            ->groupBy('e.idEgreso','e.fechaEgreso','p.nomProveedor','tc.nomTipoComprobante','e.numeroComprobante','e.impuestoEgreso','tp.nomTipoPago','e.estadoEgreso')
             ->get();
           /*   dd($data,"HOLAAA"); */
              /* return view('comercial.compra.index',compact('data')); */
@@ -50,6 +53,9 @@ class EgresoController extends Controller
     }
     public function create(Request $request)
     {
+        $proveedor=DB::table('proveedor')->where('condicionProveedor','=','1')->get();
+        $tipopago=DB::table('tipopago')->get();
+        $tipo_comprobante=DB::table('tipo_comprobante')->get();
         if ($request->ajax()) {
             $data = DB::table('producto')
             ->where('condicionProducto','=','1')
@@ -58,10 +64,13 @@ class EgresoController extends Controller
             ->addIndexColumn()
             ->rawColumns([])
             ->make(true);
+
             }
-        return view('comercial/compra/create');
+
+        return view('comercial/compra/create',['proveedor'=>$proveedor,'tipopago'=>$tipopago,'tipo_comprobante'=>$tipo_comprobante]);
 
     }
+
     public function edit($id)
     {
     	//dd('aki estamos',$id);
@@ -76,4 +85,35 @@ class EgresoController extends Controller
 			"cate"=>$categoria
     	]); */
  	}
+    public function store(Request $request)
+    {
+        /* dump($request->all()); */
+        $insertCompra=DB::table('egresos')
+        ->insertGetId([
+            'idProveedor'=>$request->idProveedor,
+            'idTipoPago'=>$request->idTipoPago,
+            'idTipoComprobante'=>$request->idTipoComprobante,
+            'numeroComprobante'=>$request->numeroComprobante,
+            'fechaEgreso'=>date('Y-m-d'),
+            'impuestoEgreso'=>$request->impuestoEgreso,
+            'estadoEgreso'=>$request->estadoEgreso,
+        ]);
+        foreach ($request->detallecompra as $key => $value) {
+            /* dump($value['idProducto']); */
+            $insertDetalleCompra=DB::table('detalle_egreso')
+            ->insertGetId([
+                'idEgreso'=>$insertCompra,
+                'idProducto'=>$value['idProducto'],
+                'cantidadCompra'=>$value['cantidad'],
+                'precioVentaEgreso'=>1,
+                'precioCompraEgreso'=>$value['precio'],
+            ]);
+        }
+
+        return  response()->json([
+    		"status"=> 1,
+			"message"=>"GuarDado correctamnte",
+            "data"=>null
+    	]);
+    }
 }

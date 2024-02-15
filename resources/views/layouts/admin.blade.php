@@ -170,12 +170,12 @@
                                         <span class="menu-text">Compras</span>
                                     </a>
                                 </li>
-                                {{-- <li class="menu-item">
-                                    <a href="ecommerce-product-detail.html" class="menu-link">
-                                        <span class="menu-text">Product Detail</span>
+                                <li class="menu-item">
+                                    <a href="{{ url('comercial/venta') }}" class="menu-link">
+                                        <span class="menu-text">Ventas</span>
                                     </a>
                                 </li>
-                                <li class="menu-item">
+                                {{-- <li class="menu-item">
                                     <a href="ecommerce-product-edit.html" class="menu-link">
                                         <span class="menu-text">Add Product</span>
                                     </a>
@@ -1145,7 +1145,7 @@
                             <!-- Brand Logo Dark -->
                             <a href="index.html" class="logo-dark">
                                 <img src="{{ asset('/images/logo-dark.png') }}" alt="dark logo" class="logo-lg">
-                                <img src="{{ asset('/images/logo-sm.png') }}" alt="small logo" class="logo-sm">
+                                <img src="{{ asset('/images/logo-sm.png.png') }}" alt="small logo" class="logo-sm">
                             </a>
                         </div>
 
@@ -2277,7 +2277,7 @@
     <script src="{{ asset('/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @stack('javascript')
+    <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -2285,6 +2285,8 @@
             }
         });
     </script>
+
+    @stack('javascript')
 
 </body>
 

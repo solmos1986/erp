@@ -398,7 +398,7 @@
         });
 
         /*<!-- AJAX DELETE Modal -->*/
-        $(document).on("click", ".delete", function() {
+        $(document).ready(function() {
             const id = $(this).data('id');
             console.log(id, "HOLA recibi info DELETE")
             $('#idProveedorDelete').val(id)

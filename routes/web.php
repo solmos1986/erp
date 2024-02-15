@@ -8,6 +8,9 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\DataTableUserController;
 use App\Http\Controllers\EgresoController;
+use App\Http\Controllers\IngresoController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -67,3 +70,17 @@ Route::get('comercial/compra/create', [EgresoController::class, 'create'])->name
 Route::put('comercial/compra/{id}', [EgresoController::class, 'update']);
 Route::get('comercial/compra/{id}', [EgresoController::class, 'edit'])->name('edita.compra');
 Route::delete('comercial/compra/{id}', [EgresoController::class, 'destroy']);
+//
+//
+Route::get('comercial/venta', [IngresoController::class, 'index'])->name('index.venta');
+Route::post('comercial/venta', [IngresoController::class, 'store']);
+Route::get('comercial/venta/create', [IngresoController::class, 'create'])->name('create.venta');
+Route::put('comercial/venta/{id}', [IngresoController::class, 'update']);
+Route::get('comercial/venta/{id}', [IngresoController::class, 'edit'])->name('edita.venta');
+Route::delete('comercial/venta/{id}', [IngresoController::class, 'destroy']);
+
+Route::prefix('producto')->group(function(){
+    Route::get('/', [ProductoController::class, 'obtener_producto']);
+    //Route::get('store', [ProductoController::class, 'obtener_producto']);
+});
+

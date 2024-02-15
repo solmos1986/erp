@@ -14,8 +14,8 @@ class Egreso extends Model
     protected $fillable=[ ///especifica los campos que recibiran un valor que se almacenaran en la base de datos
     	'idEgreso',
         'idProveedor',
-    	'metodoPago',
-    	'tipoComprobante',
+    	'idTipoPago',
+    	'idTipoComprobante',
     	'numeroComprobante',
     	'fechaEgreso',
         'impuestoEgreso',

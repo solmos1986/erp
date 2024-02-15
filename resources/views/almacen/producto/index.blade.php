@@ -128,7 +128,11 @@
 
                 columns: [{
                         data: 'imagenProducto',
-                        name: 'imagenProducto'
+                        name: 'imagenProducto',
+                        type: 'upload',
+                        render: function(data, type, row, mneta) {
+                            return `<img src="/imagenes/productos/${row.imagenProducto}" style="height:50px;width:50px;" />`;
+                        }
                     },
                     {
                         data: 'codProducto',

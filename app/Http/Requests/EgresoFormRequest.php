@@ -25,14 +25,14 @@ class EgresoFormRequest extends FormRequest
     {
         return [
             'idProveedor'=>'max:11',
-            'metodoPago'=>'max:50',
-            'tipoComprobante'=>'max:50',
+            'idTipoPago'=>'max:50',
+            'idTipoComprobante'=>'max:50',
             'numeroComprobante'=>'max:25',
             'fechaEgreso'=>'', //required|
             'impuestoEgreso'=>'max:11,0',
             'estadoEgreso'=>'max:11',
             'idProducto'=>'max:11',
-            'cantidadEgreso'=>'max:25',
+            'cantidadCompra'=>'max:25',
             'precioVentaEgreso'=>'max:25,0',
             'precioCompraEgreso'=>'max:25,0',
              ];
