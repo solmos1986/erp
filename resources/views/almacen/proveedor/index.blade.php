@@ -27,18 +27,19 @@
     </div>
     <!-- end page title -->
     <div class="row">
-        <div class="col-md-3 mb-2">
+        <div class="col-lg-3">
             <div class="input-group">
-                <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar proveedor" required>
+                <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto" required>
             </div>
         </div>
-        <div class="col-md-6 mb-2">
+        <div class="col-lg-5">
+
         </div>
-        <div class="col-md-3 col-md-push mb-2">
-
-            <div class="input-group">
-
-                <button type="button" id="serchbtn" class="btn rounded-pill btn-success nuevo">NUEVO</button>
+        <div class="col-lg-4">
+            <div class="text-lg-end">
+                <a href="#"><button type="button" id="serchbtn"
+                        class="nuevo btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                        Nuevo Proveedor </button></a>
             </div>
         </div>
     </div>
@@ -398,7 +399,7 @@
         });
 
         /*<!-- AJAX DELETE Modal -->*/
-        $(document).ready(function() {
+        $(document).on("click", ".delete", function() {
             const id = $(this).data('id');
             console.log(id, "HOLA recibi info DELETE")
             $('#idProveedorDelete').val(id)

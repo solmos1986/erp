@@ -18,150 +18,257 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('/libs/clockpicker/bootstrap-clockpicker.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
     {{-- <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> --}}
 @endpush
 
 @section('contenido')
-    <div class="content">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Comercial</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Compras</a></li>
+                        <li class="breadcrumb-item active">Orden De Compra</li>
+                    </ol>
+                </div>
+                <h4 class="page-title"><b>OC - ORDEN DE COMPRA</b></h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
 
-        <!-- Start Content-->
-        <div class="container-fluid">
 
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Comercial</a></li>
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Compras</a></li>
-                                <li class="breadcrumb-item active">Orden De Compra</li>
-                            </ol>
+    <div class="row">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">INFO COMPRA</h5>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="mb-3">
+                            <label for="fechaOC" class="form-label">Fecha</label>
+                            <input type="text" id="fechaOC" class="form-control" placeholder="Date and Time"
+                                value="<?php echo date('Y-m-d H:i:s'); ?>">
                         </div>
-                        <h4 class="page-title"><b>OC - ORDEN DE COMPRA</b></h4>
+                    </div>
+                    <div class="col-lg-5">
+                        <label for="EstadoOC" class="form-label">Estado <span class="text-danger">*</span></label>
+                        <select class="form-control select2" id="EstadoOC">
+                            <option value="1">Ordenado</option>
+                            <option value="2">Recibido-Pagado</option>
+                            <option value="3">Recibido-NoPagado</option>
+                            <option value="4">NoRecibido-Pagado</option>
+                        </select>
+
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="nomUsuario" class="form-label">Usuario <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="nomUsuario" placeholder="# Usuario" value="8888"
+                            readonly>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="mb-3" id="12">
+                            <label for="nomProveedor" class="form-label">Proveedor <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control select2" id="nomProveedor">
+                                @foreach ($proveedor as $pro)
+                                    <option value="{{ $pro->idProveedor }}">{{ $pro->nomProveedor }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mb-3" id="12">
+                            <label for="MetodoPago" class="form-label">Metodo de Pago <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control select2" id="MetodoPago">
+                                @foreach ($tipopago as $fp)
+                                    <option value="{{ $fp->idTipoPago }}">{{ $fp->nomTipoPago }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mb-3" id="12">
+                            <label for="TipoComprobante" class="form-label">Tipo Comprobante <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-control select2" id="TipoComprobante">
+                                @foreach ($tipo_comprobante as $tc)
+                                    <option value="{{ $tc->idTipoComprobante }}">{{ $tc->nomTipoComprobante }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mb-3" id="12">
+                            <label for="NumComprobante" class="form-label">No. Comprobante <span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="NumComprobante"
+                                placeholder="# comprobante..">
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+
+
+                </div>
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xl-6">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">SELECCIONA PRODUCTOS</h5>
+
+                    <table id="dtProducto" class="dtProducto table dt-responsive nowrap w-100" style="min-block-size: ;">
+                        <thead>
+                            <tr>
+                                {{--    <th>Imagen</th> --}}
+                                <th>Codigo</th>
+                                <th>Producto</th>
+                                <th>Unid.Medida</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <!-- end card -->
+            </div>
+
+        </div> <!-- end col -->
+
+
+        <div class="col-md-12 col-xl-6 container py-0">
+            <div class="row justify-content-center mb-0">
+                <div class="col-md-12 col-xl-12">
+                    <div class="card shadow-0 border rounded-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-xl-12">
+                                    <h5>DETALLE</h5>
+                                    <div class="table-responsive">
+                                        <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
+                                            style="min-block-size: ;">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="max-width: 35%; overflow: hidden; word-break: break-all;">
+                                                        Producto</th>
+
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Cant.</th>
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Precio</th>
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Total</th>
+                                                    <th style="max-width: 5%; overflow: hidden; word-break: break-all;">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dtOC">
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th><b>Total.</b>
+                                                    </th>
+                                                    <th id="TotalCart"></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- end page title -->
-
-
-            <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">INFO COMPRA</h5>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="mb-3">
-                                    <label for="fechaOC" class="form-label">Fecha</label>
-                                    <input class="form-control" id="fechaOC" type="date" name="date">
-                                </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <label for="EstadoOC" class="form-label">Estado <span class="text-danger">*</span></label>
-                                <select class="form-control select2" id="EstadoOC">
-                                    <option value="1">Ordenado</option>
-                                    <option value="2">Recibido-Pagado</option>
-                                    <option value="3">Recibido-NoPagado</option>
-                                    <option value="4">NoRecibido-Pagado</option>
-                                </select>
-
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="nomUsuario" class="form-label">Usuario <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="nomUsuario" placeholder="# Usuario" readonly>
-
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="mb-3" id="12">
-                                    <label for="nomProveedor" class="form-label">Proveedor <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control select2" id="nomProveedor">
-                                        @foreach ($proveedor as $pro)
-                                            <option value="{{ $pro->idProveedor }}">{{ $pro->nomProveedor }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="mb-3" id="12">
-                                    <label for="MetodoPago" class="form-label">Metodo de Pago <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control select2" id="MetodoPago">
-                                        @foreach ($tipopago as $fp)
-                                            <option value="{{ $fp->idTipoPago }}">{{ $fp->nomTipoPago }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="mb-3" id="12">
-                                    <label for="TipoComprobante" class="form-label">Tipo Comprobante <span
-                                            class="text-danger">*</span></label>
-                                    <select class="form-control select2" id="TipoComprobante">
-                                        @foreach ($tipo_comprobante as $tc)
-                                            <option value="{{ $tc->idTipoComprobante }}">{{ $tc->nomTipoComprobante }}
-                                            </option>
-                                        @endforeach
-
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="mb-3" id="12">
-                                    <label for="NumComprobante" class="form-label">No. Comprobante <span
-                                            class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="NumComprobante"
-                                        placeholder="# comprobante..">
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="row">
-
-
-                        </div>
-                        <div class="row">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-
-                    <div class="card">
+        </div>
+    </div>
+    {{-- <div class="card shadow-0 border rounded-3">
                         <div class="card-body">
-                            <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">SELECCIONA PRODUCTOS</h5>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-xl-12">
+                                    <h5>DETALLE</h5>
+                                    <div class="table-responsive">
+                                        <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
+                                            style="min-block-size: ;">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th style="max-width: 35%; overflow: hidden; word-break: break-all;">
+                                                        Producto</th>
 
-                            <table id="dtProducto" class="dtProducto table dt-responsive nowrap w-100">
-                                <thead>
-                                    <tr>
-                                        {{--    <th>Imagen</th> --}}
-                                        <th>Codigo</th>
-                                        <th>Producto</th>
-                                        <th>Unid. Medida</th>
-                                        <th>Accion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Cant.</th>
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Precio</th>
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Total</th>
+                                                    <th style="max-width: 5%; overflow: hidden; word-break: break-all;">
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dtOC">
 
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th><b>Total.</b>
+                                                    </th>
+                                                    <th id="TotalCart"></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
 
-                                </tbody>
-                            </table>
-
-
+                                </div>
+                            </div>
                         </div>
-                        <!-- end card -->
-                    </div>
+                    </div> --}}
 
-                </div> <!-- end col -->
 
-                <div class="col-md-6">
+    {{-- <div class="col-md-6">
 
                     <div class="card">
                         <div class="card-body">
@@ -170,11 +277,11 @@
                                 <table class=" table  table-nowrap table-centered mb-0" id="dtCart">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Producto</th>
-                                            <th>Precio</th>
-                                            <th>Cantidad</th>
-                                            <th>Total</th>
-                                            <th style="width: 50px;"></th>
+                                            <th width="45%">Producto</th>
+                                            <th width="15%">Cantidad</th>
+                                            <th width="15%">Precio</th>
+                                            <th width="15%">Total</th>
+                                            <th width="10%" style="width: 50px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody id="dtOC">
@@ -184,14 +291,14 @@
                                         <tr>
                                             <th></th>
                                             <th></th>
-                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Total Bs.</b></th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;<b>Total Bs.</b></th>
                                             <th id="TotalCart"></th>
                                             <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
 
-                                {{-- <div class="border p-3 mt-4 mt-lg-0 rounded">
+                                <div class="border p-3 mt-4 mt-lg-0 rounded">
                                     <h4 class="header-title mb-3">Order Summary</h4>
 
                                     <div class="table-responsive">
@@ -221,7 +328,7 @@
                                         </table>
                                     </div>
 
-                                </div> --}} <!-- end table-responsive-->
+                                </div> <!-- end table-responsive-->
 
                                 <!-- Add note input-->
 
@@ -233,9 +340,9 @@
                                 <!-- action buttons-->
                                 <div class="row mt-4">
                                     <div class="col-sm-6">
-                                        {{-- <a href="ecommerce-products.html"
+                                        <a href="ecommerce-products.html"
                                         class="btn text-muted d-none d-sm-inline-block btn-link fw-semibold">
-                                        <i class="mdi mdi-arrow-left"></i> Continue Shopping </a> --}}
+                                        <i class="mdi mdi-arrow-left"></i> Continue Shopping </a>
                                     </div> <!-- end col -->
                                     <div class="col-sm-6">
                                         <div class="text-sm-end">
@@ -259,26 +366,20 @@
                     </div> <!-- end col-->
                     <!-- end card -->
                 </div>
-                <!-- end row -->
+                <!-- end row --> --}}
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="text-center mb-3">
-                            <a href="{{ url('almacen/producto') }}"><button type="button"
-                                    class="btn w-sm btn-light waves-effect">Cancelar</button></a>
-                            <button type="button"
-                                class="btn w-sm btn-success waves-effect waves-light guardar">Guardar</button>
-                            <button type="button" class="btn w-sm btn-danger waves-effect waves-light">Borrar</button>
-                        </div>
-                    </div> <!-- end col -->
-                </div>
-                <!-- end row -->
-
-
-
+    <div class="row">
+        <div class="col-12">
+            <div class="text-center mb-3">
+                <a href="{{ url('comercial/compra') }}"><button type="button"
+                        class="btn w-sm btn-light waves-effect">Cancelar</button></a>
+                <button type="button"
+                    class="procesar btn w-sm btn-success waves-effect waves-light guardar">Guardar</button>
+                <button type="button" class="btn w-sm btn-danger waves-effect waves-light">Borrar</button>
             </div>
-        </div>
+        </div> <!-- end col -->
     </div>
+    <!-- end row -->
 @endsection
 
 @push('javascript')
@@ -313,6 +414,11 @@
     <script src="{{ asset('/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
     <script src="{{ asset('/libs/mohithg-switchery/switchery.min.js') }}"></script>
     <script src="{{ asset('/libs/multiselect/js/jquery.multi-select.js') }}"></script>
+    <script src="{{ asset('/libs/clockpicker/bootstrap-clockpicker.min.js') }}"></script>
+    <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('/libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+    {{-- <script src="{{ asset('/js/pages/form-pickers.init.js') }}"></script> --}}
 
     {{-- <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
     <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
@@ -321,6 +427,19 @@
     <script src="{{ asset('/js/pages/add-product.init.js') }}"></script>
     <!-- Select2 js-->
     <script src="{{ asset('/js/pages/form-advanced.init.js') }}"></script> --}}
+    <style>
+        .texto {
+            /* display: -webkit-box;
+                                        -webkit-line-clamp: 1;
+                                        -webkit-box-orient: vertical;
+                                        overflow: hidden; */
+            /* margin: 1rem; */
+            min-width: 80px;
+            max-width: 180px;
+            overflow: hidden;
+            word-break: break-all;
+        }
+    </style>
     <script>
         var detallecompra = []
         console.log('detallecompra inicial', detallecompra)
@@ -348,11 +467,26 @@
 
                });
            }); */
-
+        /* $(document).ready(function() {
+            var dttable = $('#dtProducto').DataTable({
+                columnDefs: [{
+                    targets: 1,
+                    className: "text-truncate"
+                }],
+                createdRow: function(row) {
+                    var td = $(row).find(".text-truncate");
+                    var td = $(row).find(".");
+                    td.attr("title", td.html());
+                }
+            });
+        }); */
         $(document).ready(function() {
 
             let table = $('.dtProducto').DataTable({
-
+                columnDefs: [{
+                    targets: 1,
+                    className: "texto"
+                }],
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('create.compra') }}",
@@ -388,7 +522,8 @@
                 },
                 drawCallback: function() {
                     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
-                }
+                },
+
 
             });
 
@@ -442,9 +577,9 @@
             detallecompra.forEach((item, i) => {
                 html += `
                         <tr id="fila${i}">
-                            <td>${item.nomProducto}<input type="hidden" min="1" name="idProducto[]" value="${item.idProducto}" id="idProducto${i}" class="id form-control" placeholder="0" style="width: 90px;"></td>
-                            <td><input type="number" min="1" value="${item.precio}" data-id="${i}" name="precio[]" class="precio form-control" placeholder="0" style="width: 90px;"></td>
+                            <td style="min-width: 80px; max-width:200px; overflow: hidden; word-break: break-all;"><p class="">${item.codProducto}<br>${item.nomProducto}</p><input type="hidden" min="1" name="idProducto[]" value="${item.idProducto}" id="idProducto${i}" class="id form-control" placeholder="0" style="width: 90px;"></td>
                             <td><input type="number" min="1" value="${item.cantidad}" data-id="${i}" name="cantidad[]" class="cantidad form-control" placeholder="0" style="width: 90px;"></td>
+                            <td><input type="number" min="1" value="${item.precio}" data-id="${i}" name="precio[]" class="precio form-control" placeholder="0" style="width: 90px;"></td>
                             <td class="total${i}">${item.precioTotal}</td>
                             <td class="delete${i}"><i data-id="${i}"  class="deleteItem fas fa-trash-alt text-danger"></i></td>
                         </tr>
@@ -455,13 +590,14 @@
         $(document).on('click', '.procesar', function() {
             var dato = {
                 detallecompra: detallecompra,
-                idProveedor: 1,
-                idTipoPago: 2,
-                idTipoComprobante: 2,
-                numeroComprobante: 1223,
-                /* fechaegreso: $('#MetodoPago').val(), */
-                impuestoEgreso: 18,
+                idProveedor: $('#nomProveedor').val(),
+                idTipoPago: $('#MetodoPago').val(),
+                idTipoComprobante: $('#TipoComprobante').val(),
+                numeroComprobante: $('#NumComprobante').val(),
+                fechaEgreso: $('#fechaOC').val(),
+                impuestoEgreso: 16,
                 estadoEgreso: 1,
+                idUsuario: $('#nomUsuario').val(),
 
 
             };
@@ -472,14 +608,10 @@
                 dataType: 'json',
                 data: dato,
                 success: function(response) {
-                    /* console.log(response, "ACTUALIZO")
-                                        window.location = "index";
-                     */
-                    Swal.fire({
-                        type: 'success',
-                        title: 'OK',
-                        /*    text: response.message, */
-                    });
+                    console.log(response, "ACTUALIZO")
+                    window.location = "index";
+
+
 
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

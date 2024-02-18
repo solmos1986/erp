@@ -17,6 +17,10 @@ class ProductoController extends Controller
     public function obtener_producto()
     {
         $productos = DB::table('producto')->where('condicionProducto', '=', 1)->get();
+        $clientes = DB::table('cliente')->where('condicionCliente', '=', 1)->get();
+        $usuario = DB::table('usuario')->where('condicionUsuario', '=', 1)->get();
+        $tipoPago = DB::table('tipopago')->where('condicionTipoPago', '=', 1)->get();
+
         return response()->json([
             "data" => $productos,
             "status" => 1,
@@ -56,6 +60,7 @@ class ProductoController extends Controller
         $producto->stockMinimo = $request->get('stockMinimo');
         $producto->unidadMedida = $request->get('unidadMedida');
         $producto->idCategoria = $request->get('idCategoria');
+        $producto->precioVentaProducto = $request->get('precioVentaProducto');
         $producto->condicionProducto = '1';
         if ($request->hasFile('imagenProducto')) {
 
@@ -108,6 +113,7 @@ class ProductoController extends Controller
         $producto->stockMinimo = $request->get('stockMinimo');
         $producto->unidadMedida = $request->get('unidadMedida');
         $producto->idCategoria = $request->get('idCategoria');
+        $producto->precioVentaProducto = $request->get('precioVentaProducto');
         //$producto->CondicionProducto='1';
         //$producto->ImagenProducto=$request->get('ImagenProductoEdit');
         //dd($producto);

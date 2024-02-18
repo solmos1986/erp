@@ -19,6 +19,20 @@
         <!-- Start Content-->
         <div class="container-fluid">
             <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="#">ERP</a></li>
+                                <li class="breadcrumb-item"><a href="#">Comercial</a></li>
+                                <li class="breadcrumb-item active">Ventas</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">VENTAS</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-3">
                     <div class="input-group">
                         <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto"
@@ -56,7 +70,6 @@
                                         <th>Fecha</th>
                                         <th>Cliente</th>
                                         <th>Comprobante</th>
-                                        <th>Numero</th>
                                         <th>Impuestos</th>
                                         <th>Metodo Pago</th>
                                         <th>Total</th>
@@ -103,10 +116,10 @@
     <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
 
     <!-- Init js-->
-    <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
+    {{--   <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
 
     <!-- Init js -->
-    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script>
+    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script> --}}
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
         $(function() {
@@ -130,11 +143,7 @@
                     },
                     {
                         data: 'nomTipoComprobante',
-                        name: 'nomTipoComprobante'
-                    },
-                    {
-                        data: 'numeroComprobante',
-                        name: 'numeroComprobante'
+                        name: 'nomTipoComprobante',
                     },
                     {
                         data: 'impuestoIngreso',
@@ -159,7 +168,7 @@
                         searchable: false,
                         render: function(data, type, row, meta) {
                             console.log("LLEGO FILA", row)
-                            return `<a href="{{ url('almacen/producto/${row.idIngreso}') }}"  data-id="${row.idIngreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idIngreso}" class="delete far fa-trash-alt text-danger"></a>`;
+                            return `<a href="{{ url('almacen/producto/${row.idIngreso}') }}"  data-id="${row.idIngreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idIngreso}" class="delete fas fa-trash-alt text-danger"></a>`;
                         }
                     },
                 ],

@@ -17,6 +17,7 @@
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
 
+
     @stack('css')
     <!-- Theme Config Js -->
     <script src="{{ asset('/js/head.js') }}"></script>
@@ -127,11 +128,11 @@
                                         <span class="menu-text">Proveedor</span>
                                     </a>
                                 </li>
-                                {{-- <li class="menu-item">
-                                    <a href="dashboard-4.html" class="menu-link">
-                                        <span class="menu-text">Dashboard 4</span>
+                                <li class="menu-item">
+                                    <a href="{{ url('almacen/inventario') }}" class="menu-link">
+                                        <span class="menu-text">Inventario</span>
                                     </a>
-                                </li> --}}
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -1145,7 +1146,7 @@
                             <!-- Brand Logo Dark -->
                             <a href="index.html" class="logo-dark">
                                 <img src="{{ asset('/images/logo-dark.png') }}" alt="dark logo" class="logo-lg">
-                                <img src="{{ asset('/images/logo-sm.png.png') }}" alt="small logo" class="logo-sm">
+                                <img src="{{ asset('/images/logo-sm.png') }}" alt="small logo" class="logo-sm">
                             </a>
                         </div>
 

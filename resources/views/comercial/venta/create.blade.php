@@ -22,198 +22,240 @@
 @endpush
 
 @section('contenido')
-    <div class="content">
+    <!-- start page title -->
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                        <li class="breadcrumb-item active">Products</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">VENTA</h4>
+            </div>
+        </div>
+    </div>
+    <!-- end page title -->
 
-        <!-- Start Content-->
-        <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <form class="d-flex flex-wrap align-items-center">
+                                <label for="inputPassword2" class="visually-hidden">Search</label>
+                                <div class="me-3">
+                                    <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2"
+                                        placeholder="Search...">
+                                </div>
+                                <label for="status-select" class="me-2">Sort By</label>
+                                <div class="me-sm-3">
+                                    <select class="form-select my-1 my-lg-0" id="status-select">
+                                        <option selected="">All</option>
+                                        <option value="1">Popular</option>
+                                        <option value="2">Price Low</option>
+                                        <option value="3">Price High</option>
+                                        <option value="4">Sold Out</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-auto">
+                            <div class="text-lg-end my-1 my-lg-0">
+                                <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
+                                        class="mdi mdi-cog"></i></button>
+                                <a href="ecommerce-product-edit.html" class="btn btn-danger waves-effect waves-light"><i
+                                        class="mdi mdi-plus-circle me-1"></i> Add New</a>
+                            </div>
+                        </div><!-- end col-->
+                    </div> <!-- end row -->
+                </div>
+            </div> <!-- end card -->
+        </div> <!-- end col-->
+    </div>
+    <!-- end row-->
+    <div class="row">
+        <div class="col-md-6 col-lg-6 col-xl-6 container py-0">
+            <div class="row justify-content-center mb-0" id="list_cards">
 
-            <!-- start page title -->
+            </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                                <li class="breadcrumb-item active">Products</li>
-                            </ol>
+                    <ul class="pagination pagination-rounded justify-content-end mb-3">
+                        <li class="page-item">
+                            <a class="page-link" href="javascript: void(0);" aria-label="Previous">
+                                <span aria-hidden="true">«</span>
+                                <span class="visually-hidden">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
+                        <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="javascript: void(0);" aria-label="Next">
+                                <span aria-hidden="true">»</span>
+                                <span class="visually-hidden">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div> <!-- end col-->
+            </div> <!-- end row-->
+            {{-- </div> <!-- end col-8--> --}}
+        </div>
+        <div class="col-md-6 col-lg-6 col-xl-6 container py-0">
+            <div class="row justify-content-center mb-0">
+                <div class="col-md-12 col-xl-12">
+                    <div class="card shadow-0 border rounded-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-xl-12 mb-4 mb-lg-0">
+                                    <div class="row mb-1">
+                                        <label for="fechaVenta" class="form-label col-2 col-xl-2">Fecha</label>
+                                        <div class="col-4 col-xl-4">
+                                            <input type="text" class="form-control form-control-sm" id="fechaVenta"
+                                                name="date" placeholder="Fecha" value="<?php echo date('Y-m-d H:i:s'); ?>">
+                                        </div>
+                                        <label for="idVendedor" class="form-label col-2 col-xl-2">Vendedor</label>
+                                        <div class="col-4 col-xl-4">
+                                            <input type="text" class="form-control form-control-sm" id="idVendedor"
+                                                placeholder="Vendedor" value="8888">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label for="idCliente" class="form-label col-2 col-xl-2">Cliente</label>
+                                        <div class="col-10 col-xl-10">
+                                            <select class="form-control form-control-sm" id="idCliente">
+                                                @foreach ($cliente as $cli)
+                                                    <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label for="docCliente" class="form-label col-2 col-xl-2">NIT/CI</label>
+                                        <div class="col-4 col-xl-4">
+                                            <input type="select" class="form-control form-control-sm" id="docCliente"
+                                                placeholder="NIT/CI">
+                                        </div>
+                                        <label for="idTipoPago" class="form-label col-2 col-xl-2">Tipo Pago</label>
+                                        <div class="col-4 col-xl-4">
+                                            <select class="form-control form-control-sm" id="idTipoPago">
+                                                @foreach ($tipopago as $tp)
+                                                    <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}</option>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row mb-1">
+                                        <label for="idTipoComprobante"
+                                            class="form-label col-2 col-xl-2">Comprobante</label>
+                                        <div class="col-4 col-xl-4">
+                                            <div class="col-12 col-xl-12">
+                                                <select class="form-control form-control-sm" id="idTipoComprobante">
+                                                    @foreach ($tipo_comprobante as $tp)
+                                                        <option value="{{ $tp->idTipoComprobante }}">
+                                                            {{ $tp->nomTipoComprobante }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                        <label for="impuestoIngreso" class="form-label col-2 col-xl-2">Impuestos</label>
+                                        <div class="col-4 col-xl-4">
+                                            <input type="number" class="form-control form-control-sm"
+                                                id="impuestoIngreso" placeholder="% impuesto" value="16">
+                                        </div>
+                                        {{-- <label for="example-input-small"
+                                            class="form-label col-2 col-xl-2">Vendedor</label>
+                                        <div class="col-4 col-xl-4">
+                                            <input type="select" class="form-control form-control-sm"
+                                                id="example-input-small" placeholder="Vendedor">
+                                        </div> --}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-xl-12 mb-4 mb-lg-0">
+
+                                </div>
+                            </div>
                         </div>
-                        <h4 class="page-title">VENTA</h4>
                     </div>
                 </div>
             </div>
-            <!-- end page title -->
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
+            <div class="row justify-content-center mb-0">
+                <div class="col-md-12 col-xl-12">
+                    <div class="card shadow-0 border rounded-3">
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <div class="col-auto">
-                                    <form class="d-flex flex-wrap align-items-center">
-                                        <label for="inputPassword2" class="visually-hidden">Search</label>
-                                        <div class="me-3">
-                                            <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2"
-                                                placeholder="Search...">
-                                        </div>
-                                        <label for="status-select" class="me-2">Sort By</label>
-                                        <div class="me-sm-3">
-                                            <select class="form-select my-1 my-lg-0" id="status-select">
-                                                <option selected="">All</option>
-                                                <option value="1">Popular</option>
-                                                <option value="2">Price Low</option>
-                                                <option value="3">Price High</option>
-                                                <option value="4">Sold Out</option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-auto">
-                                    <div class="text-lg-end my-1 my-lg-0">
-                                        <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
-                                                class="mdi mdi-cog"></i></button>
-                                        <a href="ecommerce-product-edit.html"
-                                            class="btn btn-danger waves-effect waves-light"><i
-                                                class="mdi mdi-plus-circle me-1"></i> Add New</a>
-                                    </div>
-                                </div><!-- end col-->
-                            </div> <!-- end row -->
-                        </div>
-                    </div> <!-- end card -->
-                </div> <!-- end col-->
-
-            </div>
-            <!-- end row-->
-            <div class="row">
-                <div class="col-md-6 col-lg-6 col-xl-6 container py-2">
-                    <div class="row justify-content-center mb-0" id="list_cards">
-
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <ul class="pagination pagination-rounded justify-content-end mb-3">
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript: void(0);" aria-label="Previous">
-                                        <span aria-hidden="true">«</span>
-                                        <span class="visually-hidden">Previous</span>
-                                    </a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="javascript: void(0);">1</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">2</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">3</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">4</a></li>
-                                <li class="page-item"><a class="page-link" href="javascript: void(0);">5</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="javascript: void(0);" aria-label="Next">
-                                        <span aria-hidden="true">»</span>
-                                        <span class="visually-hidden">Next</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div> <!-- end col-->
-                    </div> <!-- end row-->
-                </div> <!-- end col-8-->
-
-                {{-- <div class="col-4">
-                    <div class="row"> --}}
-                <div class="col-md-6 col-lg-6 col-xl-6 container py-2"> <!-- Desde aqui repite los Tag's -->
-                    <div class="card product-box">
-                        <div class="row card-body">
-                            {{-- AQui EL ENCABEZAO DE LA NOTA DE VENTA --}}
-                        </div>
-                    </div>
-                    <div class="card product-box">
-                        <div class="row card-body">
-                            <div class="table-responsive">
-                                <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
-                                    style="min-block-size: ">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th width="35%">Producto</th>
-                                            <th width="20%">Precio</th>
-                                            <th width="20%">Cantidad</th>
-                                            <th width="20%">Total</th>
-                                            <th width="5%"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="dtVE">
-
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Total Bs.</b></th>
-                                            <th id="TotalCart"></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-
-                                {{-- <div class="border p-3 mt-4 mt-lg-0 rounded">
-                                    <h4 class="header-title mb-3">Order Summary</h4>
-
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-xl-12">
+                                    <h5>DETALLE</h5>
                                     <div class="table-responsive">
-                                        <table class="table mb-0">
-                                            <tbody>
+                                        <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
+                                            style="min-block-size: ">
+                                            <thead class="table-light">
                                                 <tr>
-                                                    <td>Grand Total :</td>
-                                                    <td>$1571.19</td>
+                                                    <th style="max-width: 35%; overflow: hidden; word-break: break-all;">
+                                                        Producto</th>
+
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Cant.</th>
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Precio</th>
+                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
+                                                        Total</th>
+                                                    <th style="max-width: 5%; overflow: hidden; word-break: break-all;">
+                                                    </th>
                                                 </tr>
-                                                <tr>
-                                                    <td>Discount : </td>
-                                                    <td>-$157.11</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Shipping Charge :</td>
-                                                    <td>$25</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Estimated Tax : </td>
-                                                    <td>$19.22</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total :</th>
-                                                    <th>$1458.3</th>
-                                                </tr>
+                                            </thead>
+                                            <tbody id="dtVE">
+
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <th><b>Total.</b>
+                                                    </th>
+                                                    <th id="TotalCart"></th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
-
-                                </div> --}} <!-- end table-responsive-->
-
-                                <!-- Add note input-->
-
-                                <div class="mt-3">
-                                    <label for="example-textarea" class="form-label">Add a Note:</label>
-                                    <textarea class="form-control" id="example-textarea" rows="3" placeholder="Write some note.."></textarea>
                                 </div>
-
-                                <!-- action buttons-->
-                                <div class="row mt-2">
-                                    <div class="col-sm-6">
-                                        {{-- <a href="ecommerce-products.html"
-                                        class="btn text-muted d-none d-sm-inline-block btn-link fw-semibold">
-                                        <i class="mdi mdi-arrow-left"></i> Continue Shopping </a> --}}
-                                    </div> <!-- end col -->
-                                    <div class="col-sm-6">
-                                        <div class="text-sm-end">
-                                            <i class="procesar mdi mdi-cart-plus btn btn-danger">Procesar</i>
-                                        </div>
-                                    </div> <!-- end col -->
-                                </div> <!-- end row-->
+                            </div>
+                            <div class="row">
+                                <br>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12 col-xl-12">
+                                    <div class="text-lg-end my-1 my-lg-0">
+                                        <a href="{{ url('comercial/venta') }}"><button type="button"
+                                                class="btn w-sm btn-light waves-effect">Cancelar</button></a>
+                                        <button type="button"
+                                            class="procesar btn w-sm btn-success waves-effect waves-light guardar">Guardar</button>
+                                        <button type="button"
+                                            class="btn w-sm btn-danger waves-effect waves-light">Borrar</button>
+                                    </div>
+                                </div> <!-- end col -->
                             </div>
                         </div>
-                    </div> <!-- end card-->
-
-                </div> <!-- end col HASTA AQUI SON LOS TAGs-->
-
-                {{-- </div>
-
-                </div> --}}
+                    </div>
+                </div>
             </div>
-        </div> <!-- container -->
-    </div> <!-- content -->
+        </div>
+    </div>
 @endsection
 
 @push('javascript')
@@ -279,80 +321,68 @@
         });
 
         function renderCard() {
+
             $('#list_cards').html('')
             let cards = ``;
             productos.map((item, i) => {
                 cards += `
-           
-               
-            
                 <div class="col-md-12 col-lg-12 col-xl-12">
                     <div class="card shadow-0 border rounded-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                                <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(4).webp"
-                                    class="w-100" />
-                                <a href="#!">
-                                    <div class="hover-overlay">
-                                    <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0" >
+                                    <div class="bg-image hover-zoom ripple rounded ripple-surface" >
+                                    <img src="/imagenes/productos/${item.imagenProducto}" 
+                                        class="w-100" />
+                                    <a href="#!">
+                                        <div class="hover-overlay">
+                                        <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
+                                        </div>
+                                    </a>
                                     </div>
-                                </a>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-6">
-                                <div>
-                                    <h5>Quant trident shirts</h5>
+                                <div class="col-md-6 col-lg-6 col-xl-6">
+                                    <div>
+                                        <h5 class="text-truncate">${item.nomProducto}</h5>
+                                    </div>
+                                    
+                                    <div class="mt-1 mb-0 text-muted small">
+                                        <span>Caract.1</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>Caract.2</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>Caract.3<br /></span>
+                                    </div>
+                                    <div class="mb-2 text-muted small">
+                                        <span>Categoria</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>SubCate</span>
+                                        <span class="text-primary"> • </span>
+                                        <span>Tipo<br /></span>
+                                    </div>
+                                    <p class="texto mb-4 mb-md-0">
+                                    There are many variations of passages of Lorem Ipsum available, but the
+                                    majority have suffered alteration in some form, by injected humour, or
+                                    randomised words which don't look even slightly believable.
+                                    </p>
                                 </div>
-                                <div class="d-flex flex-row">
-                                <div class="text-danger mb-1 me-2">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <span>310</span>
-                                </div>
-                                <div class="mt-1 mb-0 text-muted small">
-                                <span>100% cotton</span>
-                                <span class="text-primary"> • </span>
-                                <span>Light weight</span>
-                                <span class="text-primary"> • </span>
-                                <span>Best finish<br /></span>
-                                </div>
-                                <div class="mb-2 text-muted small">
-                                <span>Unique design</span>
-                                <span class="text-primary"> • </span>
-                                <span>For men</span>
-                                <span class="text-primary"> • </span>
-                                <span>Casual<br /></span>
-                                </div>
-                                <p class="text-truncate mb-4 mb-md-0">
-                                There are many variations of passages of Lorem Ipsum available, but the
-                                majority have suffered alteration in some form, by injected humour, or
-                                randomised words which don't look even slightly believable.
-                                </p>
-                            </div>
-                            <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
-                                <div class="d-flex flex-row align-items-center mb-1">
-                                <h4 class="mb-1 me-1">$13.99</h4>
-                                <span class="text-danger"><s>$20.99</s></span>
-                                </div>
-                                <h6 class="text-success">Free shipping</h6>
-                                <div class="d-flex flex-column mt-4">
-                                <button class="btn btn-primary btn-sm" type="button">Details</button>
-                                <button class="btn btn-outline-primary btn-sm mt-2" type="button">
-                                    Add to cart
-                                </button>
+                                <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start ">
+                                    <div class="d-flex flex-row justify-content-center align-items-center mb-1">
+                                        <h4 class="mb-1 me-1">Bs. ${item.precioVentaProducto}</h4>
+                                       
+                                    </div>
+                                        
+                                    <div class="d-flex flex-column mt-4">
+                                        <button data-id="${i}" class="add_product btn btn-outline-primary btn-sm mt-2 " type="button">
+                                            Agregar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
-                    </div>
-                </div>
-         
-                
+                </div> 
                 `;
             })
             $('#list_cards').append(cards)
@@ -360,6 +390,7 @@
         $(document).on('click', '.add_product', function() {
 
             let posicion = $(this).data('id');
+            console.log(posicion, "IDDDD");
             let producto = productos[posicion];
             console.log(producto, "PRODUCTOOOO")
             const validador = detalleVenta.find(((item) => item.idProducto == producto
@@ -369,8 +400,8 @@
                 detalleVenta.push({
                     ...producto,
                     cantidad: 1,
-                    precio: 0,
-                    precioTotal: 0
+                    precio: producto.precioVentaProducto,
+                    precioTotal: parseFloat((producto.precioVentaProducto * 1))
                 });
             } else {
                 detalleVenta.map(item => {
@@ -382,20 +413,21 @@
                     }
                 });
             }
-            /* console.log('detalleVentaAddCard', detalleVenta) */
+            console.log('detalleVentaAddCard', detalleVenta)
             SumaTotales();
             renderDetalleVenta();
         });
 
         function renderDetalleVenta() {
+            console.log('detalleVentaAddCard', detalleVenta)
             $('#dtVE').html('')
             let html = ``;
             detalleVenta.forEach((item, i) => {
                 html += `
                         <tr id="fila${i}">
-                            <td>${item.nomProducto}<input type="hidden" min="1" name="idProducto[]" value="${item.idProducto}" id="idProducto${i}" class="id form-control" placeholder="0" style="width: 90px;"></td>
-                            <td><input type="number" min="1" value="${item.precio}" data-id="${i}" name="precio[]" class="precio form-control" placeholder="0" style="width: 90px;"></td>
+                            <td style="min-width: 80px; max-width:200px; overflow: hidden; word-break: break-all;"><p class="">${item.codProducto}<br>${item.nomProducto}</p><input type="hidden" min="1" name="idProducto[]" value="${item.idProducto}" id="idProducto${i}" class="id form-control" placeholder="0" style="width: 90px;"></td>
                             <td><input type="number" min="1" value="${item.cantidad}" data-id="${i}" name="cantidad[]" class="cantidad form-control" placeholder="0" style="width: 90px;"></td>
+                            <td><input type="number" min="1" value="${item.precioVentaProducto}" data-id="${i}" name="precioVentaProducto[]" class="precio form-control" placeholder="0" style="width: 90px;"></td>
                             <td class="total${i}">${item.precioTotal}</td>
                             <td class="delete${i}"><i data-id="${i}"  class="deleteItem fas fa-trash-alt text-danger"></i></td>
                         </tr>
@@ -408,13 +440,13 @@
             let precio = $(this).val();
             let posicion = $(this).data('id');
             /* let td = '#pro' + posicion
-            let colum = $(this).data('td');
-            console.log(precio, posicion, colum, "PROBANDO") */
+            let colum = $(this).data('td');*/
+            console.log(precio, posicion, "PROBANDO")
             let total = 0;
             detalleVenta.map((item, i) => {
                 if (i == posicion) {
                     item.precioTotal = parseFloat(precio * item.cantidad);
-                    item.precio = parseFloat(precio);
+                    item.precioVentaProducto = parseFloat(precio);
                     $(`.total${posicion}`).text(item
                         .precioTotal); //restringir cantidad decimales
                 }
@@ -467,26 +499,53 @@
                 //renderDetalleVenta()
             })
         }
+        $(document).on('click', '.procesar', function() {
+            var dato = {
+                detalleVenta: detalleVenta,
+                idCliente: $('#idCliente').val(),
+                idTipoPago: $('#idTipoPago').val(),
+                idTipoComprobante: $('#idTipoComprobante').val(),
+                fechaIngreso: $('#fechaVenta').val(),
+                impuestoIngreso: $('#impuestoIngreso').val(),
+                estadoIngreso: 1,
+                idUsuario: $('#idVendedor').val(),
+
+
+            };
+            console.log(dato, "ENVIADO A STORE");
+            $.ajax({
+                type: "post",
+                url: `${base_url}/comercial/venta`,
+                dataType: 'json',
+                data: dato,
+                success: function(response) {
+                    console.log(response, "ACTUALIZO")
+                    window.location = "index";
+
+
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplosdsfs!',
+                    });
+                },
+                fail: function() {
+                    console.log('error servidor')
+                }
+            });
+        });
     </script>
     <style>
-        .card1 {
-            background-color: rgb(255, 255, 255);
-            flex: 100%;
-            margin-bottom: 15px;
-            border: 5px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .footer1 {
-            background-color: rgb(255, 255, 255);
-            padding: 10px;
-        }
-
-        .content1 {
-            flex-grow: 1;
-            flex-shrink: 1;
-
+        .texto {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            /* margin: 1rem; */
         }
     </style>
 @endpush

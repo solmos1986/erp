@@ -27,6 +27,23 @@
     </div>
     <!-- end page title -->
     <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto" required>
+            </div>
+        </div>
+        <div class="col-lg-5">
+
+        </div>
+        <div class="col-lg-4">
+            <div class="text-lg-end">
+                <a href="#"><button type="button" id="serchbtn"
+                        class="nuevo btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                        Registrar Cliente </button></a>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="row">
         <div class="col-md-3 mb-2">
             <div class="input-group">
                 <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar cliente" required>
@@ -41,7 +58,7 @@
                 <button type="button" id="serchbtn" class="btn rounded-pill btn-success nuevo">NUEVO</button>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-12">
             <div class="card">

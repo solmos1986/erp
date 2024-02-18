@@ -118,14 +118,15 @@
 
                                 <div class="row">
                                     <div class="col-4">
-                                        <label for="precioCompra">Precio Compra <span class="text-danger">*</span></label>
+                                        <label for="precioCompra">Precio Compra <span
+                                                class="text-danger">*</span></label><!-- Trae el resultado del promedio de los ingresos a almacen por compra -->
                                         <input type="text" class="form-control" id="precioCompra" name="precioCompra"
-                                            placeholder="Enter amount">
+                                            placeholder="Enter amount" readonly>
                                     </div>
                                     <div class="col-4">
                                         <label for="pecioVenta">Precio Venta <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="pecioVenta" name="pecioVenta"
-                                            placeholder="Enter amount">
+                                        <input type="text" class="form-control" id="precioVentaProducto"
+                                            name="precioVentaProducto" placeholder="Enter amount">
                                     </div>
                                     <div class="col-4">
                                         <label for="stockMinimo">Stock Minimo <span class="text-danger">*</span></label>
