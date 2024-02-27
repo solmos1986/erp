@@ -54,4 +54,42 @@ class User extends Authenticatable
             ->first();
         return $usuario;
     }
+    public function obtener_roles()
+    {
+        $roles = DB::table('rol_authenticacion')
+            ->select('rol_authenticacion.rol_authenticacion_id')
+            ->join('authenticacion', 'authenticacion.authenticacion_id', 'rol_authenticacion.authenticacion_id')
+            ->where('authenticacion.usuario_id', auth()->user()->usuario_id)
+            ->where('authenticacion.estado', 1)
+            ->get()
+            ->pluck('rol_authenticacion_id');
+        return $roles;
+    }
+    public function obtener_menu()
+    {
+        $roles = $this->obtener_roles();
+        $super_modulos = DB::table('rol_super_modulo')
+            ->join('super_modulo', 'super_modulo.super_modulo_id', 'rol_super_modulo.super_modulo_id')
+            ->whereIn('rol_super_modulo.rol_authenticacion_id', $roles)
+            ->groupBy('rol_super_modulo.super_modulo_id')
+            ->get();
+        foreach ($super_modulos as $key => $super_modulo) {
+            $modulos = DB::table('rol_modulo')
+                ->join('modulo', 'modulo.modulo_id', 'rol_modulo.modulo_id')
+                ->where('rol_modulo.rol_super_modulo_id', $super_modulo->rol_super_modulo_id)
+                ->groupBy('rol_modulo.modulo_id')
+                ->get();
+            foreach ($modulos as $key => $modulo) {
+                $sub_modulos = DB::table('rol_sub_modulo')
+                    ->join('sub_modulo', 'sub_modulo.sub_modulo_id', 'rol_sub_modulo.sub_modulo_id')
+                    ->where('rol_sub_modulo.rol_modulo_id', $modulo->rol_modulo_id)
+                    ->groupBy('rol_sub_modulo.sub_modulo_id')
+                    ->get();
+                $modulo->sub_modulos = $sub_modulos;
+            }
+            $super_modulo->modulos = $modulos;
+        }
+
+        return $super_modulos;
+    }
 }
