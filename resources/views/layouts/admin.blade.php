@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-topbar-color="dark">
+<html lang="es" data-topbar-color="dark">
 
 <head>
     <meta charset="utf-8" />
@@ -23,9 +23,15 @@
     <!-- Icons css -->
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
     <!-- Begin page -->
     <div id="wrapper">
+        <div id="preloader">
+            <div id="status">
+                <div class="spinner">Cargando...</div>
+            </div>
+        </div>
         <!-- ========== Menu ========== -->
         <!-- ========== Left menu End ========== -->
         @component('layouts.parts.sidebar')
@@ -56,7 +62,7 @@
     <!-- END wrapper -->
     <!-- INICIO MENU DE CONFIGURACION DE LA DERECHA -->
     <!-- Theme Settings -->
-    <div class="offcanvas offcanvas-end right-bar" tabindex="-1" id="theme-settings-offcanvas">
+    {{-- <div class="offcanvas offcanvas-end right-bar" tabindex="-1" id="theme-settings-offcanvas">
         <div class="d-flex align-items-center w-100 p-0 offcanvas-header">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs nav-bordered nav-justified w-100" role="tablist">
@@ -121,8 +127,8 @@
                         <a href="javascript: void(0);" class="text-reset notification-item">
                             <div class="d-flex align-items-start noti-user-item">
                                 <div class="position-relative me-2">
-                                    <img src="{{ asset('images/users/user-10.jpg') }}"
-                                        class="rounded-circle avatar-sm" alt="user-pic">
+                                    <img src="{{ asset('images/users/user-10.jpg') }}" class="rounded-circle avatar-sm"
+                                        alt="user-pic">
                                     <i class="mdi mdi-circle user-status online"></i>
                                 </div>
                                 <div class="overflow-hidden">
@@ -566,7 +572,7 @@
             </div>
         </div>
         <!-- FIN MENU DE CONFIGURACION DE LA DERECHA -->
-    </div>
+    </div> --}}
     <script type="text/javascript">
         var base_url = "{{ url('/') }}";
     </script>
@@ -582,7 +588,7 @@
     <script src="{{ asset('/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @stack('javascript')
+
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -590,8 +596,9 @@
             }
         });
     </script>
-
+    <script src="{{ asset('/js/components/errors_ajax.js') }}"></script>
+    <script src="{{ asset('/js/components/ajax.js') }}"></script>
+    @stack('javascript')
 </body>
-
 
 </html>

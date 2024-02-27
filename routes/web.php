@@ -78,5 +78,10 @@ Route::get('/', function () {
 
 Route::prefix('roles')->group(function () {
     Route::get('/', [RolController::class, 'index'])->name('rol.index');
-
+    Route::get('/data-table', [RolController::class, 'data_table'])->name('rol.data_table');
+    Route::get('/create', [RolController::class, 'create'])->name('rol.create');
+    Route::post('/store', [RolController::class, 'store'])->name('rol.store');
+    Route::get('/{id}', [RolController::class, 'edit'])->name('rol.edit');
+    Route::put('/{id}', [RolController::class, 'update'])->name('rol.update');
+    Route::delete('/{id}', [RolController::class, 'destroy'])->name('rol.destroy');
 });

@@ -24,8 +24,8 @@
 
             <!-- Dropdown Menu -->
             <div class="dropdown d-none d-xl-block">
-                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown"
-                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#"
+                    role="button" aria-haspopup="false" aria-expanded="false">
                     Create New
                     <i class="mdi mdi-chevron-down ms-1"></i>
                 </a>
@@ -67,8 +67,8 @@
 
             <!-- Mega Menu Dropdown -->
             <div class="dropdown dropdown-mega d-none d-xl-block">
-                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown"
-                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#"
+                    role="button" aria-haspopup="false" aria-expanded="false">
                     Mega Menu
                     <i class="mdi mdi-chevron-down  ms-1"></i>
                 </a>
@@ -176,8 +176,7 @@
             <!-- Topbar Search Form -->
             <li class="app-search dropdown me-3 d-none d-lg-block">
                 <form>
-                    <input type="search" class="form-control rounded-pill" placeholder="Search..."
-                        id="top-search">
+                    <input type="search" class="form-control rounded-pill" placeholder="Search..." id="top-search">
                     <span class="fe-search search-icon font-16"></span>
                 </form>
                 <div class="dropdown-menu dropdown-menu-animated dropdown-lg" id="search-dropdown">
@@ -213,8 +212,7 @@
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item">
                             <div class="d-flex align-items-start">
-                                <img class="d-flex me-2 rounded-circle"
-                                    src="{{ asset('images/users/user-2.jpg') }}"
+                                <img class="d-flex me-2 rounded-circle" src="{{ asset('images/users/user-2.jpg') }}"
                                     alt="Generic placeholder image" height="32">
                                 <div class="w-100">
                                     <h5 class="m-0 font-14">Erwin E. Brown</h5>
@@ -226,8 +224,7 @@
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item">
                             <div class="d-flex align-items-start">
-                                <img class="d-flex me-2 rounded-circle"
-                                    src="{{ asset('images/users/user-5.jpg') }}"
+                                <img class="d-flex me-2 rounded-circle" src="{{ asset('images/users/user-5.jpg') }}"
                                     alt="Generic placeholder image" height="32">
                                 <div class="w-100">
                                     <h5 class="m-0 font-14">Jacob Deo</h5>
@@ -248,9 +245,8 @@
 
             <!-- Search Dropdown (for Mobile/Tablet) -->
             <li class="dropdown d-lg-none">
-                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none"
-                    data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                    aria-expanded="false">
+                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none" data-bs-toggle="dropdown"
+                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="ri-search-line font-22"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-animated dropdown-lg p-0">
@@ -263,9 +259,8 @@
 
             <!-- App Dropdown -->
             <li class="dropdown d-none d-md-inline-block">
-                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none"
-                    data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                    aria-expanded="false">
+                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none" data-bs-toggle="dropdown"
+                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="fe-grid font-22"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg p-0">
@@ -286,8 +281,7 @@
                             </div>
                             <div class="col">
                                 <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('images/brands/dribbble.png') }}"
-                                        alt="dribbble">
+                                    <img src="{{ asset('images/brands/dribbble.png') }}" alt="dribbble">
                                     <span>Dribbble</span>
                                 </a>
                             </div>
@@ -296,8 +290,7 @@
                         <div class="row g-0">
                             <div class="col">
                                 <a class="dropdown-icon-item" href="#">
-                                    <img src="{{ asset('images/brands/bitbucket.png') }}"
-                                        alt="bitbucket">
+                                    <img src="{{ asset('images/brands/bitbucket.png') }}" alt="bitbucket">
                                     <span>Bitbucket</span>
                                 </a>
                             </div>
@@ -320,36 +313,35 @@
 
             <!-- Language flag dropdown  -->
             <li class="dropdown d-none d-md-inline-block">
-                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none"
-                    data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                    aria-expanded="false">
-                    <img src="{{ asset('images/flags/us.jpg') }}" alt="user-image"
-                        class="me-0 me-sm-1" height="18">
+                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none" data-bs-toggle="dropdown"
+                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <img src="{{ asset('images/flags/us.jpg') }}" alt="user-image" class="me-0 me-sm-1"
+                        height="18">
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated">
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="{{ asset('images/flags/germany.jpg') }}" alt="user-image"
-                            class="me-1" height="12"> <span class="align-middle">German</span>
+                        <img src="{{ asset('images/flags/germany.jpg') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">German</span>
                     </a>
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="{{ asset('images/flags/italy.jpg') }}" alt="user-image"
-                            class="me-1" height="12"> <span class="align-middle">Italian</span>
+                        <img src="{{ asset('images/flags/italy.jpg') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Italian</span>
                     </a>
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="{{ asset('images/flags/spain.jpg') }}" alt="user-image"
-                            class="me-1" height="12"> <span class="align-middle">Spanish</span>
+                        <img src="{{ asset('images/flags/spain.jpg') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Spanish</span>
                     </a>
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="{{ asset('images/flags/russia.jpg') }}" alt="user-image"
-                            class="me-1" height="12"> <span class="align-middle">Russian</span>
+                        <img src="{{ asset('images/flags/russia.jpg') }}" alt="user-image" class="me-1"
+                            height="12"> <span class="align-middle">Russian</span>
                     </a>
 
                 </div>
@@ -357,9 +349,8 @@
 
             <!-- Notofication dropdown -->
             <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none"
-                    data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                    aria-expanded="false">
+                <a class="nav-link dropdown-toggle waves-effect waves-light arrow-none" data-bs-toggle="dropdown"
+                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="fe-bell font-22"></i>
                     <span class="badge bg-danger rounded-circle noti-icon-badge">9</span>
                 </a>
@@ -370,8 +361,7 @@
                                 <h6 class="m-0 font-16 fw-semibold"> Notification</h6>
                             </div>
                             <div class="col-auto">
-                                <a href="javascript: void(0);"
-                                    class="text-dark text-decoration-underline">
+                                <a href="javascript: void(0);" class="text-dark text-decoration-underline">
                                     <small>Clear All</small>
                                 </a>
                             </div>
@@ -386,8 +376,7 @@
                         <a href="javascript:void(0);"
                             class="dropdown-item p-0 notify-item card unread-noti shadow-none mb-1">
                             <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i
-                                        class="mdi mdi-close"></i></span>
+                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <div class="notify-icon bg-primary">
@@ -408,8 +397,7 @@
                         <a href="javascript:void(0);"
                             class="dropdown-item p-0 notify-item card read-noti shadow-none mb-1">
                             <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i
-                                        class="mdi mdi-close"></i></span>
+                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <div class="notify-icon bg-info">
@@ -432,8 +420,7 @@
                         <a href="javascript:void(0);"
                             class="dropdown-item p-0 notify-item card read-noti shadow-none mb-1">
                             <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i
-                                        class="mdi mdi-close"></i></span>
+                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <div class="notify-icon">
@@ -458,8 +445,7 @@
                         <a href="javascript:void(0);"
                             class="dropdown-item p-0 notify-item card read-noti shadow-none mb-1">
                             <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i
-                                        class="mdi mdi-close"></i></span>
+                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <div class="notify-icon bg-primary">
@@ -479,8 +465,7 @@
                         <a href="javascript:void(0);"
                             class="dropdown-item p-0 notify-item card read-noti shadow-none mb-1">
                             <div class="card-body">
-                                <span class="float-end noti-close-btn text-muted"><i
-                                        class="mdi mdi-close"></i></span>
+                                <span class="float-end noti-close-btn text-muted"><i class="mdi mdi-close"></i></span>
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
                                         <div class="notify-icon">
@@ -521,14 +506,11 @@
 
             <!-- User Dropdown -->
             <li class="dropdown">
-                <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light"
-                    data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
-                    aria-expanded="false">
-                    <img src="{{ asset('images/users/user-1.jpg') }}" alt="user-image"
-                        class="rounded-circle">
+                <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown"
+                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <img src="{{ asset('images/users/user-1.jpg') }}" alt="user-image" class="rounded-circle">
                     <span class="ms-1 d-none d-md-inline-block">
-                        {{ auth()->user()->obtener_usuario()->nomUsuario }} <i
-                            class="mdi mdi-chevron-down"></i>
+                        {{ auth()->user()->obtener_usuario()->nomUsuario }} <i class="mdi mdi-chevron-down"></i>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end profile-dropdown ">

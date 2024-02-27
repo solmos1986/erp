@@ -57,12 +57,12 @@ class User extends Authenticatable
     public function obtener_roles()
     {
         $roles = DB::table('rol_authenticacion')
-            ->select('rol_authenticacion.rol_authenticacion_id')
+            ->select('rol_authenticacion.rol_id')
             ->join('authenticacion', 'authenticacion.authenticacion_id', 'rol_authenticacion.authenticacion_id')
             ->where('authenticacion.usuario_id', auth()->user()->usuario_id)
             ->where('authenticacion.estado', 1)
             ->get()
-            ->pluck('rol_authenticacion_id');
+            ->pluck('rol_id');
         return $roles;
     }
     public function obtener_menu()
@@ -70,7 +70,7 @@ class User extends Authenticatable
         $roles = $this->obtener_roles();
         $super_modulos = DB::table('rol_super_modulo')
             ->join('super_modulo', 'super_modulo.super_modulo_id', 'rol_super_modulo.super_modulo_id')
-            ->whereIn('rol_super_modulo.rol_authenticacion_id', $roles)
+            ->whereIn('rol_super_modulo.rol_id', $roles)
             ->groupBy('rol_super_modulo.super_modulo_id')
             ->get();
         foreach ($super_modulos as $key => $super_modulo) {
