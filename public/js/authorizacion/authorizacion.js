@@ -1,35 +1,65 @@
+
 const columns = [{
-    data: 'nombre_rol',
-    name: 'nombre_rol'
+    data: 'docUsuario',
+    name: 'docUsuario'
 },
 {
-    data: 'super_modulos',
-    name: 'super_modulos',
+    data: 'nomUsuario',
+    name: 'nomUsuario'
+},
+{
+    data: 'telUsuario',
+    name: 'telUsuario'
+},
+{
+    data: 'mailUsuario',
+    name: 'mailUsuario'
+},
+{
+    data: 'usuario',
+    name: 'usuario',
+},
+{
+    data: 'estado',
+    name: 'estado',
     orderable: false,
     searchable: false,
     render: function (data, type, row, meta) {
-        let chips = ``;
-        row.super_modulos.map((super_modulo) => {
-            chips += `<div class="badge bg-secondary text-light mb-0 m-1">${super_modulo.nombre_super_modulo}</div>`
-        })
-        return chips;
+        return `<div class="badge bg-${data.estado == 0 ? 'danger' : 'secondary'} text-light mb-0 m-1">${data.estado == 0 ? 'Inactivo' : 'Activo'}</div>`;
     }
 },
 {
-    data: 'rol_id',
-    name: 'rol_id',
+    data: 'authenticacion_id',
+    name: 'authenticacion_id',
     orderable: false,
     searchable: false,
     render: function (data, type, row, meta) {
         return `
-            <i data-id="${row.rol_id}" class="editar fas fa-pencil-alt text-info m-1 cursor-pointer" title="Editar"></i>
-            <i data-id="${row.rol_id}" class="delete far fa-trash-alt text-danger m-1 cursor-pointer" title="Eliminar"></i>
+            <i data-id="${row.authenticacion_id}" class="editar fas fa-pencil-alt text-info m-1 cursor-pointer" title="Editar"></i>
+            <i data-id="${row.authenticacion_id}" class="delete far fa-trash-alt text-danger m-1 cursor-pointer" title="Eliminar"></i>
         `;
     }
 }];
 
-let tableRoles = dataTable($('.data-table-roles'), `${base_url}/roles/data-table`, columns);
+let tableUsusario = dataTable($('.data-table-usuario'), `${base_url}/authorizacion/data-table`, columns);
 
+$(document).on("click", ".editar", function () {
+    const btn = $(this);
+    console.log('editar')
+    const id = $(this).data('id');
+    btn.prop('disabled', true);
+    $('#modal_authorizacion .modal-title').text('Editar Authenticacion');
+    ajax(`${base_url}/authorizacion/${id}`, 'GET').then((response) => {
+        btn.prop('disabled', false);
+        data = response.data;
+        BtnAddUpdate($('#btn_save'), 'store', 'update')
+        $('#modal_authorizacion').modal('show');
+    }).catch(() => {
+        btn.prop('disabled', false)
+    });
+});
+
+/* 
 const initial = {
     rol_id: 0,
     nombre_rol: '',
@@ -66,9 +96,9 @@ $(document).on("click", ".store", function () {
         if (response.status == 1) {
             $('#modal_rol').modal('hide');
             SwallSuccess(response.message)
-            tableRoles.ajax.url(`${base_url}/roles/data-table`).load();
+            tableUsusario.ajax.url(`${base_url}/roles/data-table`).load();
         } else {
-            console.log('error', response)
+            console.log('error',response)
             SwallErrorValidate(response)
         }
         btn.prop('disabled', false);
@@ -86,7 +116,7 @@ $(document).on("click", ".update", function () {
         if (response.status == 1) {
             $('#modal_rol').modal('hide');
             SwallSuccess(response.message)
-            tableRoles.ajax.url(`${base_url}/roles/data-table`).load();
+            tableUsusario.ajax.url(`${base_url}/roles/data-table`).load();
         } else {
             SwallErrorValidate(response)
         }
@@ -96,23 +126,7 @@ $(document).on("click", ".update", function () {
     });
 });
 
-$(document).on("click", ".editar", function () {
-    data = initial;
-    const btn = $(this);
-    console.log('editar')
-    const id = $(this).data('id');
-    btn.prop('disabled', true);
-    $('#modal_rol .modal-title').text('Editar rol');
-    ajax(`${base_url}/roles/${id}`, 'GET').then((response) => {
-        btn.prop('disabled', false);
-        data = response.data;
-        renderSuperModulos();
-        BtnAddUpdate($('#btn_save'), 'store', 'update')
-        $('#modal_rol').modal('show');
-    }).catch(() => {
-        btn.prop('disabled', false)
-    });
-});
+
 
 $(document).on("click", ".delete", function () {
     const id = $(this).data('id');
@@ -134,8 +148,8 @@ $(document).on("click", ".delete", function () {
 function eliminar(id) {
     ajax(`${base_url}/roles/${id}`, 'DELETE').then((response) => {
         SwallSuccess(response.message)
-        tableRoles.ajax.url(`${base_url}/roles/data-table`).load();
+        tableUsusario.ajax.url(`${base_url}/roles/data-table`).load();
     }).catch(() => {
 
     });
-}
+} */

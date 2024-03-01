@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Validator;
 
 class RolController extends Controller
 {
@@ -20,7 +21,6 @@ class RolController extends Controller
     public function index()
     {
         $roles = DB::table('rol')->get();
-
         return view('rol/index', compact('roles'));
     }
 
@@ -69,7 +69,11 @@ class RolController extends Controller
         return response()->json([
             'status' => 1,
             'message' => 'Todos los modulos',
-            'data' => $super_modulos,
+            'data' => [
+                'rol_id' => 0,
+                'nombre_rol' => '',
+                'super_modulos' => $super_modulos,
+            ],
         ]);
     }
 
@@ -80,6 +84,28 @@ class RolController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
+    {
+        $rules = array(
+            'nombre_rol' => 'required',
+        );
+        $messages = [
+            'nombre_rol.required' => "Nombre rol es requerido"
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+        $this->insertMasivo($request);
+        return response()->json([
+            'status' => 1,
+            'message' => 'Registrado correctamente',
+            'data' => null,
+        ]);
+    }
+    public function insertMasivo(Request $request)
     {
         $rol_insert = DB::table('rol')
             ->insertGetId([
@@ -112,11 +138,6 @@ class RolController extends Controller
                 }
             }
         }
-        return response()->json([
-            'status' => 1,
-            'message' => 'Todos los modulos',
-            'data' => $request->all(),
-        ]);
     }
 
     /**
@@ -145,8 +166,10 @@ class RolController extends Controller
             ->get();
         foreach ($super_modulos as $key => $super_modulo) {
             $rol_super_modulo = DB::table('rol_super_modulo')
-                ->where('rol_super_modulo.rol_id', $id)
+                ->where('rol_super_modulo.super_modulo_id', $super_modulo->super_modulo_id)
+                ->where('rol_super_modulo.rol_id', $rol->rol_id)
                 ->first();
+            //dd($rol_super_modulo);
             $modulos = DB::table('modulo')
                 ->where('modulo.super_modulo_id', $super_modulo->super_modulo_id)
                 ->get();
@@ -154,6 +177,7 @@ class RolController extends Controller
                 foreach ($modulos as $key => $modulo) {
                     $rol_modulo = DB::table('rol_modulo')
                         ->where('rol_modulo.rol_super_modulo_id', $rol_super_modulo->rol_super_modulo_id)
+                        ->where('rol_modulo.modulo_id', $modulo->modulo_id)
                         ->first();
                     $sub_modulos = DB::table('sub_modulo')
                         ->where('sub_modulo.modulo_id', $modulo->modulo_id)
@@ -161,6 +185,7 @@ class RolController extends Controller
                     if ($rol_modulo) {
                         foreach ($sub_modulos as $key => $sub_modulo) {
                             $rol_sub_modulo = DB::table('rol_sub_modulo')
+                                ->where('rol_sub_modulo.sub_modulo_id', $sub_modulo->sub_modulo_id)
                                 ->where('rol_sub_modulo.rol_modulo_id', $rol_modulo->rol_modulo_id)
                                 ->first();
                             if ($rol_sub_modulo) {
@@ -216,9 +241,27 @@ class RolController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = array(
+            'nombre_rol' => 'required',
+        );
+        $messages = [
+            'nombre_rol.required' => "Nombre rol es requerido",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+        $this->destroy($id);
+        $this->insertMasivo($request);
+        return response()->json([
+            'status' => 1,
+            'message' => 'Modificado correctamente',
+            'data' => null,
+        ]);
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -227,17 +270,66 @@ class RolController extends Controller
      */
     public function destroy($id)
     {
+        $sub_modulo_ids = DB::table('rol_authenticacion')
+            ->select(
+                'rol_sub_modulo.rol_sub_modulo_id'
+            )
+            ->join('rol_super_modulo', 'rol_super_modulo.rol_id', 'rol_authenticacion.rol_id')
+            ->join('super_modulo', 'super_modulo.super_modulo_id', 'rol_super_modulo.super_modulo_id')
+            ->join('rol_modulo', 'rol_modulo.rol_super_modulo_id', 'rol_super_modulo.rol_super_modulo_id')
+            ->join('modulo', 'modulo.modulo_id', 'rol_modulo.modulo_id')
+            ->join('rol_sub_modulo', 'rol_sub_modulo.rol_modulo_id', 'rol_modulo.rol_modulo_id')
+            ->join('sub_modulo', 'sub_modulo.sub_modulo_id', 'rol_sub_modulo.sub_modulo_id')
+            ->where('rol_authenticacion.rol_id', $id)
+            ->groupBy('rol_sub_modulo.rol_sub_modulo_id')
+            ->get()
+            ->pluck('rol_sub_modulo_id');
+        //dump($sub_modulo_ids);
+        $sub_modulos = DB::table('rol_sub_modulo')
+            ->whereIn('rol_sub_modulo.rol_sub_modulo_id', $sub_modulo_ids)
+            ->delete();
+
+        $modulo_ids = DB::table('rol_authenticacion')
+            ->select(
+                'rol_modulo.rol_modulo_id'
+            )
+            ->join('rol_super_modulo', 'rol_super_modulo.rol_id', 'rol_authenticacion.rol_id')
+            ->join('super_modulo', 'super_modulo.super_modulo_id', 'rol_super_modulo.super_modulo_id')
+            ->join('rol_modulo', 'rol_modulo.rol_super_modulo_id', 'rol_super_modulo.rol_super_modulo_id')
+            ->join('modulo', 'modulo.modulo_id', 'rol_modulo.modulo_id')
+            ->where('rol_authenticacion.rol_id', $id)
+            ->groupBy('rol_modulo.rol_modulo_id')
+            ->get()
+            ->pluck('rol_modulo_id');
+        //dump($modulo_ids);
+        $modulos = DB::table('rol_modulo')
+            ->whereIn('rol_modulo.rol_modulo_id', $modulo_ids)
+            ->delete();
+
+        $super_modulo_ids = DB::table('rol_authenticacion')
+            ->select(
+                'rol_super_modulo.rol_super_modulo_id'
+            )
+            ->join('rol_super_modulo', 'rol_super_modulo.rol_id', 'rol_authenticacion.rol_id')
+            ->join('super_modulo', 'super_modulo.super_modulo_id', 'rol_super_modulo.super_modulo_id')
+            ->where('rol_authenticacion.rol_id', $id)
+            ->groupBy('rol_super_modulo.rol_super_modulo_id')
+            ->get()
+            ->pluck('rol_super_modulo_id');
+        //dump($super_modulo_ids);
+        $super_modulos = DB::table('rol_super_modulo')
+            ->whereIn('rol_super_modulo.rol_super_modulo_id', $super_modulo_ids)
+            ->delete();
+
         $rol = DB::table('rol')
             ->where('rol.rol_id', $id)
-            ->first();
-        $super_modulos = DB::table('super_modulo')
-            ->join('rol_super_modulo', 'rol_super_modulo.super_modulo_id', 'super_modulo.super_modulo_id')
-            ->where('rol_super_modulo.rol_id', $rol->rol_id)
-            ->get();
+            ->delete();
 
-        $super_modulos = DB::table('super_modulo')
-            ->join('rol_super_modulo', 'rol_super_modulo.super_modulo_id', 'super_modulo.super_modulo_id')
-            ->where('rol_super_modulo.rol_id', $rol->rol_id)
-            ->get();
+        //dd('stop');
+        return response()->json([
+            'status' => 1,
+            'message' => 'Rol eliminado correctamente',
+            'data' => null,
+        ]);
     }
 }

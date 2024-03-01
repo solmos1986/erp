@@ -1,5 +1,5 @@
-function dataTable(url, columns) {
-    var dataTable = $('.data-table-roles').DataTable({
+function dataTable(element, url, columns) {
+    var dataTable = element.DataTable({
         processing: true,
         serverSide: true,
         ajax: {

@@ -19,11 +19,11 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="#">ACCESIBILIDAD</a></li>
-                        <li class="breadcrumb-item"><a href="#">Roles y permisos</a></li>
-                        <li class="breadcrumb-item active">Roles</li>
+                        <li class="breadcrumb-item"><a href="#">Acceso al sistema</a></li>
+                        <li class="breadcrumb-item breadcrumb-item active">Authenticacion</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Roles</h4>
+                <h4 class="page-title">Authenticacion</h4>
             </div>
         </div>
     </div>
@@ -48,7 +48,26 @@
                     </div> <!-- end row-->
                 </div>
             </div> <!-- end widget-rounded-circle-->
-        </div> <!-- end col-->
+        </div> 
+        <div class="col-xl-4 col-md-4 col-ms-6">
+            <div class="widget-rounded-circle card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="avatar-lg rounded-circle bg-light">
+                                <i class="fe-list font-26 avatar-title text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-end">
+                                <h3 class="text-dark mt-1"><span data-plugin="counterup">{{ count($usuarios) }}</span></h3>
+                                <p class="text-muted mb-1 text-truncate">Usuarios</p>
+                            </div>
+                        </div>
+                    </div> <!-- end row-->
+                </div>
+            </div> <!-- end widget-rounded-circle-->
+        </div><!-- end col-->
     </div>
 
     <div class="row">
@@ -58,18 +77,18 @@
                 <div class="card-body">
                     <!-- project title-->
                     <h4 class="mt-0 font-15">
-                        Lista de roles
+                        Lista de usuario
                     </h4>
-                    <button class="btn btn-primary nuevo" type="button">
-                        {{-- <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" ></span> --}}
-                        Nuevo rol
-                    </button>
                     <hr>
-                    <table class="data-table-roles table dt-responsive nowrap w-100">
+                    <table class="data-table-usuario table dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <th>Rol</th>
-                                <th>Modulos</th>
+                                <th>Doc. identificacion</th>
+                                <th>Nombre</th>
+                                <th>Telefono</th>
+                                <th>Correo</th>
+                                <th>Ususario</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -80,8 +99,8 @@
             </div> <!-- end card-->
         </div>
     </div>
-    <x-components.modal size="modal-xl" id="modal_rol" nameBtnSave="Guardar" nameBtnClose="Cancelar" idBtnSave="btn_save">
-        @include('rol.components.form-rol')
+    <x-components.modal size="modal-xl" id="modal_authorizacion" nameBtnSave="Guardar" nameBtnClose="Cancelar" idBtnSave="btn_save">
+        @include('authorizacion.components.form-authorizacion')
     </x-components.modal>
 @endsection
 
@@ -97,6 +116,5 @@
     <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
 
     <script src="{{ asset('/js/components/datatables.js') }}"></script>
-    <script src="{{ asset('/js/roles/rol.js') }}"></script>
-    <script src="{{ asset('/js/roles/checkList.js') }}"></script>
+    <script src="{{ asset('/js/authorizacion/authorizacion.js') }}"></script>
 @endpush

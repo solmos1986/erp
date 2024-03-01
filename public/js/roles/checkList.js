@@ -1,5 +1,7 @@
 //render
 function renderSuperModulos() {
+    $('#form_rol #rol_id').val(data.rol_id);
+    $('#form_rol #nombre_rol').val(data.nombre_rol);
     let HTML = ``;
     data.super_modulos.map((super_modulo, i) => {
         HTML += `
@@ -81,6 +83,7 @@ $(document).on('change', '#form_rol .form-check-input', function () {
     }
     console.log(data.super_modulos)
 });
+
 function listCheck(nivel, id, valor) {
     data.super_modulos.map((super_modulo) => {
         if (nivel == 'super_modulo') {

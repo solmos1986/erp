@@ -598,6 +598,8 @@
     </script>
     <script src="{{ asset('/js/components/errors_ajax.js') }}"></script>
     <script src="{{ asset('/js/components/ajax.js') }}"></script>
+    <script src="{{ asset('/js/components/swall-alerts.js') }}"></script>
+    <script src="{{ asset('/js/components/buttons.js') }}"></script>
     @stack('javascript')
 </body>
 

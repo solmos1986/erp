@@ -53,7 +53,7 @@
             </div>
             <p class="text-muted mb-0">Admin Head</p>
         </div>
-
+       {{--  {{ dd(auth()->user()->obtener_menu()) }} --}}
         <!--- Menu -->
         <ul class="menu">
             @foreach (auth()->user()->obtener_menu() as $i => $supermodulo)

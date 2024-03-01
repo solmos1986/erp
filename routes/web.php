@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorizacionController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EgresoController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TestWebSocketsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,4 +86,18 @@ Route::prefix('roles')->group(function () {
     Route::get('/{id}', [RolController::class, 'edit'])->name('rol.edit');
     Route::put('/{id}', [RolController::class, 'update'])->name('rol.update');
     Route::delete('/{id}', [RolController::class, 'destroy'])->name('rol.destroy');
+});
+
+Route::prefix('authorizacion')->group(function () {
+    Route::get('/', [AuthorizacionController::class, 'index'])->name('authorizacion.index');
+    Route::get('/data-table', [AuthorizacionController::class, 'data_table'])->name('authorizacion.data_table');
+    Route::get('/create', [AuthorizacionController::class, 'create'])->name('authorizacion.create');
+    Route::post('/store', [AuthorizacionController::class, 'store'])->name('authorizacion.store');
+    Route::get('/{id}', [AuthorizacionController::class, 'edit'])->name('authorizacion.edit');
+    Route::put('/{id}', [AuthorizacionController::class, 'update'])->name('authorizacion.update');
+    Route::delete('/{id}', [AuthorizacionController::class, 'destroy'])->name('authorizacion.destroy');
+});
+
+Route::prefix('test-sockets')->group(function () {
+    Route::get('/', [TestWebSocketsController::class, 'test'])->name('test-sockets.test');
 });
