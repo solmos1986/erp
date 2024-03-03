@@ -14,16 +14,10 @@ class InventarioController extends Controller
 
         if ($request->ajax()) {
             $query = trim($request->get('searchText'));
-            $data = DB::table('entrada_producto_almacen as ea') /* ->get() */
-                ->join('producto as p', 'p.idPr
+            $data = DB::select('CALL stock ()');
+            /* ->get() */
 
-                oducto', '=', 'ea.idProducto')
-                ->select('ea.idProducto', 'p.nomProducto', DB::raw('count(ea.idProducto) as totalEntrada'))
-                ->where('ea.idProducto', 'LIKE', '%' . $query . '%')
-
-                ->groupBy('ea.idProducto', 'p.nomProducto')
-                ->get();
-            /*   dd($data,"HOLAAA"); */
+            //dd($data, "HOLAAA");
             /* return view('comercial.compra.index',compact('data')); */
             return Datatables::of($data)
                 ->addIndexColumn()

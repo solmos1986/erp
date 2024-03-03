@@ -17,11 +17,11 @@
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="#">ERP</a></li>
-                        <li class="breadcrumb-item"><a href="#">Alamacen</a></li>
-                        <li class="breadcrumb-item active">Proveedores</li>
+                        <li class="breadcrumb-item"><a href="#">Configuracion</a></li>
+                        <li class="breadcrumb-item active">Control de Acceso</li>
                     </ol>
                 </div>
-                <h4 class="page-title">PROVEEDORES</h4>
+                <h4 class="page-title">LECTORES</h4>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
             <div class="text-lg-end">
                 <a href="#"><button type="button" id="serchbtn"
                         class="nuevo btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
-                        Nuevo Proveedor </button></a>
+                        Nuevo Lector </button></a>
             </div>
         </div>
     </div>
@@ -47,14 +47,15 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="dtProveedor" class="dtProveedor table dt-responsive nowrap w-100">
+                    <table id="dtLectores" class="dtLectores table dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <th>Codigo</th>
-                                <th>Proveedor</th>
-                                <th>Telefono</th>
-                                <th>Direccion</th>
-                                <th>Correo Electronico</th>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Direccion IP</th>
+                                <th>Puerto</th>
+                                <th>Usuario</th>
+                                <th>Constraseña</th>
                                 <th>Accion</th>
                             </tr>
                         </thead>
@@ -72,7 +73,7 @@
     <!-- MODAL  -->
 
     <!-- NUEVO Modal -->
-    <div class="modal fade" id="formProveedor" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade" id="formLector" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -83,13 +84,13 @@
                 </ul>
             </div>
         @endif
-        {!! Form::open(['url' => 'almacen/proveedor', 'method' => 'POST', 'autocomplete' => 'off']) !!}
+        {!! Form::open(['url' => 'configuracion/lectores', 'method' => 'POST', 'autocomplete' => 'off']) !!}
         {{ Form::token() }}
 
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">Crear Proveedor</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">Agregar Lector</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -97,27 +98,27 @@
                         <div class="row">
 
                             <div class="col-md-12 mb-1">
-                                <label for="nomProveedor" class="form-label">Nombre Proveedor</label>
+                                <label for="nomLector" class="form-label">Nombre Lector</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="nomProveedor"
-                                        placeholder="Ingrese Proveedor" required name="nomProveedor">
+                                    <input type="text" class="form-control" id="nomLector"
+                                        placeholder="Ingrese Proveedor" required name="nomLector">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
 
                             <div class="col-md-6 mb-1">
-                                <label for="tel1Proveedor" class="form-label">Telefono 1 Proveedor</label>
+                                <label for="ipLector" class="form-label">Direccion IP</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="tel1Proveedor" placeholder="Telefono 1"
-                                        required name="tel1Proveedor">
+                                    <input type="text" class="form-control" id="ipLector" placeholder="xxx.xxx.xxx.xxx"
+                                        required name="ipLector">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-1">
-                                <label for="tel2Proveedor" class="form-label">Telefono 2 Proveedor</label>
+                                <label for="portLector" class="form-label">Puerto Lector</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="tel2Proveedor" placeholder="Telefono 2"
-                                        required name="tel2Proveedor">
+                                    <input type="text" class="form-control" id="portLector" placeholder="ej. 80" required
+                                        name="portLector">
                                 </div>
                             </div>
 
@@ -125,19 +126,19 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12 mb-1">
-                                <label for="mailProveedor" class="form-label">Correo Electronico</label>
+                                <label for="userLector" class="form-label">Usuario</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="mailProveedor" placeholder="E-mail"
-                                        required name="mailProveedor">
+                                    <input type="text" class="form-control" id="userLector" placeholder="user" required
+                                        name="userLector">
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12 mb-1">
-                                <label for="dirProveedor" class="form-label">Direccion</label>
+                                <label for="passLector" class="form-label">Contraseña</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="dirProveedor" placeholder="Direccion"
-                                        required name="dirProveedor">
+                                    <input type="text" class="form-control" id="passLector" placeholder="contraseña"
+                                        required name="passLector">
                                 </div>
                             </div>
                         </div>
@@ -155,7 +156,7 @@
 
     <!-- EDIT Modal -->
 
-    <div class="modal fade" id="formEditarProveedor" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade" id="formEditarLector" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
         aria-hidden="true">
         @if (count($errors) > 0)
             <div class="alert alert-danger">
@@ -170,24 +171,24 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">Editar Proveedor</h4>
+                    <h4 class="modal-title" id="myLargeModalLabel">Editar Lector</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="needs-validation" novalidate>
                         <div class="row">
                             <div class="col-md-4 mb-1">
-                                <label for="idProveedorEdit" class="form-label">Id Proveedor</label>
+                                <label for="idLectorEdit" class="form-label">Id Lector</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="idProveedorEdit" placeholder=""
-                                        required name="idProveedorEdit">
+                                    <input type="text" class="form-control" id="idLectorEdit" placeholder="" required
+                                        name="idLectorEdit">
                                 </div>
                             </div>
                             <div class="col-md-8 mb-1">
-                                <label for="nomProveedorEdit" class="form-label">Nombre Proveedor</label>
+                                <label for="nomLectorEdit" class="form-label">Nombre Lector</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="nomProveedorEdit" required
-                                        name="nomProveedorEdit">
+                                    <input type="text" class="form-control" id="nomLectorEdit" required
+                                        name="nomLectorEdit">
                                 </div>
                             </div>
                         </div>
@@ -195,34 +196,34 @@
                         <div class="row">
 
                             <div class="col-md-3 mb-1">
-                                <label for="tel1ProveedorEdit" class="form-label">Telefono 1 Proveedor</label>
+                                <label for="ipLectorEdit" class="form-label">Direccion IP</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="tel1ProveedorEdit" required
-                                        name="tel1ProveedorEdit">
+                                    <input type="text" class="form-control" id="ipLectorEdit" required
+                                        name="ipLectorEdit">
                                 </div>
                             </div>
                             <div class="col-md-3 mb-1">
-                                <label for="tel2ProveedorEdit" class="form-label">Telefono 2 Proveedor</label>
+                                <label for="portLectorEdit" class="form-label">Puerto Lector</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="tel2ProveedorEdit" required
-                                        name="tel2ProveedorEdit">
+                                    <input type="text" class="form-control" id="portLectorEdit" required
+                                        name="portLectorEdit">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-1">
-                                <label for="mailProveedorEdit" class="form-label">Correo Electronico</label>
+                                <label for="userLectorEdit" class="form-label">Usuario</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="mailProveedorEdit" required
-                                        name="mailProveedorEdit">
+                                    <input type="text" class="form-control" id="userLectorEdit" required
+                                        name="userLectorEdit">
                                 </div>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-12 mb-1">
-                                <label for="dirProveedorEdit" class="form-label">Direccion</label>
+                                <label for="passLectorEdit" class="form-label">Contraseña</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="dirProveedorEdit" required
-                                        name="dirProveedorEdit">
+                                    <input type="text" class="form-control" id="passLectorEdit" required
+                                        name="passLectorEdit">
                                 </div>
                             </div>
                         </div>
@@ -239,7 +240,7 @@
     </div><!-- /.modal -->
 
     <!-- DELETE Modal -->
-    <div id="formDeleteProveedor" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="formDeleteLector" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content modal-filled bg-danger">
                 <div class="modal-header">
@@ -250,7 +251,7 @@
                     <div class="text-center">
                         <i class="dripicons-wrong h1 text-white"></i>
                         <h4 class="mt-2 text-white">CUIDADO !</h4>
-                        <p class="mt-3 text-white">Esta seguro de eliminar Proveedor?</p>
+                        <p class="mt-3 text-white">Esta seguro de eliminar Lector?</p>
                         <button type="button" class="btnDelete btn btn-light my-2"
                             data-bs-dismiss="modal">Eliminar</button>
 
@@ -272,39 +273,43 @@
         /* <!--AJAX CARGA DATA TABLE Function--> */
         $(function() {
 
-            var table = $('.dtProveedor').DataTable({
+            var table = $('.dtLectores').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('index.proveedor') }}",
+                ajax: "{{ route('index.lector') }}",
 
                 columns: [{
-                        data: 'idProveedor',
-                        name: 'idProveedor'
+                        data: 'idLector',
+                        name: 'idLector'
                     },
                     {
-                        data: 'nomProveedor',
-                        name: 'nomProveedor'
+                        data: 'nomLector',
+                        name: 'nomLector'
                     },
                     {
-                        data: 'tel1Proveedor',
-                        name: 'tel1Proveedor'
+                        data: 'ipLector',
+                        name: 'ipLector'
                     },
                     {
-                        data: 'dirProveedor',
-                        name: 'dirProveedor'
+                        data: 'portLector',
+                        name: 'portLector'
                     },
                     {
-                        data: 'mailProveedor',
-                        name: 'mailProveedor'
+                        data: 'userLector',
+                        name: 'userLector'
                     },
                     {
-                        data: 'idProveedor',
-                        name: 'idProveedor',
+                        data: 'passLector',
+                        name: 'passLector'
+                    },
+                    {
+                        data: 'idLector',
+                        name: 'idLector',
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row, meta) {
                             console.log("LLEGO FILA", row)
-                            return `<a href="javascript:void(0)"  data-id="${row.idProveedor}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idProveedor}" class="delete far fa-trash-alt text-danger"></a>`;
+                            return `<a href="javascript:void(0)"  data-id="${row.idLector}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idLector}" class="delete far fa-trash-alt text-danger"></a>`;
                         }
                     },
                 ],
@@ -326,19 +331,19 @@
                 console.log(id, "estoy enviando?")
                 $.ajax({
                     type: "get",
-                    url: `${base_url}/almacen/proveedor/${id}`,
+                    url: `${base_url}/configuracion/lectores/${id}`,
                     dataType: 'json',
 
                     success: function(response) {
                         console.log(response, "LLEGO DATA?")
 
-                        $('#idProveedorEdit').val(response.data.idProveedor)
-                        $('#nomProveedorEdit').val(response.data.nomProveedor)
-                        $('#tel1ProveedorEdit').val(response.data.tel1Proveedor)
-                        $('#tel2ProveedorEdit').val(response.data.tel2Proveedor)
-                        $('#dirProveedorEdit').val(response.data.dirProveedor)
-                        $('#mailProveedorEdit').val(response.data.mailProveedor)
-                        $('#formEditarProveedor').modal('show');
+                        $('#idLectorEdit').val(response.data.idLector)
+                        $('#nomLectorEdit').val(response.data.nomLector)
+                        $('#ipLectorEdit').val(response.data.ipLector)
+                        $('#portLectorEdit').val(response.data.portLector)
+                        $('#userLectorEdit').val(response.data.userLector)
+                        $('#passLectorEdit').val(response.data.passLector)
+                        $('#formEditarLector').modal('show');
                         console.log(response, "QUE  PASO???");
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -351,32 +356,32 @@
             });
             /* <!--AJAX NUEVO Modal--> */
             $(document).on("click", ".nuevo", function() {
-                $('#formProveedor').modal('show');
+                $('#formLector').modal('show');
 
             });
 
             /*<!-- AJAX UPDATE Modal -->*/
             $(document).on("click", ".update", function() {
-                const id = $("#idProveedorEdit").val();
+                const id = $("#idLectorEdit").val();
                 console.log(id)
 
                 $.ajax({
                     type: "put",
-                    url: `${base_url}/almacen/proveedor/${id}`,
+                    url: `${base_url}/configuracion/lectores/${id}`,
                     dataType: 'json',
                     data: {
 
-                        idProveedor: $('#idProveedorEdit').val(),
-                        nomProveedor: $('#nomProveedorEdit').val(),
-                        tel1Proveedor: $('#tel1ProveedorEdit').val(),
-                        tel2Proveedor: $('#tel2ProveedorEdit').val(),
-                        dirProveedor: $('#dirProveedorEdit').val(),
-                        mailProveedor: $('#mailProveedorEdit').val(),
+                        idLector: $('#idLectorEdit').val(),
+                        nomLector: $('#nomLectorEdit').val(),
+                        ipLector: $('#ipLectorEdit').val(),
+                        portLector: $('#portLectorEdit').val(),
+                        userLector: $('#userLectorEdit').val(),
+                        passLector: $('#passLectorEdit').val(),
                     },
                     success: function(response) {
                         console.log(response, "ACTUALIZO")
-                        $('#formEditarProveedor').modal('hide');
-                        $('.dtProveedor').DataTable().ajax.reload();
+                        $('#formEditarLector').modal('hide');
+                        $('.dtLectores').DataTable().ajax.reload();
                         Swal.fire({
                             type: 'success',
                             title: 'OK',
@@ -402,18 +407,18 @@
         $(document).on("click", ".delete", function() {
             const id = $(this).data('id');
             console.log(id, "HOLA recibi info DELETE")
-            $('#idProveedorDelete').val(id)
-            $('#formDeleteProveedor').modal('show');
+            $('#idLectorDelete').val(id)
+            $('#formDeleteLector').modal('show');
             $(".btnDelete").click(function() {
                 $.ajax({
                     type: "delete",
-                    url: `${base_url}/almacen/proveedor/${id}`,
+                    url: `${base_url}/configuracion/lectores/${id}`,
                     dataType: 'json',
 
                     success: function(response) {
                         console.log(response, "LLEGO DATA?")
-                        $('#formDeleteProveedor').modal('hide');
-                        $('.dtProveedor').DataTable().ajax.reload();
+                        $('#formDeleteLector').modal('hide');
+                        $('.dtLectores').DataTable().ajax.reload();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         //error_status(jqXHR)

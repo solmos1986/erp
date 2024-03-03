@@ -159,7 +159,7 @@
                         name: 'imagenProducto',
                         type: 'upload',
                         render: function(data, type, row, mneta) {
-                            return `<img src="/imagenes/productos/${row.imagenProducto}" style="height:50px;width:50px;" />`;
+                            return `<img src="${base_url}/imagenes/productos/${row.imagenProducto}" style="height:50px;width:50px;" />`;
                         }
                     },
                     {

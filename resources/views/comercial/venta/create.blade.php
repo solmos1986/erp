@@ -292,8 +292,11 @@
 
     <script>
         var productos = [];
+        var stock = 0;
         var detalleVenta = [];
+
         console.log(detalleVenta, "IniciadorDetalleVenta")
+
         $(document).ready(function() {
             $.ajax({
                 type: "get",
@@ -302,6 +305,10 @@
                 success: function callbackFuntion(response) {
                     console.log(response, "lista de productos")
                     productos = response.data;
+                    stock = response.stock;
+                    const array3 = productos.concat(stock);
+                    array3.join()
+                    console.log(array3, "CONCAT")
 
                     renderCard()
                 },
@@ -319,6 +326,12 @@
 
             });
         });
+        console.log(stock, "STOCK")
+        console.log(productos, "productos")
+
+
+
+
 
         function renderCard() {
 
@@ -332,7 +345,7 @@
                             <div class="row">
                                 <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0" >
                                     <div class="bg-image hover-zoom ripple rounded ripple-surface" >
-                                    <img src="/imagenes/productos/${item.imagenProducto}" 
+                                    <img src="${base_url}/imagenes/productos/${item.imagenProducto}" 
                                         class="w-100" />
                                     <a href="#!">
                                         <div class="hover-overlay">
@@ -386,6 +399,7 @@
                 `;
             })
             $('#list_cards').append(cards)
+
         }
         $(document).on('click', '.add_product', function() {
 

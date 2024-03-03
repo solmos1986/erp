@@ -20,9 +20,11 @@ class ProductoController extends Controller
         $clientes = DB::table('cliente')->where('condicionCliente', '=', 1)->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', 1)->get();
         $tipoPago = DB::table('tipopago')->where('condicionTipoPago', '=', 1)->get();
+        $stock = DB::select('CALL stock ()');
 
         return response()->json([
             "data" => $productos,
+            "stock" => $stock,
             "status" => 1,
             "message" => '',
         ]);

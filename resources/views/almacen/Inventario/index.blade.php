@@ -23,7 +23,7 @@
                         <li class="breadcrumb-item active">Inventario</li>
                     </ol>
                 </div>
-                <h4 class="page-title">INVENTRIO</h4>
+                <h4 class="page-title">INVENTARIO</h4>
             </div>
         </div>
     </div>
@@ -127,8 +127,16 @@
                         name: 'nomProducto'
                     },
                     {
-                        data: 'totalEntrada',
-                        name: 'totalEntrada'
+                        data: 'entrada',
+                        name: 'entrada'
+                    },
+                    {
+                        data: 'salida',
+                        name: 'salida'
+                    },
+                    {
+                        data: 'stock',
+                        name: 'stock'
                     },
                     {
                         data: 'idProducto',

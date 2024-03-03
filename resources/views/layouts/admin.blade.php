@@ -31,7 +31,7 @@
     <!-- Icons css -->
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
-
+    @livewireStyles
 
 </head>
 
@@ -107,7 +107,7 @@
 
                     <li class="menu-item">
                         <a href="#menuDashboards" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"></span>
+                            <span class="menu-icon"><i data-feather="truck"></i></span>
                             <span class="menu-text"> Almacenes</span>
                             <span class="menu-arrow"></span>
                         </a>
@@ -131,6 +131,16 @@
                                 <li class="menu-item">
                                     <a href="{{ url('almacen/inventario') }}" class="menu-link">
                                         <span class="menu-text">Inventario</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{ url('almacen/configurar') }}" class="menu-link">
+                                        <span class="menu-text">Configurar</span>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{ url('almacen/paquetes') }}" class="menu-link">
+                                        <span class="menu-text">Paquetes Gym</span>
                                     </a>
                                 </li>
                             </ul>
@@ -254,15 +264,15 @@
 
                     <li class="menu-item">
                         <a href="#menuEmail" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i data-feather="mail"></i></span>
-                            <span class="menu-text"> Email </span>
+                            <span class="menu-icon"><i data-feather="settings"></i></span>
+                            <span class="menu-text"> Configuracion </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="menuEmail">
                             <ul class="sub-menu">
                                 <li class="menu-item">
-                                    <a href="email-inbox.html" class="menu-link">
-                                        <span class="menu-text">Inbox</span>
+                                    <a href="{{ url('configuracion/lectores') }}" class="menu-link">
+                                        <span class="menu-text">Control Acceso</span>
                                     </a>
                                 </li>
                                 <li class="menu-item">
@@ -2264,7 +2274,7 @@
         <!-- FIN MENU DE CONFIGURACION DE LA DERECHA -->
     </div>
     <script type="text/javascript">
-        var base_url = 'http://127.0.0.1:8000';
+        var base_url = 'http://localhost/SisAdm/public';
     </script>
 
     <!-- Vendor js -->
