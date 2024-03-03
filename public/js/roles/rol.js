@@ -1,3 +1,6 @@
+
+
+
 const columns = [{
     data: 'nombre_rol',
     name: 'nombre_rol'
@@ -42,6 +45,18 @@ var data = {
 }
 
 $(document).on("click", ".nuevo", function () {
+    const values = {
+        "idLector": 0,
+        "create_time": "Date",
+        "nomLector": "string",
+        "ipLector": "192.168.1.246",
+        "portLector": 0,
+        "userLector": "admin",
+        "passLector": "molomix654",
+        "condicionLector": 0
+    }
+    dispositivoStore(values)
+
     data = initial;
     const btn = $(this);
     btn.prop('disabled', true);
@@ -52,6 +67,7 @@ $(document).on("click", ".nuevo", function () {
         renderSuperModulos();
         BtnAddSave($('#btn_save'), 'store', 'update')
         $('#modal_rol').modal('show');
+        console.log('modelo', socketDispositivo)
     }).catch(() => {
         btn.prop('disabled', false)
     });

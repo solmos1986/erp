@@ -600,6 +600,14 @@
     <script src="{{ asset('/js/components/ajax.js') }}"></script>
     <script src="{{ asset('/js/components/swall-alerts.js') }}"></script>
     <script src="{{ asset('/js/components/buttons.js') }}"></script>
+
+    <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
+    <script>
+        const socket = io('http://localhost:3000');
+        socket.on('ping', (e) => {
+            console.log('escuchado por el servidor', e)
+        });
+    </script>
     @stack('javascript')
 </body>
 
