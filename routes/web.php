@@ -97,7 +97,3 @@ Route::prefix('authorizacion')->group(function () {
     Route::put('/{id}', [AuthorizacionController::class, 'update'])->name('authorizacion.update');
     Route::delete('/{id}', [AuthorizacionController::class, 'destroy'])->name('authorizacion.destroy');
 });
-
-Route::prefix('test-sockets')->group(function () {
-    Route::get('/', [TestWebSocketsController::class, 'test'])->name('test-sockets.test');
-});
