@@ -19,22 +19,45 @@
         <!-- Start Content-->
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-3 mb-2">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="#">ERP</a></li>
+                                <li class="breadcrumb-item"><a href="#">Comercial</a></li>
+                                <li class="breadcrumb-item active">Compras</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">ORDENES DE COMPRA</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
                     <div class="input-group">
                         <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto"
                             required>
                     </div>
                 </div>
-                <div class="col-md-6 mb-2">
+                <div class="col-lg-5">
+
                 </div>
-                <div class="col-md-3 col-md-push mb-2">
+                <div class="col-lg-4">
+                    <div class="text-lg-end">
+                        <a href="{{ url('comercial/compra/create') }}"><button type="button" id="serchbtn"
+                                class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                                Nueva Compra </button></a>
+                        {{-- <button type="button" class="btn btn-light waves-effect mb-2">Export</button> --}}
+                    </div>
+                </div>
+                {{-- <div class="col-md-3 col-md-push mb-2">
 
                     <div class="input-group">
                         <a href="{{ url('comercial/compra/create') }}"><button type="button" id="serchbtn"
                                 class="btn rounded-pill btn-success">NUEVO</button></a>
 
                     </div>
-                </div>
+                </div> --}}
             </div>
             <div class="row">
                 <div class="col-12">
@@ -47,7 +70,6 @@
                                         <th>Fecha</th>
                                         <th>Proveedor</th>
                                         <th>Comprobante</th>
-                                        <th>Numero</th>
                                         <th>Impuestos</th>
                                         <th>Metodo Pago</th>
                                         <th>Total</th>
@@ -76,6 +98,8 @@
 
 @push('javascript')
     <script src="{{ asset('/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+    <script src="{{ asset('/js/pages/form-advanced.init.js') }}"></script>
+    <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
 
     <!-- Init js -->
     <script src="{{ asset('/js/pages/bootstrap-tables.init.js') }}"></script>
@@ -92,10 +116,10 @@
     <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
 
     <!-- Init js-->
-    <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
+    {{--   <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
 
     <!-- Init js -->
-    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script>
+    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script> --}}
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
         $(function() {
@@ -118,20 +142,20 @@
                         name: 'nomProveedor'
                     },
                     {
-                        data: 'tipoComprobante',
-                        name: 'tipoComprobante'
-                    },
-                    {
-                        data: 'numeroComprobante',
-                        name: 'numeroComprobante'
+                        data: 'nomTipoComprobante',
+                        name: 'nomTipoComprobante',
+                        render: function(data, type, row, meta) {
+                            // esto es lo que se va a renderizar como html
+                            return `<b>${row.nomTipoComprobante}</b> ${row.numeroComprobante}`;
+                        }
                     },
                     {
                         data: 'impuestoEgreso',
                         name: 'impuestoEgreso'
                     },
                     {
-                        data: 'metodoPago',
-                        name: 'metodoPago'
+                        data: 'nomTipoPago',
+                        name: 'nomTipoPago'
                     },
                     {
                         data: 'total',
@@ -148,7 +172,7 @@
                         searchable: false,
                         render: function(data, type, row, meta) {
                             console.log("LLEGO FILA", row)
-                            return `<a href="{{ url('almacen/producto/${row.idEgreso}') }}"  data-id="${row.idEgreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idProducto}" class="delete far fa-trash-alt text-danger"></a>`;
+                            return `<a href="{{ url('almacen/producto/${row.idEgreso}') }}"  data-id="${row.idEgreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idEgreso}" class="delete far fa-trash-alt text-danger"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idEgreso}" class="delete "></a>`;
                         }
                     },
                 ],

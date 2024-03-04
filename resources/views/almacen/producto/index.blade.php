@@ -27,6 +27,23 @@
     </div>
     <!-- end page title -->
     <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto" required>
+            </div>
+        </div>
+        <div class="col-lg-5">
+
+        </div>
+        <div class="col-lg-4">
+            <div class="text-lg-end">
+                <a href="{{ url('almacen/producto/create') }}"><button type="button" id="serchbtn"
+                        class="nuevo btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                        Nuevo Producto </button></a>
+            </div>
+        </div>
+    </div>
+    {{-- <div class="row">
         <div class="col-md-3 mb-2">
             <div class="input-group">
                 <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto" required>
@@ -42,7 +59,7 @@
 
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -53,9 +70,11 @@
                                 <th>Imagen</th>
                                 <th>Codigo</th>
                                 <th>Producto</th>
-                                <th>Unidad Medida</th>
+                                <th>U. Medida</th>
                                 <th>Categoria</th>
-                                <th>Stock Minimo</th>
+                                <th>Stock Min.</th>
+                                <th>P. Compra</th>
+                                <th>P. Venta</th>
                                 <th>Accion</th>
                             </tr>
                         </thead>
@@ -116,6 +135,15 @@
 
     <!-- Init js -->
     <script src="{{ asset('/js/pages/add-product.init.js') }}"></script>
+    <style>
+        .texto {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            /* margin: 1rem; */
+        }
+    </style>
 
     <script type="text/javascript">
         /* <!--AJAX CARGA DATA TABLE Function--> */
@@ -128,7 +156,11 @@
 
                 columns: [{
                         data: 'imagenProducto',
-                        name: 'imagenProducto'
+                        name: 'imagenProducto',
+                        type: 'upload',
+                        render: function(data, type, row, mneta) {
+                            return `<img src="${base_url}/imagenes/productos/${row.imagenProducto}" style="height:50px;width:50px;" />`;
+                        }
                     },
                     {
                         data: 'codProducto',
@@ -149,6 +181,14 @@
                     {
                         data: 'stockMinimo',
                         name: 'stockMinimo'
+                    },
+                    {
+                        data: 'stockMinimo',
+                        name: 'stockMinimo'
+                    },
+                    {
+                        data: 'precioVentaProducto',
+                        name: 'precioVentaProducto'
                     },
                     {
                         data: 'idProducto',

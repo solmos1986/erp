@@ -588,7 +588,6 @@
     <script src="{{ asset('/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -596,6 +595,7 @@
             }
         });
     </script>
+
     <script src="{{ asset('/js/components/errors_ajax.js') }}"></script>
     <script src="{{ asset('/js/components/ajax.js') }}"></script>
     <script src="{{ asset('/js/components/swall-alerts.js') }}"></script>

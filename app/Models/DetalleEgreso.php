@@ -15,7 +15,7 @@ class DetalleEgreso extends Model
     	'idDetalleEgreso',
         'idEgreso',
     	'idProducto',
-    	'cantidadEgreso',
+    	'cantidadCompra',
     	'precioVentaEgreso',
     	'precioCompraEgreso',
     ];
