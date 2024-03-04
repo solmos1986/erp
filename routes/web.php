@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorizacionController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EgresoController;
@@ -27,9 +30,6 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 // crea todas las rutas posibles que tendrá nuestro sistema
 
 Route::get('almacen/inventario', [InventarioController::class, 'index'])->name('index.inventario');
@@ -39,6 +39,7 @@ Route::get('almacen/inventario/{id}', [InventarioController::class, 'edit'])->na
 Route::delete('almacen/inventario/{id}', [InventarioController::class, 'destroy']);
 //
 //
+
 Route::get('almacen/categoria', [CategoriaController::class, 'index'])->name('index.categoria');
 Route::post('almacen/categoria', [CategoriaController::class, 'store']);
 Route::put('almacen/categoria/{id}', [CategoriaController::class, 'update']);
@@ -108,6 +109,37 @@ Route::get('comercial/compra/create', [EgresoController::class, 'create'])->name
 Route::put('comercial/compra/{id}', [EgresoController::class, 'update']);
 Route::get('comercial/compra/{id}', [EgresoController::class, 'edit'])->name('edita.compra');
 Route::delete('comercial/compra/{id}', [EgresoController::class, 'destroy']);
+
+Route::prefix('auth')->group(function () {
+    Route::get('login', [AuthController::class, 'index'])->name('auth.login');
+    Route::post('login', [AuthController::class, 'verificar'])->name('auth.validate');
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
+    //Route::delete('login', [EgresoController::class, 'destroy']);
+});
+
+Route::get('/', function () {
+    return redirect()->route('index.compra');
+});
+
+Route::prefix('roles')->group(function () {
+    Route::get('/', [RolController::class, 'index'])->name('rol.index');
+    Route::get('/data-table', [RolController::class, 'data_table'])->name('rol.data_table');
+    Route::get('/create', [RolController::class, 'create'])->name('rol.create');
+    Route::post('/store', [RolController::class, 'store'])->name('rol.store');
+    Route::get('/{id}', [RolController::class, 'edit'])->name('rol.edit');
+    Route::put('/{id}', [RolController::class, 'update'])->name('rol.update');
+    Route::delete('/{id}', [RolController::class, 'destroy'])->name('rol.destroy');
+});
+
+Route::prefix('authorizacion')->group(function () {
+    Route::get('/', [AuthorizacionController::class, 'index'])->name('authorizacion.index');
+    Route::get('/data-table', [AuthorizacionController::class, 'data_table'])->name('authorizacion.data_table');
+    Route::get('/create', [AuthorizacionController::class, 'create'])->name('authorizacion.create');
+    Route::post('/store', [AuthorizacionController::class, 'store'])->name('authorizacion.store');
+    Route::get('/{id}', [AuthorizacionController::class, 'edit'])->name('authorizacion.edit');
+    Route::put('/{id}', [AuthorizacionController::class, 'update'])->name('authorizacion.update');
+    Route::delete('/{id}', [AuthorizacionController::class, 'destroy'])->name('authorizacion.destroy');
+
 //
 //
 Route::get('comercial/venta', [IngresoController::class, 'index'])->name('index.venta');
