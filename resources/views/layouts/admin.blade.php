@@ -603,7 +603,7 @@
 
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
     <script>
-        const socket = io('http://localhost:3000');
+        const socket = io('{{env('APP_ENV')}}');
         socket.on('ping', (e) => {
             console.log('escuchado por el servidor', e)
         });
