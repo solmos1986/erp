@@ -20,6 +20,8 @@
     <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
     <!-- App css -->
     <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- Icons css -->
+    <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
