@@ -49,7 +49,7 @@ $(document).on("click", ".nuevo", function () {
         "idLector": 0,
         "create_time": "Date",
         "nomLector": "string",
-        "ipLector": "192.168.1.246",
+        "ipLector": "192.168.1.247",
         "portLector": 0,
         "userLector": "admin",
         "passLector": "molomix654",
