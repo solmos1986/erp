@@ -163,10 +163,8 @@ Route::post('almacen/paquetes', [PaquetesGymController::class, 'store']);
 Route::put('almacen/paquetes/{id}', [PaquetesGymController::class, 'update']);
 Route::get('almacen/paquetes/{id}', [PaquetesGymController::class, 'edit'])->name('edita.paquete');
 Route::delete('almacen/paquetes/{id}', [PaquetesGymController::class, 'destroy']);
-//
-//
+
 
 Route::prefix('producto')->group(function () {
     Route::get('/', [ProductoController::class, 'obtener_producto']);
-    //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
