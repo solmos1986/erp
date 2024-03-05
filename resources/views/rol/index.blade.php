@@ -79,13 +79,25 @@
                 </div> <!-- end card-body-->
             </div> <!-- end card-->
         </div>
+
+        <div class="col-xl-12 col-lg-12">
+            <video id="webcam" autoplay playsinline width="640" height="480"></video>
+            <canvas id="canvas" class="d-none"></canvas>
+            <audio id="snapSound" src="audio/snap.wav" preload = "auto"></audio>
+            <button class="btn btn-primary" id="capturar" type="button">
+                Tomar foto
+            </button>
+            <img id="foto_tomada" src="" alt="">
+        </div>
     </div>
+
     <x-components.modal size="modal-xl" id="modal_rol" nameBtnSave="Guardar" nameBtnClose="Cancelar" idBtnSave="btn_save">
         @include('rol.components.form-rol')
     </x-components.modal>
 @endsection
 
 @push('javascript')
+    <script type="text/javascript" src="https://unpkg.com/webcam-easy/dist/webcam-easy.min.js"></script>
     <script src="{{ asset('/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
     <!-- Init js -->
     <script src="{{ asset('/js/pages/bootstrap-tables.init.js') }}"></script>
@@ -101,4 +113,22 @@
     <script src="{{ asset('/js/roles/checkList.js') }}"></script>
     <!-- Sockets-->
     <script src="{{ asset('/js/socket/dispositivo-socket.js') }}"></script>
+    <script>
+        const webcamElement = document.getElementById('webcam');
+        const canvasElement = document.getElementById('canvas');
+        const snapSoundElement = document.getElementById('snapSound');
+        const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
+        webcam.start()
+            .then(result => {
+                console.log("webcam started");
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        $(document).on("click", "#capturar", function() {
+            var data = webcam.snap();
+            console.log(data)
+            $('#foto_tomada').prop('src', data)
+        });
+    </script>
 @endpush
