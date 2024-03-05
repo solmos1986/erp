@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorizacionController;
-use App\Http\Controllers\RolController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EgresoController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\MarcasController;
 use App\Http\Controllers\PaquetesGymController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
+use App\Http\Controllers\RolController;
 use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\Tipo_ComprobanteController;
 use App\Http\Controllers\UsuarioController;
