@@ -18,7 +18,6 @@
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
 
 
-    @stack('css')
     <!-- Theme Config Js -->
     <script src="{{ asset('/js/head.js') }}"></script>
 
@@ -31,8 +30,7 @@
     <!-- Icons css -->
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
-    @livewireStyles
-
+    @stack('css')
 </head>
 
 <body>
@@ -186,12 +184,12 @@
                                         <span class="menu-text">Ventas</span>
                                     </a>
                                 </li>
-                                {{-- <li class="menu-item">
-                                    <a href="ecommerce-product-edit.html" class="menu-link">
-                                        <span class="menu-text">Add Product</span>
+                                <li class="menu-item">
+                                    <a href="{{ url('comercial/inscripcion') }}" class="menu-link">
+                                        <span class="menu-text">Inscripcion</span>
                                     </a>
                                 </li>
-                                <li class="menu-item">
+                                {{-- <li class="menu-item">
                                     <a href="ecommerce-customers.html" class="menu-link">
                                         <span class="menu-text">Customers</span>
                                     </a>
