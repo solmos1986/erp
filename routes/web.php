@@ -139,7 +139,7 @@ Route::prefix('authorizacion')->group(function () {
     Route::get('/{id}', [AuthorizacionController::class, 'edit'])->name('authorizacion.edit');
     Route::put('/{id}', [AuthorizacionController::class, 'update'])->name('authorizacion.update');
     Route::delete('/{id}', [AuthorizacionController::class, 'destroy'])->name('authorizacion.destroy');
-
+});
 //
 //
 Route::get('comercial/venta', [IngresoController::class, 'index'])->name('index.venta');

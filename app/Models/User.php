@@ -90,34 +90,52 @@ class User extends Authenticatable
             ->where('authenticacion.authenticacion_id', auth()->user()->authenticacion_id)
             ->groupBy('sub_modulo.sub_modulo_id')
             ->get();
-        //estructurar
-        $super_modulos = [];
-        $super_modulos_index = 0;
-        foreach ($menus as $key => $menu) {
-            if ($menu->super_modulo_id != $super_modulos_index) {
-                /* $super_modulo = new stdClass;
-                $super_modulo->super_modulo_id = $menu->super_modulo_id;
-                $super_modulo->nombre_super_modulo = $menu->nombre_super_modulo; */
-                $super_modulos[] = $menu;
-                $modulos_index = 0;
-                foreach ($menus as $key => $modulo) {
-                    if ($modulo->super_modulo_id == $menu->super_modulo_id) {
-                        if ($modulo->modulo_id != $modulos_index) {
-                            $menu->modulos[] = $modulo;
+        //estructurar agrupacion manual
 
-                            foreach ($menus as $key => $sub_modulo) {
-                                if ($sub_modulo->modulo_id == $modulo->modulo_id) {
-                                    $modulo->sub_modulos[]=$sub_modulo;
-                                }
-                            }
-                        }
-                    }
-                    $modulos_index = $modulo->modulo_id;
-                }
-            }
-            $super_modulos_index = $menu->super_modulo_id;
+        $super_modulos = [];
+        $agrupar_super_modulos = [];
+        foreach ($menus as $k => &$menu) {
+            $agrupar_super_modulos[$menu->super_modulo_id][$k] = $menu;
         }
 
+        foreach ($agrupar_super_modulos as $key => $agrupar_super_modulo) {
+            foreach ($agrupar_super_modulo as $key => $val) {
+                $super_modulos[] = $val;
+                break;
+            }
+        }
+
+        $modulos = [];
+        $agrupar_modulos = [];
+        foreach ($menus as $k => &$menu) {
+            $agrupar_modulos[$menu->modulo_id][$k] = $menu;
+        }
+
+        foreach ($agrupar_modulos as $key => $agrupar_modulo) {
+            foreach ($agrupar_modulo as $key => $val) {
+                $modulos[] = $val;
+                break;
+            }
+        }
+
+        foreach ($super_modulos as $key => $super_modulo) {
+            foreach ($modulos as $key => $modulo) {
+                if ($super_modulo->super_modulo_id == $modulo->super_modulo_id) {
+                    $super_modulo->modulos[] = $modulo;
+                }
+            }
+        }
+
+        foreach ($super_modulos as $key => $super_modulo) {
+            foreach ($super_modulo->modulos as $key => $modulo) {
+                foreach ($menus as $key => $menu) {
+                    if ($modulo->modulo_id == $menu->modulo_id) {
+                        $modulo->sub_modulos[] = $menu;
+                    }
+                }
+            }
+        }
+        //dd($super_modulos);
         return $super_modulos;
     }
 }

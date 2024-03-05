@@ -129,7 +129,7 @@ class RolController extends Controller
                 }
                 foreach ($modulo['sub_modulos'] as $key => $sub_modulo) {
                     if ($sub_modulo['validate'] == 'true') {
-                        $rol_modulo_insert = DB::table('rol_sub_modulo')
+                        $rol_modulo_sub_insert = DB::table('rol_sub_modulo')
                             ->insertGetId([
                                 'rol_modulo_id' => $rol_modulo_insert,
                                 'sub_modulo_id' => $sub_modulo['sub_modulo_id'],
