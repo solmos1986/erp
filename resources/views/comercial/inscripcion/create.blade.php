@@ -367,11 +367,16 @@
             return date;
         }
         $(document).on('click', '.procesar', function() {
+            if ($('#impuestoInscripcion').val() == 0) {
+                var idTC = 1
+            } else {
+                var idTC = 2
+            }
             var dato = {
 
                 idCliente: $('#idCliente').val(),
                 idTipoPago: $('#idTipoPago').val(),
-                idTipoComprobante: 1,
+                idTipoComprobante: idTC,
 
                 impuestoInscripcion: $('#impuestoInscripcion').val(),
                 estadoInscripcion: 1,

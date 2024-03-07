@@ -24,14 +24,15 @@ class ClienteRequest extends FormRequest
     public function rules()
     {
         return [
-        'idCliente'=>'max:10',
-        'nomCliente'=>'max:100',
-    	'docCliente'=>'max:20',
-    	'tel1Cliente'=>'max:25',
-    	'tel2Cliente'=>'max:25',
-    	'dirCliente'=>'max:150',
-        'mailCliente'=>'max:100',
-        'CondicionCliente'=>'max:2',
+            'idCliente' => 'max:10',
+            'nomCliente' => 'max:100',
+            'docCliente' => 'max:20',
+            'tel1Cliente' => 'max:25',
+            'tel2Cliente' => 'max:25',
+            'dirCliente' => 'max:150',
+            'mailCliente' => 'max:100',
+            'CondicionCliente' => 'max:2',
+            'fotoCliente' => 'max:150',
         ];
     }
 }

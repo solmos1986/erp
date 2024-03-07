@@ -100,20 +100,30 @@
                         </div>
 
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="mb-3" id="12">
                             <label for="TipoComprobante" class="form-label">Tipo Comprobante <span
                                     class="text-danger">*</span></label>
-                            <select class="form-control select2" id="TipoComprobante">
-                                @foreach ($tipo_comprobante as $tc)
-                                    <option value="{{ $tc->idTipoComprobante }}">{{ $tc->nomTipoComprobante }}
+                            <select class="form-control select2" id="TipoComprobante" value='1'>
+                                @foreach ($tipo_comprobante as $tp)
+                                    <option value="{{ $tp->impuestoComprobante }}">
+                                        {{ $tp->nomTipoComprobante }}
                                     </option>
                                 @endforeach
 
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
+                        <div class="mb-3" id="12">
+                            <label for="impuestoCompra" class="form-label">Impuestos <span
+                                    class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="impuestoCompra" placeholder="# comprobante.."
+                                value="1">
+                        </div>
+
+                    </div>
+                    <div class="col-lg-2">
                         <div class="mb-3" id="12">
                             <label for="NumComprobante" class="form-label">No. Comprobante <span
                                     class="text-danger">*</span></label>
@@ -430,9 +440,9 @@
     <style>
         .texto {
             /* display: -webkit-box;
-                                        -webkit-line-clamp: 1;
-                                        -webkit-box-orient: vertical;
-                                        overflow: hidden; */
+                                                                                                                                                        -webkit-line-clamp: 1;
+                                                                                                                                                        -webkit-box-orient: vertical;
+                                                                                                                                                        overflow: hidden; */
             /* margin: 1rem; */
             min-width: 80px;
             max-width: 180px;
@@ -588,14 +598,19 @@
             $('#dtOC').append(html)
         }
         $(document).on('click', '.procesar', function() {
+            if ($('#impuestoCompra').val() == 0) {
+                var idTC = 1
+            } else {
+                var idTC = 2
+            }
             var dato = {
                 detallecompra: detallecompra,
                 idProveedor: $('#nomProveedor').val(),
                 idTipoPago: $('#MetodoPago').val(),
-                idTipoComprobante: $('#TipoComprobante').val(),
+                idTipoComprobante: idTC,
                 numeroComprobante: $('#NumComprobante').val(),
                 fechaEgreso: $('#fechaOC').val(),
-                impuestoEgreso: 16,
+                impuestoEgreso: $('#impuestoCompra').val(),
                 estadoEgreso: 1,
                 idUsuario: $('#nomUsuario').val(),
 
@@ -662,12 +677,28 @@
             console.log(detallecompra, "Mapeando cantidad")
             SumaTotales();
         });
+        var comprobante = document.getElementById("TipoComprobante");
+        comprobante.addEventListener("change", function() {
+            console.log("Comprobante cambio", comprobante.value)
+            calcularImpuesto();
+        });
+
+        function calcularImpuesto() {
+            var impuesto = comprobante.value;
+            var costoIns = $("#TotalCart").val();;
+            console.log("Valor Total CArt", costoIns)
+            var tImpuesto = impuesto * costoIns;
+            $('#impuestoCompra').val(tImpuesto);
+            console.log(tImpuesto, "Valor Comprobante");
+
+        }
 
         function SumaTotales() {
             let tabla = document.getElementById("dtOC");
             let total = 0;
             detallecompra.map((item, i) => {
                 total += parseFloat(item.precioTotal);
+                $("#TotalCart").val(total);
             });
             $("#TotalCart").html(total);
             /* console.log(longitud, "numero de filas") */
@@ -679,7 +710,7 @@
                 $("#TotalCart").html(total);
                 //renderDetalleVenta();
             } */
-
+            calcularImpuesto();
         }
 
         $(document).on('click', '.deleteItem', function() {

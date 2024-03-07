@@ -83,6 +83,7 @@ Route::delete('almacen/producto/{id}', [ProductoController::class, 'destroy']);
 //
 Route::get('comercial/cliente', [ClienteController::class, 'index'])->name('index.cliente');
 Route::post('comercial/cliente', [ClienteController::class, 'store']);
+Route::post('comercial/clienteImagen', [ClienteController::class, 'Base64toFile']);
 Route::put('comercial/cliente/{id}', [ClienteController::class, 'update']);
 Route::get('comercial/cliente/{id}', [ClienteController::class, 'edit'])->name('edita.cliente');
 Route::delete('comercial/cliente/{id}', [ClienteController::class, 'destroy']);

@@ -100,7 +100,7 @@ class EgresoController extends Controller
                     'idEgreso' => $insertCompra,
                     'idProducto' => $value['idProducto'],
                     'cantidadCompra' => $value['cantidad'],
-                    'precioVentaEgreso' => 1,
+                    //'precioVentaEgreso' => 1,
                     'precioCompraEgreso' => $value['precio'],
                 ]);
 
