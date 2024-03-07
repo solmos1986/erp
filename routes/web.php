@@ -7,6 +7,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\EstadoPedidosController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LectoresController;
 use App\Http\Controllers\MarcasController;
@@ -83,6 +84,7 @@ Route::delete('almacen/producto/{id}', [ProductoController::class, 'destroy']);
 //
 Route::get('comercial/cliente', [ClienteController::class, 'index'])->name('index.cliente');
 Route::post('comercial/cliente', [ClienteController::class, 'store']);
+Route::post('comercial/clienteImagen', [ClienteController::class, 'Base64toFile']);
 Route::put('comercial/cliente/{id}', [ClienteController::class, 'update']);
 Route::get('comercial/cliente/{id}', [ClienteController::class, 'edit'])->name('edita.cliente');
 Route::delete('comercial/cliente/{id}', [ClienteController::class, 'destroy']);
@@ -151,6 +153,16 @@ Route::get('comercial/venta/{id}', [IngresoController::class, 'edit'])->name('ed
 Route::delete('comercial/venta/{id}', [IngresoController::class, 'destroy']);
 //
 //
+Route::get('comercial/inscripcion', [InscripcionController::class, 'index'])->name('index.inscripcion');
+Route::post('comercial/inscripcion', [InscripcionController::class, 'store']);
+Route::get('comercial/inscripcion/index', [InscripcionController::class, 'index']);
+Route::get('comercial/inscripcion/create', [InscripcionController::class, 'create'])->name('create.inscripcion');
+Route::put('comercial/inscripcion/{id}', [InscripcionController::class, 'update']);
+Route::get('comercial/inscripcion/{id}', [InscripcionController::class, 'edit'])->name('edita.inscripcion');
+Route::delete('comercial/inscripcion/{id}', [InscripcionController::class, 'destroy']);
+//
+//
+
 Route::get('configuracion/lectores', [LectoresController::class, 'index'])->name('index.lector');
 Route::post('configuracion/lectores', [LectoresController::class, 'store']);
 Route::put('configuracion/lectores/{id}', [LectoresController::class, 'update']);
@@ -167,4 +179,8 @@ Route::delete('almacen/paquetes/{id}', [PaquetesGymController::class, 'destroy']
 
 Route::prefix('producto')->group(function () {
     Route::get('/', [ProductoController::class, 'obtener_producto']);
+
+Route::prefix('paquetes')->group(function () {
+    Route::get('/', [PaquetesGymController::class, 'obtener_paquetes']);
+    //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });

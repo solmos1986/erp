@@ -10,5 +10,9 @@
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "convert-base64-to-image": "^0.0.16",
+        "webcam-easy": "^1.1.1"
     }
 }

@@ -92,8 +92,10 @@
     <!-- MODAL  -->
 
     <!-- NUEVO Modal -->
-    <div class="modal fade" id="formCliente" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+
+    <div id="formCliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel"
         aria-hidden="true">
+
         @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <ul>
@@ -103,20 +105,21 @@
                 </ul>
             </div>
         @endif
-        {!! Form::open(['url' => 'comercial/cliente', 'method' => 'POST', 'autocomplete' => 'off']) !!}
-        {{ Form::token() }}
+        {{--     {!! Form::open(['url' => 'comercial/cliente', 'method' => 'POST', 'autocomplete' => 'off']) !!}
+        {{ Form::token() }} --}}
+        <div class="modal-dialog modal-full-width">
 
-        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myLargeModalLabel">Crear Cliente</h4>
+                    <h3 class="modal-title" id="fullWidthModalLabel">CREAR CLIENTE</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="needs-validation" novalidate>
+                    <form action="/" method="post" enctype="multipart/form-data" {{-- class="dropzone" --}} id="form_client"
+                        novalidate>
                         <div class="row">
 
-                            <div class="col-md-8 mb-1">
+                            <div class="col-md-7 mb-1">
                                 <div class="row">
                                     <label for="nomCliente" class="form-label">Nombre Cliente</label>
                                     <div class="input-group">
@@ -142,20 +145,47 @@
                                 <div class="row mt-2">
                                     <label for="tel2Cliente" class="form-label">Telefono 2 Cliente</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="tel2Cliente" placeholder="Telefono 2"
-                                            required name="tel2Cliente">
+                                        <input type="text" class="form-control" id="tel2Cliente"
+                                            placeholder="Telefono 2" required name="tel2Cliente">
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12 mb-1">
+                                        <label for="mailCliente" class="form-label">Correo Electronico</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="mailCliente"
+                                                placeholder="E-mail" required name="mailCliente">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-12 mb-1">
+                                        <label for="dirCliente" class="form-label">Direccion</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="dirCliente"
+                                                placeholder="Direccion" required name="dirCliente">
+                                            <input type="text" class="form-control" id="base64" readonly
+                                                value="" required name="base64">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4 mb-1">
-                                <div class="row">
-                                    <h2>Capture Photo From Camera using Javascript</h2>
-                                    <button id="start-camera">Start Camera</button>
-                                    <video id="video" width="320" height="240" autoplay></video>
-                                    <button id="click-photo">Click Photo</button>
-                                    <canvas id="canvas" width="320" height="240"></canvas>
-                                </div>
+                            <div class="col-md-5 mb-1 ml-2">
 
+                                <video id="webcam" autoplay playsinline width="640" height="480"></video>
+                                <img class="mb-1"id="foto_tomada" src="" alt="">
+                                <canvas id="canvas" class="d-none"></canvas>
+                                {{-- <audio id="snapSound" src="audio/snap.wav" preload = "auto"></audio> --}}
+
+                                <button class="btn btn-primary" id="iniciar" type="button">
+                                    Tomar foto
+                                </button>
+                                <button class="btn btn-primary capturar" id="capturar" type="button">
+                                    Capturar foto
+                                </button>
+                                <button class="btn btn-primary" id="cancelar" type="button">
+                                    Cancelar
+                                </button>
                             </div>
                         </div>
                         <div class="row">
@@ -169,29 +199,13 @@
 
 
                         </div>
-                        <div class="row">
-                            <div class="col-md-12 mb-1">
-                                <label for="mailCliente" class="form-label">Correo Electronico</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="mailCliente" placeholder="E-mail"
-                                        required name="mailCliente">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 mb-1">
-                                <label for="dirCliente" class="form-label">Direccion</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="dirCliente" placeholder="Direccion"
-                                        required name="dirCliente">
-                                </div>
-                            </div>
-                        </div>
+
+
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary waves-effect"
                             data-bs-dismiss="modal">Cancelar</button>
-                        <button type="sumit" class="btn btn-info waves-effect waves-light">Guardar</button>
+                        <button type="button" class="guardar btn btn-info waves-effect waves-light">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -320,6 +334,9 @@
     <script src="{{ asset('/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('/libs/webcam-easy/webcam-easy.min.js') }}"></script>
+
 
     <script type="text/javascript">
         /* <!--AJAX CARGA DATA TABLE Function--> */
@@ -486,6 +503,40 @@
             })
         });
 
+        $(document).on("click", ".guardar", function() {
+
+
+            console.log("click guardar")
+
+            $.ajax({
+                type: "post",
+                url: `${base_url}/comercial/cliente`,
+                dataType: 'json',
+                data: {
+                    nomCliente: $('#nomCliente').val(),
+                    docCliente: $('#docCliente').val(),
+                    tel1Cliente: $('#tel1Cliente').val(),
+                    tel2Cliente: $('#tel2Cliente').val(),
+                    dirCliente: $('#dirCliente').val(),
+                    mailCliente: $('#mailCliente').val(),
+                    imagen: $('#base64').val(),
+                },
+                success: function(response) {
+                    console.log(response.img, "LLEGO NAMEEEEE?")
+                    console.log(response.data, "LLEGO NAMEEEEE?")
+                    $('#formCliente').modal('hide');
+                    $('.dtCliente').DataTable().ajax.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    //error_status(jqXHR)
+                    console.log(response, "ERROR?")
+                },
+                fail: function() {
+                    //fail()
+                }
+            })
+
+        })
 
         $(document).ready(function() {
             $("#basic-datatable").DataTable({
@@ -511,32 +562,74 @@
                 }
             });
         });
+        const webcamElement = document.getElementById('webcam');
+        const canvasElement = document.getElementById('canvas');
+        const snapSoundElement = document.getElementById('snapSound');
+        const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
 
-        /* SCRIPT CAMARA */
-        let camera_button = document.querySelector("#start-camera");
-        let video = document.querySelector("#video");
-        let click_button = document.querySelector("#click-photo");
-        let canvas = document.querySelector("#canvas");
+        $(document).on("click", "#capturar", function() {
 
-        camera_button.addEventListener('click', async function() {
-            let stream = await navigator.mediaDevices.getUserMedia({
-                video: true
-            }).then(
-                stream => (video.srcObject = stream),
+            var data = webcam.snap();
+            $('#base64').val(data);
+            var inp = $('#base64').val();
+            $('#foto_tomada').prop('src', data)
+            $('#webcam').hide();
+            /* $.ajax({
+                type: "POST",
+                url: `${base_url}/comercial/clienteImagen`,
+                dataType: 'json',
+                data: {
+                    imagen: data,
+
+                },
+                success: function(response) {
+                    console.log(response.data, "ACTUALIZO")
+
+                    Swal.fire({
+                        type: 'success',
+                        title: 'OK',
+                        text: response.message,
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplosdsfs!',
+                    });
+                },
+                fail: function() {
+                    console.log('error servidor')
+                }
+            }) */
 
 
-            );
+
+
         });
-
-        click_button.addEventListener('click', function() {
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            let image_data_url = canvas.toDataURL('image/jpeg');
-
-            // data url of the image
-            console.log(image_data_url);
+        $(document).on("click", "#cancelar", function() {
+            $('#foto_tomada').prop('src', '')
+            //$('#foto_tomada').hide();
+            $('#webcam').show();
         });
+        $("#iniciar").click(function() {
 
-
-        /* FIN SCRIPT CAMARA */
+            webcam.start()
+                .then(result => {
+                    console.log("webcam started");
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            console.log("INICIAR CAM")
+        });
+        /*  $('#formCliente').on('dismiss', function() {
+             webcam.stop();
+         }) */
+        $('#formCliente').on('hidden.bs.modal', function() {
+            webcam.stop();
+            $(this).removeData();
+        })
     </script>
 @endpush

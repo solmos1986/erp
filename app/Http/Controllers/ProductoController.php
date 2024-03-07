@@ -64,6 +64,8 @@ class ProductoController extends Controller
         $producto->idCategoria = $request->get('idCategoria');
         $producto->precioVentaProducto = $request->get('precioVentaProducto');
         $producto->condicionProducto = '1';
+        dd($producto);
+
         if ($request->hasFile('imagenProducto')) {
 
             //dd($producto);// con producto me sigue dando nulo no funciona $file

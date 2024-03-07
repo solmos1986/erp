@@ -30,7 +30,7 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                        <li class="breadcrumb-item active">Products</li>
+                        <li class="breadcrumb-item active">Ventas</li>
                     </ol>
                 </div>
                 <h4 class="page-title">VENTA</h4>
@@ -162,7 +162,7 @@
                                             <div class="col-12 col-xl-12">
                                                 <select class="form-control form-control-sm" id="idTipoComprobante">
                                                     @foreach ($tipo_comprobante as $tp)
-                                                        <option value="{{ $tp->idTipoComprobante }}">
+                                                        <option value="{{ $tp->impuestoComprobante }}">
                                                             {{ $tp->nomTipoComprobante }}
                                                         </option>
                                                     @endforeach
@@ -173,7 +173,7 @@
                                         <label for="impuestoIngreso" class="form-label col-2 col-xl-2">Impuestos</label>
                                         <div class="col-4 col-xl-4">
                                             <input type="number" class="form-control form-control-sm"
-                                                id="impuestoIngreso" placeholder="% impuesto" value="16">
+                                                id="impuestoIngreso" placeholder="% impuesto" value="">
                                         </div>
                                         {{-- <label for="example-input-small"
                                             class="form-label col-2 col-xl-2">Vendedor</label>
@@ -485,11 +485,26 @@
             SumaTotales();
         });
 
+        var comprobante = document.getElementById("idTipoComprobante");
+        comprobante.addEventListener("change", function() {
+            console.log("Comprobante cambio", comprobante.value)
+            calcularImpuesto();
+        });
+
+        function calcularImpuesto() {
+            var impuesto = comprobante.value;
+            var costoIns = $('#TotalCart').val();
+            var tImpuesto = impuesto * costoIns;
+            $('#impuestoIngreso').val(tImpuesto);
+            console.log(tImpuesto, "Valor Comprobante");
+        }
+
         function SumaTotales() {
             let tabla = document.getElementById("dtVE");
             let total = 0;
             detalleVenta.map((item, i) => {
                 total += parseFloat(item.precioTotal);
+                $("#TotalCart").val(total);
             });
             $("#TotalCart").html(total);
             /* console.log(longitud, "numero de filas") */
@@ -501,24 +516,30 @@
                 $("#TotalCart").html(total);
                 //renderDetalleVenta();
             } */
-
-            $(document).on('click', '.deleteItem', function() {
-                let posicion = $(this).data('id');
-                let tr = document.querySelector('#fila' + posicion)
-                tr.remove();
-                console.log('eliminando elemento', posicion)
-                detalleVenta.splice(posicion, 1);
-                console.log('resultado', detalleVenta)
-                SumaTotales();
-                //renderDetalleVenta()
-            })
+            calcularImpuesto();
         }
+        $(document).on('click', '.deleteItem', function() {
+            let posicion = $(this).data('id');
+            let tr = document.querySelector('#fila' + posicion)
+            tr.remove();
+            console.log('eliminando elemento', posicion)
+            detalleVenta.splice(posicion, 1);
+            console.log('resultado', detalleVenta)
+            SumaTotales();
+            //renderDetalleVenta()
+        })
+
         $(document).on('click', '.procesar', function() {
+            if ($('#impuestoIngreso').val() == 0) {
+                var idTC = 1;
+            } else {
+                var idTC = 2;
+            }
             var dato = {
                 detalleVenta: detalleVenta,
                 idCliente: $('#idCliente').val(),
                 idTipoPago: $('#idTipoPago').val(),
-                idTipoComprobante: $('#idTipoComprobante').val(),
+                idTipoComprobante: idTC,
                 fechaIngreso: $('#fechaVenta').val(),
                 impuestoIngreso: $('#impuestoIngreso').val(),
                 estadoIngreso: 1,
@@ -550,8 +571,8 @@
                 fail: function() {
                     console.log('error servidor')
                 }
-            });
-        });
+            })
+        })
     </script>
     <style>
         .texto {

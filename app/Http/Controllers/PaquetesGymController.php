@@ -24,6 +24,15 @@ class PaquetesGymController extends Controller
         return view('almacen/paquetes/index');
 
     }
+    public function obtener_paquetes($id)
+    {
+        $paquetes = PaquetesGym::findOrFail($id);
+//return view("almacen.categoria.edit",["categoria"=>Categoria::findOrFail($id)]);
+        return response()->json([
+            "data" => $paquetes,
+        ]);
+
+    }
     public function store(PaquetesGymRequest $request)
     {
 

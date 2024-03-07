@@ -32,7 +32,7 @@ class IngresoController extends Controller
 
                 ->groupBy('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', 'i.estadoIngreso')
                 ->get();
-            /*   dd($data,"HOLAAA"); */
+            /* dd($data, "HOLAAA"); */
             /* return view('comercial.compra.index',compact('data')); */
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -47,8 +47,8 @@ class IngresoController extends Controller
     public function create(Request $request)
     {
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
-        $tipopago = DB::table('tipopago')->get();
-        $tipo_comprobante = DB::table('tipo_comprobante')->get();
+        $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
+        $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         if ($request->ajax()) {
             $data = DB::table('producto')
                 ->where('condicionProducto', '=', '1')
