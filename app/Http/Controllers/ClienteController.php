@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\ClienteController;
 use App\Http\Requests\ClienteRequest; //agrega la ruta del modelo
 use App\Models\Cliente; //para hacer algunas redirecciones
-use DB; //hace referencia a nuestro request
-use Illuminate\Http\Request; // sar la base de datos
+use DataTables; //hace referencia a nuestro request
+use DB;
+// sar la base de datos
 /* use Intervention\Image\Facades\Image; */
-
 /* use Intervention\Image\Laravel\Facades\Image; */
-use Yajra\DataTables\DataTables;
+use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
@@ -54,13 +54,15 @@ class ClienteController extends Controller
         $clientes->CondicionCliente = '1';
         $docCli = $request->get('docCliente');
         $image = $request->get('imagen'); // your base64 encoded
-        $image = str_replace('data:image/png;base64,', '', $image);
+        /*  $image = str_replace('data:image/png;base64,', '', $image);
         $image = str_replace(' ', '+', $image);
         $imageName = $docCli . uniqid() . time() . ".jpg";
-        \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
-        $clientes->fotoCliente = $imageName;
+        \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image)); */
+        $clientes->fotoCliente = $this->Base64toFile($image, 1);
+
         //dd($clientes, "VER fotoCliente");
         $clientes->save();
+
         return response()->json([
             "data" => $clientes,
             "img" => $imageName,
@@ -106,19 +108,43 @@ class ClienteController extends Controller
             "data" => $clientes,
         ]);
     }
-    public function Base64toFile(Request $request)
+    /*   public function Base64toFile(Request $request)
     {
-        /* dd("LLEGUE BASE64"); */
-        $image = $request->get('imagen'); // your base64 encoded
-        $image = str_replace('data:image/png;base64,', '', $image);
-        $image = str_replace(' ', '+', $image);
 
-        $imageName = "image" . uniqid() . time() . ".jpg";
+    $image = $request->get('imagen'); // your base64 encoded
+    $image = str_replace('data:image/png;base64,', '', $image);
+    $image = str_replace(' ', '+', $image);
 
-        \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
-        return response()->json([
-            "data" => $imageName,
-        ]);
+    $imageName = "image" . uniqid() . time() . ".jpg";
+    $imgfile=base64_decode($image);
+
+    \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
+    return response()->json([
+    "data" => $imageName,
+    ]);
+
+    } */
+    public function FileToBase64($nameFile)
+    {
+        try {
+            $path = public_path() . '/assets/cuestionario/' . $nameFile . '';
+            $extencion = pathinfo($path, PATHINFO_EXTENSION);
+            $image = base64_encode(file_get_contents($path));
+            return "data:image/$extencion;base64, $image";
+        } catch (\Throwable $th) {
+            return "";
+        }
+    }
+    public function Base64toFile($base64, $id)
+    {
+        $name = "image-$id-" . uniqid() . time() . ".jpg"; // nombre fisico del archivo
+        $path = public_path() . '/assets/cuestionario/' . $name; // nombre ubicacion del archivo
+        $imagen = base64_decode($base64); // conversion de base64 a file
+        dd($imagen, "QUE ESSS");
+        $height = $imagen->height() / 4; //opcional controlar peso de archivo
+        $width = $imagen->width() / 4; //opcional controlar peso de archivo
+        $imagen->resize($width, $height)->save($path); //opcional controlar peso de archivo
+        return $name;
 
     }
 

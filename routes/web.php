@@ -151,6 +151,8 @@ Route::get('comercial/venta/create', [IngresoController::class, 'create'])->name
 Route::put('comercial/venta/{id}', [IngresoController::class, 'update']);
 Route::get('comercial/venta/{id}', [IngresoController::class, 'edit'])->name('edita.venta');
 Route::delete('comercial/venta/{id}', [IngresoController::class, 'destroy']);
+//Route::get('comercial/venta/filter', [IngresoController::class, 'filter'])->name('filter.venta');
+
 //
 //
 Route::get('comercial/inscripcion', [InscripcionController::class, 'index'])->name('index.inscripcion');
@@ -179,6 +181,7 @@ Route::delete('almacen/paquetes/{id}', [PaquetesGymController::class, 'destroy']
 Route::prefix('producto')->group(function () {
     Route::get('/', [ProductoController::class, 'obtener_producto']);
 });
+
 Route::prefix('paquetes')->group(function () {
     Route::get('/', [PaquetesGymController::class, 'obtener_paquetes']);
     //Route::get('store', [ProductoController::class, 'obtener_producto']);

@@ -26,9 +26,10 @@ class EgresoController extends Controller
                 ->join('detalle_egreso as de', 'e.idEgreso', '=', 'de.idEgreso')
                 ->join('tipo_comprobante as tc', 'e.idTipoComprobante', '=', 'tc.idTipoComprobante')
                 ->join('tipopago as tp', 'e.idTipoPago', '=', 'tp.idTipoPago')
-                ->select('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'), 'e.estadoEgreso')
+                ->join('usuario as u', 'e.idUsuario', '=', 'u.idUsuario')
+                ->select('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'), 'u.nomUsuario', 'e.estadoEgreso')
                 ->where('e.numeroComprobante', 'LIKE', '%' . $query . '%')
-                ->groupBy('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', 'e.estadoEgreso')
+                ->groupBy('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', 'u.nomUsuario', 'e.estadoEgreso')
                 ->get();
             /*   dd($data,"HOLAAA"); */
             /* return view('comercial.compra.index',compact('data')); */
