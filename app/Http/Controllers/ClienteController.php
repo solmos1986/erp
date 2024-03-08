@@ -7,18 +7,18 @@ use App\Http\Requests\ClienteRequest; //agrega la ruta del modelo
 use App\Models\Cliente; //para hacer algunas redirecciones
 use DB; //hace referencia a nuestro request
 use Illuminate\Http\Request; // sar la base de datos
-/* use Intervention\Image\Facades\Image; */
-
-/* use Intervention\Image\Laravel\Facades\Image; */
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Yajra\DataTables\DataTables;
 
 class ClienteController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
+
     {
 
         if ($request->ajax()) {
@@ -53,17 +53,14 @@ class ClienteController extends Controller
         $clientes->mailCliente = $request->get('mailCliente');
         $clientes->CondicionCliente = '1';
         $docCli = $request->get('docCliente');
-        $image = $request->get('imagen'); // your base64 encoded
-        $image = str_replace('data:image/png;base64,', '', $image);
-        $image = str_replace(' ', '+', $image);
-        $imageName = $docCli . uniqid() . time() . ".jpg";
-        \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
-        $clientes->fotoCliente = $imageName;
+        $image = $request->get('imagen'); 
+        $clientes->fotoCliente=$this->Base64toFile($image,1);
+        //$clientes->fotoCliente = $imageName;
         //dd($clientes, "VER fotoCliente");
         $clientes->save();
         return response()->json([
             "data" => $clientes,
-            "img" => $imageName,
+            "img" => $clientes->fotoCliente,
         ]);
 
     }
@@ -106,19 +103,17 @@ class ClienteController extends Controller
             "data" => $clientes,
         ]);
     }
-    public function Base64toFile(Request $request)
+    public function Base64toFile($base64,$id)
     {
-        /* dd("LLEGUE BASE64"); */
-        $image = $request->get('imagen'); // your base64 encoded
-        $image = str_replace('data:image/png;base64,', '', $image);
-        $image = str_replace(' ', '+', $image);
+        $manager = new ImageManager(Driver::class);
 
-        $imageName = "image" . uniqid() . time() . ".jpg";
-
-        \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
-        return response()->json([
-            "data" => $imageName,
-        ]);
+        $name = "image-$id-" . uniqid() . time() . ".jpg";
+        $path = public_path() . '/imagenes/clientes/' . $name;  
+        $image = $manager->read(file_get_contents($base64));
+        $image->resize(height: 600);
+        $encoded = $image->toJpg();
+        $encoded->save($path);
+        return $name;
 
     }
 
