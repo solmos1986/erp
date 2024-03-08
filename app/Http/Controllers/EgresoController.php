@@ -29,12 +29,7 @@ class EgresoController extends Controller
                 ->join('usuario as u', 'e.idUsuario', '=', 'u.idUsuario')
                 ->select('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'), 'u.nomUsuario', 'e.estadoEgreso')
                 ->where('e.numeroComprobante', 'LIKE', '%' . $query . '%')
-<<<<<<< HEAD
-
                 ->groupBy('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', 'u.nomUsuario', 'e.estadoEgreso')
-=======
-                ->groupBy('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', 'e.estadoEgreso')
->>>>>>> ebfdd7ccf86b59a8af664d22f732533bbedf8595
                 ->get();
             /*   dd($data,"HOLAAA"); */
             /* return view('comercial.compra.index',compact('data')); */
