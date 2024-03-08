@@ -204,14 +204,14 @@
 
                                             </td>
                                             <td>
-                                                <input type="date" class="form-control form-control-sm"
-                                                    id="fechaInicio" name="date" placeholder="Fecha"
-                                                    value="<?php echo date('Y-m-d'); ?>">
+
+                                                <input type="text" id="fechaInicio" class="form-control"
+                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>">
                                             </td>
                                             <td>
-                                                <input type="date" class="form-control form-control-sm" id="fechaFin"
-                                                    name="date" placeholder="Fecha" value="<?php echo date('Y-m-d'); ?>"
-                                                    readonly>
+
+                                                <input type="text" id="fechaFin" class="form-control"
+                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>" readonly>
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control form-control-sm"
@@ -361,12 +361,16 @@
         }
 
         function setFormato(fecha) {
+            var seg = ("0" + fecha.getSeconds()).slice(-2);
+            var min = ("0" + fecha.getMinutes()).slice(-2);
+            var hour = ("0" + fecha.getHours());
             var day = ("0" + fecha.getDate()).slice(-2);
             var month = ("0" + (fecha.getMonth() + 1)).slice(-2);
-            var date = fecha.getFullYear() + "-" + (month) + "-" + (day);
+            var date = fecha.getFullYear() + "-" + (month) + "-" + (day) + "T" + (hour) + ":" + (min) + ":" + (seg);
             return date;
         }
         $(document).on('click', '.procesar', function() {
+
             if ($('#impuestoInscripcion').val() == 0) {
                 var idTC = 1
             } else {

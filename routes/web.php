@@ -119,6 +119,8 @@ Route::get('comercial/venta/create', [IngresoController::class, 'create'])->name
 Route::put('comercial/venta/{id}', [IngresoController::class, 'update']);
 Route::get('comercial/venta/{id}', [IngresoController::class, 'edit'])->name('edita.venta');
 Route::delete('comercial/venta/{id}', [IngresoController::class, 'destroy']);
+//Route::get('comercial/venta/filter', [IngresoController::class, 'filter'])->name('filter.venta');
+
 //
 //
 Route::get('comercial/inscripcion', [InscripcionController::class, 'index'])->name('index.inscripcion');

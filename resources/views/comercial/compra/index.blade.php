@@ -73,6 +73,7 @@
                                         <th>Impuestos</th>
                                         <th>Metodo Pago</th>
                                         <th>Total</th>
+                                        <th>Usuario</th>
                                         <th>Estado</th>
                                         <th>Accion</th>
                                     </tr>
@@ -160,6 +161,10 @@
                     {
                         data: 'total',
                         name: 'total'
+                    },
+                    {
+                        data: 'nomUsuario',
+                        name: 'nomUsuario'
                     },
                     {
                         data: 'estadoEgreso',

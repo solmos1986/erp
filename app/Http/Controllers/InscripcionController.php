@@ -25,10 +25,11 @@ class InscripcionController extends Controller
                 ->join('detalle_inscripcion as di', 'in.idInscripcion', '=', 'di.idInscripcion')
                 ->join('tipo_comprobante as tc', 'in.idTipoComprobante', '=', 'tc.idTipoComprobante')
                 ->join('tipopago as tp', 'in.idTipoPago', '=', 'tp.idTipoPago')
-                ->select('in.idInscripcion', 'in.fechaInscripcion', 'c.nomCliente', 'tc.nomTipoComprobante', 'in.impuestoInscripcion', 'tp.nomTipoPago', 'di.costoPaquete', 'in.estadoInscripcion')
+                ->join('usuario as u', 'in.idUsuario', '=', 'u.idUsuario')
+                ->select('in.idInscripcion', 'in.fechaInscripcion', 'c.nomCliente', 'tc.nomTipoComprobante', 'in.impuestoInscripcion', 'tp.nomTipoPago', 'di.costoPaquete', 'u.nomUsuario', 'in.estadoInscripcion')
                 ->where('tc.nomTipoComprobante', 'LIKE', '%' . $query . '%')
 
-                ->groupBy('in.idInscripcion', 'in.fechaInscripcion', 'c.nomCliente', 'tc.nomTipoComprobante', 'in.impuestoInscripcion', 'tp.nomTipoPago', 'di.costoPaquete', 'in.estadoInscripcion')
+                ->groupBy('in.idInscripcion', 'in.fechaInscripcion', 'c.nomCliente', 'tc.nomTipoComprobante', 'in.impuestoInscripcion', 'tp.nomTipoPago', 'di.costoPaquete', 'u.nomUsuario', 'in.estadoInscripcion')
                 ->get();
             /*  dd($data, "HOLAAA"); */
             /* return view('comercial.compra.index',compact('data')); */
