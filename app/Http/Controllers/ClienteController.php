@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\ClienteController;
 use App\Http\Requests\ClienteRequest; //agrega la ruta del modelo
 use App\Models\Cliente; //para hacer algunas redirecciones
-use DB; //hace referencia a nuestro request
-use Illuminate\Http\Request;
+use DataTables; //hace referencia a nuestro request
+use DB;
 // sar la base de datos
 /* use Intervention\Image\Facades\Image; */
 /* use Intervention\Image\Laravel\Facades\Image; */
+use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
