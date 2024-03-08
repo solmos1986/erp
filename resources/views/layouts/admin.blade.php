@@ -95,9 +95,10 @@
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
     <script>
         const socket = io('{{ env('ROUTE_SOCKET_IO') }}');
+        /* console.log('{{ env('ROUTE_SOCKET_IO') }}')
         socket.on('ping', (e) => {
             console.log('escuchado por el servidor', e)
-        });
+        }); */
     </script>
     @stack('javascript')
 </body>
