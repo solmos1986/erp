@@ -47,17 +47,69 @@
                         <a href="{{ url('comercial/inscripcion/create') }}"><button type="button" id="serchbtn"
                                 class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
                                 Nueva Inscripcion </button></a>
-                        {{-- <button type="button" class="btn btn-light waves-effect mb-2">Export</button> --}}
                     </div>
                 </div>
-                {{-- <div class="col-md-3 col-md-push mb-2">
+            </div>
+            <div class="row">
 
-                    <div class="input-group">
-                        <a href="{{ url('comercial/compra/create') }}"><button type="button" id="serchbtn"
-                                class="btn rounded-pill btn-success">NUEVO</button></a>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <label class="form-label">Desde</label>
+                                <input class="filtrar form-control" id="IngresoDesdeIns" type="date" name="date"
+                                    value="<?php echo date('Y-m-d'); ?>">
+                            </div>
+                            <div class="col-2">
+                                <label class="form-label">Hasta</label>
+                                <input class="filtrar form-control" id="IngresoHastaIns" type="date" name="date"
+                                    value="<?php echo date('Y-m-d'); ?>">
 
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Cliente</label>
+                                <select class="filtrar form-select" id="idClienteIns">
+                                    <option value="">Filtrar cliente</option>
+                                    @foreach ($cliente as $cli)
+                                        <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Comprobante</label>
+                                <select class="filtrar form-select" id="idTipoComprobanteIns">
+                                    <option value="">Filtrar comprobante</option>
+                                    @foreach ($tipo_comprobante as $tcp)
+                                        <option value="{{ $tcp->idTipoComprobante }}">{{ $tcp->nomTipoComprobante }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Forma de Pago</label>
+                                <select class="filtrar form-select" id="idTipoPagoIns">
+                                    <option value="">Filtrar pago</option>
+                                    @foreach ($tipopago as $tp)
+                                        <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Usuario</label>
+                                <select class="filtrar form-select" id="idUsuarioIns">
+                                    <option value="">Filtrar cajero</option>
+                                    @foreach ($usuario as $user)
+                                        <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                </div> --}}
+                </div> <!-- end card -->
+
             </div>
             <div class="row">
                 <div class="col-12">
@@ -123,13 +175,27 @@
     <script src="{{ asset('/js/pages/add-product.init.js') }}"></script> --}}
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
-        $(function() {
+        $(document).ready(function() {
 
-            var table = $('.dtInscripciones').DataTable({
+            const table = $('.dtInscripciones').DataTable({
+
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('index.inscripcion') }}",
+                searchin: true,
+                ajax: {
+                    url: "{{ route('index.inscripcion') }}",
+                    data: function(d) {
 
+                        d.startDate = $('#IngresoDesdeIns').val() + 'T00:00:00',
+                            d.endDate = $('#IngresoHastaIns').val() + 'T23:59:59',
+                            d.idCliente = $('#idClienteIns').val(),
+                            d.idTipoPago = $('#idTipoPagoIns').val(),
+                            d.idTipoComprobante = $('#idTipoComprobanteIns').val(),
+                            d.idUsuario = $('#idUsuarioIns').val()
+                    },
+                },
+                dataType: 'json',
+                type: "post",
                 columns: [{
                         data: 'idInscripcion',
                         name: 'idInscripcion'
@@ -190,6 +256,9 @@
                 drawCallback: function() {
                     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
                 }
+            });
+            $(document).on('keyup change', '.filtrar', function() {
+                table.draw()
             });
         });
     </script>
