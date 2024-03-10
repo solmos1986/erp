@@ -57,15 +57,7 @@ class IngresoController extends Controller
                 ->where('i.fechaIngreso', '<=', $request->get('endDate'))
                 ->groupBy('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', 'u.nomUsuario', 'i.estadoIngreso')
                 ->get()->toArray();
-
-            /*   } */
-            //dd($data);
-
-            /*   $data->where('i.idUsuario', '=', $request->get('idUsuario'))
-            ->where('tc.nomTipoComprobante', 'LIKE', '%' . $query . '%')
-
-            ->groupBy('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', 'u.nomUsuario', 'i.estadoIngreso')
-            ->get(); */
+            //dd($data, "DATAAA");
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->rawColumns([])
@@ -79,6 +71,8 @@ class IngresoController extends Controller
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
+        $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+
         if ($request->ajax()) {
             $data = DB::table('producto')
                 ->where('condicionProducto', '=', '1')
@@ -90,7 +84,7 @@ class IngresoController extends Controller
 
         }
 
-        return view('comercial/venta/create', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante]);
+        return view('comercial/venta/create', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
 
     }
     public function store(Request $request)

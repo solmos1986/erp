@@ -110,7 +110,7 @@
                                 <label for="duracionPaquete" class="form-label">Duracion</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="duracionPaquete"
-                                        placeholder="No. de dias" required name="duracionPaquete">
+                                        placeholder="No. de meses" required name="duracionPaquete">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-1">

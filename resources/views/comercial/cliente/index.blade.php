@@ -505,9 +505,6 @@
 
         $(document).on("click", ".guardar", function() {
 
-
-            console.log("click guardar")
-
             $.ajax({
                 type: "post",
                 url: `${base_url}/comercial/cliente`,
@@ -568,18 +565,17 @@
         const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
 
         $(document).on("click", "#capturar", function() {
-
-            var data = webcam.snap();
-            $('#base64').val(data);
-            var inp = $('#base64').val();
-            $('#foto_tomada').prop('src', data)
-            $('#webcam').hide();
+            var base64Image = webcam.snap();
+            console.log(base64Image, "BASE &$");
+            $('#foto_tomada').prop('src', base64Image)
+            $('#webcam').hide(),
+                resizeBase64Image(base64Image);
             /* $.ajax({
                 type: "POST",
                 url: `${base_url}/comercial/clienteImagen`,
                 dataType: 'json',
                 data: {
-                    imagen: data,
+                    imagen: base64Image,
 
                 },
                 success: function(response) {
@@ -601,13 +597,11 @@
                 },
                 fail: function() {
                     console.log('error servidor')
-                }
+                },
             }) */
 
-
-
-
         });
+
         $(document).on("click", "#cancelar", function() {
             $('#foto_tomada').prop('src', '')
             //$('#foto_tomada').hide();
@@ -631,5 +625,34 @@
             webcam.stop();
             $(this).removeData();
         })
+
+
+        function resizeBase64Image(base64Image) {
+            return new Promise((resolve, reject) => {
+                const maxSizeInMB = 1;
+                const maxSizeInBytes = maxSizeInMB * 350 * 350;
+                const img = new Image();
+                img.src = base64Image;
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext('2d');
+                    const width = img.width;
+                    const height = img.height;
+                    const aspectRatio = width / height;
+                    const newWidth = Math.sqrt(maxSizeInBytes * aspectRatio);
+                    const newHeight = Math.sqrt(maxSizeInBytes / aspectRatio);
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                    let quality = 0.8;
+                    let dataURL = canvas.toDataURL('image/jpeg', quality);
+                    var base64rz = dataURL;
+
+                    $('#base64').val(base64rz),
+                        resolve(dataURL);
+                }
+            })
+
+        }
     </script>
 @endpush
