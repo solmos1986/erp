@@ -17,8 +17,9 @@ use App\Http\Controllers\CategoriaController;
 
 class CategoriaController extends Controller
 {
-   public function __construct(){
-
+    public function __construct()
+    {
+        $this->middleware('auth');
     }
     public function index(Request $request){  //recibe un objeto llamado Request y le asigna a la variable $request
        if ($request->ajax()) {

@@ -11,10 +11,13 @@ use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LectoresController;
 use App\Http\Controllers\MarcasController;
+use App\Http\Controllers\ModuloController;
 use App\Http\Controllers\PaquetesGymController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\RolController;
+use App\Http\Controllers\SubModuloController;
+use App\Http\Controllers\SuperModuloController;
 use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\Tipo_ComprobanteController;
 use App\Http\Controllers\UsuarioController;
@@ -141,6 +144,34 @@ Route::prefix('authorizacion')->group(function () {
     Route::get('/{id}', [AuthorizacionController::class, 'edit'])->name('authorizacion.edit');
     Route::put('/{id}', [AuthorizacionController::class, 'update'])->name('authorizacion.update');
     Route::delete('/{id}', [AuthorizacionController::class, 'destroy'])->name('authorizacion.destroy');
+});
+Route::prefix('modulo')->group(function () {
+    Route::get('/', [ModuloController::class, 'index'])->name('modulo.index');
+    Route::get('/icons', [ModuloController::class, 'icons'])->name('modulo.icons');
+    Route::get('/data-table', [ModuloController::class, 'data_table'])->name('modulo.data_table');
+    Route::get('/create', [ModuloController::class, 'create'])->name('modulo.create');
+    Route::post('/', [ModuloController::class, 'store'])->name('modulo.store');
+    Route::get('/{id}', [ModuloController::class, 'edit'])->name('modulo.edit');
+    Route::put('/{id}', [ModuloController::class, 'update'])->name('modulo.update');
+    Route::delete('/{id}', [ModuloController::class, 'destroy'])->name('modulo.destroy');
+});
+Route::prefix('super-modulo')->group(function () {
+    Route::get('/', [SuperModuloController::class, 'index'])->name('super-modulo.index');
+    Route::get('/data-table', [SuperModuloController::class, 'data_table'])->name('super-modulo.data_table');
+    Route::get('/create', [SuperModuloController::class, 'create'])->name('super-modulo.create');
+    Route::post('/store', [SuperModuloController::class, 'store'])->name('super-modulo.store');
+    Route::get('/{id}', [SuperModuloController::class, 'edit'])->name('super-modulo.edit');
+    Route::put('/{id}', [SuperModuloController::class, 'update'])->name('super-modulo.update');
+    Route::delete('/{id}', [SuperModuloController::class, 'destroy'])->name('super-modulo.destroy');
+});
+Route::prefix('sub-modulo')->group(function () {
+    Route::get('/', [SubModuloController::class, 'index'])->name('sub-modulo.index');
+    Route::get('/data-table', [SubModuloController::class, 'data_table'])->name('sub-modulo.data_table');
+    Route::get('/create', [SubModuloController::class, 'create'])->name('sub-modulo.create');
+    Route::post('/store', [SubModuloController::class, 'store'])->name('sub-modulo.store');
+    Route::get('/{id}', [SubModuloController::class, 'edit'])->name('sub-modulo.edit');
+    Route::put('/{id}', [SubModuloController::class, 'update'])->name('sub-modulo.update');
+    Route::delete('/{id}', [SubModuloController::class, 'destroy'])->name('sub-modulo.destroy');
 });
 //
 //

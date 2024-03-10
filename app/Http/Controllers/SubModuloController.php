@@ -2,15 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use DataTables;
+use DB;
 use Illuminate\Http\Request;
 
 class SubModuloController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function data_table()
+    {
+        $sub_modulos = DB::table('sub_modulo')
+            ->select(
+                'sub_modulo.*',
+                'modulo.nombre_modulo'
+            )
+            ->join('modulo', 'modulo.modulo_id', 'sub_modulo.modulo_id')
+            ->get();
+
+        return Datatables::of($sub_modulos)
+            ->addIndexColumn()
+            ->rawColumns([])
+            ->make(true);
+    }
     public function index()
     {
         //
