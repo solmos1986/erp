@@ -46,20 +46,12 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="text-lg-end">
-                        {{-- <a href="{{ url('comercial/venta/create') }}"> --}}<button type="button" id="serchbtn"
-                            class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
-                            Nueva Venta </button>{{-- </a> --}}
-                        {{-- <button type="button" class="btn btn-light waves-effect mb-2">Export</button> --}}
+                        <a href="{{ url('comercial/venta/create') }}"><button type="button" id="serchbtn"
+                                class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                                Nueva Venta </button></a>
+
                     </div>
                 </div>
-                {{-- <div class="col-md-3 col-md-push mb-2">
-
-                    <div class="input-group">
-                        <a href="{{ url('comercial/compra/create') }}"><button type="button" id="serchbtn"
-                                class="btn rounded-pill btn-success">NUEVO</button></a>
-
-                    </div>
-                </div> --}}
             </div>
             <div class="row">
 
@@ -68,18 +60,18 @@
                         <div class="row">
                             <div class="col-2">
                                 <label class="form-label">Desde</label>
-                                <input class="IngresoDesde form-control" id="IngresoDesde" type="date" name="date"
+                                <input class="filtrar form-control" id="IngresoDesde" type="date" name="date"
                                     value="<?php echo date('Y-m-d'); ?>">
                             </div>
                             <div class="col-2">
                                 <label class="form-label">Hasta</label>
-                                <input class="IngresoHasta form-control" id="IngresoHasta" type="date" name="date"
+                                <input class="filtrar form-control" id="IngresoHasta" type="date" name="date"
                                     value="<?php echo date('Y-m-d'); ?>">
 
                             </div>
                             <div class="col-2">
                                 <label for="example-select" class="form-label">Cliente</label>
-                                <select class="form-select" id="idCliente">
+                                <select class="filtrar form-select" id="idCliente">
                                     <option value="">Filtrar cliente</option>
                                     @foreach ($cliente as $cli)
                                         <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
@@ -89,7 +81,7 @@
                             </div>
                             <div class="col-2">
                                 <label for="example-select" class="form-label">Comprobante</label>
-                                <select class="form-select" id="idTipoComprobante">
+                                <select class="filtrar form-select" id="idTipoComprobante">
                                     <option value="">Filtrar comprobante</option>
                                     @foreach ($tipo_comprobante as $tcp)
                                         <option value="{{ $tcp->idTipoComprobante }}">{{ $tcp->nomTipoComprobante }}
@@ -99,8 +91,8 @@
                             </div>
                             <div class="col-2">
                                 <label for="example-select" class="form-label">Forma de Pago</label>
-                                <select class="form-select" id="idTipoPago">
-                                    <option value="">Filtrar comprobante</option>
+                                <select class="filtrar form-select" id="idTipoPago">
+                                    <option value="">Filtrar pago</option>
                                     @foreach ($tipopago as $tp)
                                         <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}
                                         </option>
@@ -109,7 +101,7 @@
                             </div>
                             <div class="col-2">
                                 <label for="example-select" class="form-label">Usuario</label>
-                                <select class="form-select" id="idUsuario">
+                                <select class="filtrar form-select" id="idUsuario">
                                     <option value="">Filtrar cajero</option>
                                     @foreach ($usuario as $user)
                                         <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
@@ -118,11 +110,7 @@
                                 </select>
                             </div>
                         </div>
-
-                    </div> <!-- end card body-->
-                    {{--  <div>
-                                {{ $categorias->render() }}
-                        </div> --}}
+                    </div>
                 </div> <!-- end card -->
 
             </div>
@@ -193,7 +181,7 @@
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
         $(document).ready(function() {
-
+            console.log($('#IngresoHasta').val() + 'T23:59:59', "DATE INUT EDIT")
             const table = $('.dtIngresos').DataTable({
                 processing: true,
                 serverSide: true,
@@ -202,8 +190,8 @@
                     url: "{{ route('index.venta') }}",
                     data: function(d) {
 
-                        d.startDate = $('#IngresoDesde').val(),
-                            d.endDate = $('#IngresoHasta').val(),
+                        d.startDate = $('#IngresoDesde').val() + 'T00:00:00',
+                            d.endDate = $('#IngresoHasta').val() + 'T23:59:59',
                             d.idCliente = $('#idCliente').val(),
                             d.idTipoPago = $('#idTipoPago').val(),
                             d.idTipoComprobante = $('#idTipoComprobante').val(),
@@ -213,7 +201,9 @@
                 dataType: 'json',
                 type: "post",
 
-                columns: [{
+                columns: [
+                    /* console.log(data, "DATAAAAA")  */
+                    {
                         data: 'idIngreso',
                         name: 'idIngreso'
                     },
@@ -255,7 +245,7 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row, meta) {
-                            console.log("LLEGO FILA", row)
+                            console.log("LLEGO FILA", data)
                             return `<a href="{{ url('almacen/producto/${row.idIngreso}') }}"  data-id="${row.idIngreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idIngreso}" class="delete fas fa-trash-alt text-danger"></a>`;
                         }
                     },
@@ -270,9 +260,9 @@
                     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
                 }
             });
-            $('#serchbtn').click(function() {
+            $(document).on('keyup change', '.filtrar', function() {
                 table.draw()
-            })
+            });
         });
     </script>
     <!-- Bootstrap Tables js -->

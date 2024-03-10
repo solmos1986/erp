@@ -121,10 +121,11 @@
                                                 name="date" placeholder="Fecha" value="<?php echo date('Y-m-d H:i:s'); ?>">
                                         </div>
                                         <label for="idVendedor" class="form-label col-2 col-xl-2">Vendedor</label>
-                                        <div class="col-4 col-xl-4">
-                                            <input type="text" class="form-control form-control-sm" id="idVendedor"
-                                                placeholder="Vendedor" value="8888">
-                                        </div>
+                                        <select class="form-control form-control-sm" id="idTipoPago">
+                                            @foreach ($usuario as $user)
+                                                <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="row mb-1">
                                         <label for="idCliente" class="form-label col-2 col-xl-2">Cliente</label>
