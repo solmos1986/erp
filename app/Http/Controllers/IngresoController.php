@@ -19,29 +19,51 @@ class IngresoController extends Controller
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
     {
-
+        //dd($request, "ESTO ESTA LLEGANDO");
+        $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
+        $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
+        $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
+        $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+        $query = trim($request->get('searchText'));
         if ($request->ajax()) {
-            $query = trim($request->get('searchText'));
-            $data = DB::table('ingresos as i') /* ->get() */
+            $data = DB::table('ingresos as i')
+                ->select('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', DB::raw('sum(di.cantidadVenta*precioVenta) as total'), 'i.estadoIngreso', 'u.nomUsuario')
                 ->join('cliente as c', 'i.idCliente', '=', 'c.idCliente')
                 ->join('detalle_ingreso as di', 'i.idIngreso', '=', 'di.idIngreso')
                 ->join('tipo_comprobante as tc', 'i.idTipoComprobante', '=', 'tc.idTipoComprobante')
                 ->join('tipopago as tp', 'i.idTipoPago', '=', 'tp.idTipoPago')
-                ->select('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', DB::raw('sum(di.cantidadVenta*precioVenta) as total'), 'i.estadoIngreso')
-                ->where('tc.nomTipoComprobante', 'LIKE', '%' . $query . '%')
+                ->join('usuario as u', 'i.idUsuario', '=', 'u.idUsuario')
+                ->when(($request->get('startDate') != '' && $request->get('endDate') != ''), function ($query) use ($request) {
+                    $query->where('i.fechaIngreso', '>=', $request->get('startDate'))
+                        ->where('i.fechaIngreso', '<=', $request->get('endDate'));
+                })
+                ->when(($request->get('idCliente') != ''), function ($query) use ($request) {
+                    $query->where('i.idCliente', '=', $request->get('idCliente'));
 
-                ->groupBy('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', 'i.estadoIngreso')
-                ->get();
-            /* dd($data, "HOLAAA"); */
-            /* return view('comercial.compra.index',compact('data')); */
+                })
+                ->when(($request->get('idTipoComprobante') != ''), function ($query) use ($request) {
+                    $query->where('i.idTipoComprobante', '=', $request->get('idTipoComprobante'));
+
+                })
+                ->when(($request->get('idTipoPago') != ''), function ($query) use ($request) {
+                    $query->where('i.idTipoPago', '=', $request->get('idTipoPago'));
+
+                })
+                ->when(($request->get('idUsuario') != ''), function ($query) use ($request) {
+                    $query->where('i.idUsuario', '=', $request->get('idUsuario'));
+
+                })
+                ->where('i.fechaIngreso', '>=', $request->get('startDate'))
+                ->where('i.fechaIngreso', '<=', $request->get('endDate'))
+                ->groupBy('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', 'u.nomUsuario', 'i.estadoIngreso')
+                ->get()->toArray();
+            //dd($data, "DATAAA");
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->rawColumns([])
                 ->make(true);
-
         }
-
-        return view('comercial/venta/index');
+        return view('comercial/venta/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
 
     }
     public function create(Request $request)
@@ -49,6 +71,8 @@ class IngresoController extends Controller
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
+        $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+
         if ($request->ajax()) {
             $data = DB::table('producto')
                 ->where('condicionProducto', '=', '1')
@@ -60,7 +84,7 @@ class IngresoController extends Controller
 
         }
 
-        return view('comercial/venta/create', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante]);
+        return view('comercial/venta/create', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
 
     }
     public function store(Request $request)
@@ -115,5 +139,33 @@ class IngresoController extends Controller
             "message" => "GuarDado correctamnte",
             "data" => null,
         ]);
+    }
+    /* public function filter(Request $request)
+    {
+    $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
+    $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
+    $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
+    $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+    $query = trim($request->get('searchText'));
+    $data = DB::table('ingresos as i')
+    ->join('cliente as c', 'i.idCliente', '=', 'c.idCliente')
+    ->join('detalle_ingreso as di', 'i.idIngreso', '=', 'di.idIngreso')
+    ->join('tipo_comprobante as tc', 'i.idTipoComprobante', '=', 'tc.idTipoComprobante')
+    ->join('tipopago as tp', 'i.idTipoPago', '=', 'tp.idTipoPago')
+    ->join('usuario as u', 'i.idUsuario', '=', 'u.idUsuario')
+    ->select('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', DB::raw('sum(di.cantidadVenta*precioVenta) as total'), 'i.estadoIngreso', 'u.nomUsuario')
+    ->where('tc.nomTipoComprobante', 'LIKE', '%' . $query . '%')
+
+    ->groupBy('i.idIngreso', 'i.fechaIngreso', 'c.nomCliente', 'tc.nomTipoComprobante', 'i.impuestoIngreso', 'tp.nomTipoPago', 'u.nomUsuario', 'i.estadoIngreso')
+    ->get();
+    return Datatables::of($data)
+    ->addIndexColumn()
+    ->rawColumns([])
+    ->make(true);
+
+    } */
+    public function edit()
+    {
+
     }
 }

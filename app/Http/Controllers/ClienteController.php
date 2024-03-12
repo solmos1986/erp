@@ -5,18 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\ClienteController;
 use App\Http\Requests\ClienteRequest; //agrega la ruta del modelo
 use App\Models\Cliente; //para hacer algunas redirecciones
-use DB; //hace referencia a nuestro request
-use Illuminate\Http\Request; // sar la base de datos
-/* use Intervention\Image\Facades\Image; */
+use DataTables; //hace referencia a nuestro request
+use DB;
+use Illuminate\Http\Request;
 
+// sar la base de datos
+/* use Intervention\Image\Facades\Image; */
 /* use Intervention\Image\Laravel\Facades\Image; */
-use Yajra\DataTables\DataTables;
 
 class ClienteController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
     {
@@ -54,13 +55,13 @@ class ClienteController extends Controller
         $clientes->CondicionCliente = '1';
         $docCli = $request->get('docCliente');
         $image = $request->get('imagen'); // your base64 encoded
-        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace('data:image/jpeg;base64,', '', $image);
         $image = str_replace(' ', '+', $image);
-        $imageName = $docCli . uniqid() . time() . ".jpg";
+        $imageName = "image" . uniqid() . time() . ".jpg";
         \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
-        $clientes->fotoCliente = $imageName;
         //dd($clientes, "VER fotoCliente");
         $clientes->save();
+
         return response()->json([
             "data" => $clientes,
             "img" => $imageName,
@@ -106,15 +107,26 @@ class ClienteController extends Controller
             "data" => $clientes,
         ]);
     }
+
+    public function FileToBase64($nameFile)
+    {
+        try {
+            $path = public_path() . '/assets/cuestionario/' . $nameFile . '';
+            $extencion = pathinfo($path, PATHINFO_EXTENSION);
+            $image = base64_encode(file_get_contents($path));
+            return "data:image/$extencion;base64, $image";
+        } catch (\Throwable $th) {
+            return "";
+        }
+    }
     public function Base64toFile(Request $request)
     {
-        /* dd("LLEGUE BASE64"); */
+
         $image = $request->get('imagen'); // your base64 encoded
-        $image = str_replace('data:image/png;base64,', '', $image);
+        //dd($image, "IMAGENNN");
+        $image = str_replace('data:image/jpeg;base64,', '', $image);
         $image = str_replace(' ', '+', $image);
-
         $imageName = "image" . uniqid() . time() . ".jpg";
-
         \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
         return response()->json([
             "data" => $imageName,
