@@ -24,22 +24,41 @@ const columnsSubModulo = [{
     }
 }];
 
-$(document).ready(function () {
-    let tableSuperModulo = dataTable($('.data-table-sub-modulo'), `${base_url}/sub-modulo/data-table`, columnsSubModulo);
-});
+let tableSubModulo = dataTable($('.data-table-sub-modulo'), `${base_url}/sub-modulo/data-table`, columnsSubModulo);
 
-$(document).on("click", ".editar", function () {
+$(document).on("click", ".nuevo_sub_modulo", function () {
     const btn = $(this);
     console.log('editar')
-    const id = $(this).data('id');
-    btn.prop('disabled', true);
-    $('#modal_authorizacion .modal-title').text('Editar Authenticacion');
-    ajax(`${base_url}/authorizacion/${id}`, 'GET').then((response) => {
-        btn.prop('disabled', false);
-        data = response.data;
-        BtnAddUpdate($('#btn_save'), 'store', 'update')
-        $('#modal_authorizacion').modal('show');
+    //const id = $(this).data('id');
+    btn.prop('disabled', false);
+    ajax(`${base_url}/sub-modulo/create`, 'GET').then((response) => {
+        $('#modal_sub_modulo').modal('show');
+        BtnAddSave($('#btn_sub_save'), 'store_sub_modulo', 'update_sub_modulo')
+        $('#modal_sub_modulo .modal-title').text('Nuevo sub modulo');
+        const options = addOpcionModulo(response.data.modulos)
+        $('#modal_sub_modulo #modulo_id').html('')
+        $('#modal_sub_modulo #modulo_id').append(options)
     }).catch(() => {
         btn.prop('disabled', false)
     });
 });
+
+$(document).on("click", ".store_sub_modulo", function () {
+    const btn = $(this);
+    ajax(`${base_url}/sub-modulo`, 'POST', $('#form_sub_modulo').serialize()).then((response) => {
+        btn.prop('disabled', false);
+        $('#modal_sub_modulo').modal('hide');
+        tableSubModulo.ajax.url(`${base_url}/sub-modulo/data-table`).load();
+        SwallErrorValidate(response)
+    }).catch(() => {
+        btn.prop('disabled', false)
+    });
+});
+
+function addOpcionModulo(options) {
+    optionHTML = ``;
+    options.map((o) => {
+        optionHTML += `<option value="${o.modulo_id}">${o.nombre_modulo}</option>`;
+    })
+    return optionHTML;
+}

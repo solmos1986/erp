@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use DataTables;
 use Illuminate\Http\Request;
 use DB;
+use Validator;
 class SuperModuloController extends Controller
 {
     public function __construct()
@@ -37,7 +38,7 @@ class SuperModuloController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -48,7 +49,39 @@ class SuperModuloController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = array(
+            'nombre_super_modulo' => 'required'
+        );
+        $messages = [
+            'url.required' => "Url es requerido",
+            'class_icon.required' => "Icon es requerido",
+            'nombre_super_modulo.required' => "Nombre es requerido"
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+        $insert = DB::table('super_modulo')->insertGetId([
+            'url' => '#',
+            'nombre_super_modulo' => $request->nombre_super_modulo,
+            'class_icon' => ' '
+        ]);
+        if ($insert) {
+            return response()->json([
+                "status" => 1,
+                "message" => "Registrado correctamente",
+                "data" => null,
+            ]);
+        } else {
+            return response()->json([
+                "status" => 0,
+                "message" => "Ocurrio un error",
+                "data" => null,
+            ]);
+        }
     }
 
     /**

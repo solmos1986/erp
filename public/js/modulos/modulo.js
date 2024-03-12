@@ -63,11 +63,9 @@ $(document).on("click", ".store_modulo", function () {
         btn.prop('disabled', false);
         $('#modal_modulo').modal('hide');
         tableModulo.ajax.url(`${base_url}/modulo/data-table`).load();
-        SwallSuccess(response.message)
+        SwallErrorValidate(response)
     }).catch(() => {
         btn.prop('disabled', false)
-
-        SwallErrorValidate(response)
     });
 });
 

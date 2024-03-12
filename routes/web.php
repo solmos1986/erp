@@ -159,7 +159,7 @@ Route::prefix('super-modulo')->group(function () {
     Route::get('/', [SuperModuloController::class, 'index'])->name('super-modulo.index');
     Route::get('/data-table', [SuperModuloController::class, 'data_table'])->name('super-modulo.data_table');
     Route::get('/create', [SuperModuloController::class, 'create'])->name('super-modulo.create');
-    Route::post('/store', [SuperModuloController::class, 'store'])->name('super-modulo.store');
+    Route::post('/', [SuperModuloController::class, 'store'])->name('super-modulo.store');
     Route::get('/{id}', [SuperModuloController::class, 'edit'])->name('super-modulo.edit');
     Route::put('/{id}', [SuperModuloController::class, 'update'])->name('super-modulo.update');
     Route::delete('/{id}', [SuperModuloController::class, 'destroy'])->name('super-modulo.destroy');
@@ -168,7 +168,7 @@ Route::prefix('sub-modulo')->group(function () {
     Route::get('/', [SubModuloController::class, 'index'])->name('sub-modulo.index');
     Route::get('/data-table', [SubModuloController::class, 'data_table'])->name('sub-modulo.data_table');
     Route::get('/create', [SubModuloController::class, 'create'])->name('sub-modulo.create');
-    Route::post('/store', [SubModuloController::class, 'store'])->name('sub-modulo.store');
+    Route::post('/', [SubModuloController::class, 'store'])->name('sub-modulo.store');
     Route::get('/{id}', [SubModuloController::class, 'edit'])->name('sub-modulo.edit');
     Route::put('/{id}', [SubModuloController::class, 'update'])->name('sub-modulo.update');
     Route::delete('/{id}', [SubModuloController::class, 'destroy'])->name('sub-modulo.destroy');

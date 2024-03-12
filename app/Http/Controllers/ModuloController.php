@@ -93,11 +93,19 @@ class ModuloController extends Controller
             'class_icon' => $request->class_icon,
             'super_modulo_id' => $request->super_modulo_id,
         ]);
-        return response()->json([
-            "status" => 1,
-            "message" => "Registrado correctamente",
-            "data" => null,
-        ]);
+        if ($insert) {
+            return response()->json([
+                "status" => 1,
+                "message" => "Registrado correctamente",
+                "data" => null,
+            ]);
+        } else {
+            return response()->json([
+                "status" => 0,
+                "message" => "Ocurrio un error",
+                "data" => null,
+            ]);
+        }
     }
 
     /**

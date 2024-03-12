@@ -16,21 +16,24 @@ const columnsSuperModulo = [{
     }
 }];
 
-$(document).ready(function () {
-    let tableSuperModulo = dataTable($('.data-table-super-modulo'), `${base_url}/super-modulo/data-table`, columnsSuperModulo);
+let tableSuperModulo = dataTable($('.data-table-super-modulo'), `${base_url}/super-modulo/data-table`, columnsSuperModulo);
+
+$(document).on("click", ".nuevo_super_modulo", function () {
+    const btn = $(this);
+    btn.prop('disabled', true);
+    $('#modal_super_modulo .modal-title').text('Nueva seccion');
+    btn.prop('disabled', false);
+    BtnAddSave($('#btn_super_save'), 'store_super_modulo', 'update_super_modulo')
+    $('#modal_super_modulo').modal('show');
 });
 
-$(document).on("click", ".editar", function () {
+$(document).on("click", ".store_super_modulo", function () {
     const btn = $(this);
-    console.log('editar')
-    const id = $(this).data('id');
-    btn.prop('disabled', true);
-    $('#modal_authorizacion .modal-title').text('Editar Authenticacion');
-    ajax(`${base_url}/authorizacion/${id}`, 'GET').then((response) => {
+    ajax(`${base_url}/super-modulo`, 'POST', $('#form_super_modulo').serialize()).then((response) => {
         btn.prop('disabled', false);
-        data = response.data;
-        BtnAddUpdate($('#btn_save'), 'store', 'update')
-        $('#modal_authorizacion').modal('show');
+        $('#modal_super_modulo').modal('hide');
+        tableSuperModulo.ajax.url(`${base_url}/super-modulo/data-table`).load();
+        SwallErrorValidate(response)
     }).catch(() => {
         btn.prop('disabled', false)
     });

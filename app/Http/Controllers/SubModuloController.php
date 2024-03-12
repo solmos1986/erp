@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DataTables;
 use DB;
 use Illuminate\Http\Request;
+use Validator;
 
 class SubModuloController extends Controller
 {
@@ -44,7 +45,15 @@ class SubModuloController extends Controller
      */
     public function create()
     {
-        //
+        $modulos = DB::table('modulo')
+            ->get();
+        return response()->json([
+            "status" => 1,
+            "message" => "Mostrado sub modulo",
+            "data" => [
+                'modulos' => $modulos,
+            ],
+        ]);
     }
 
     /**
@@ -55,7 +64,42 @@ class SubModuloController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = array(
+            'url' => 'required',
+            'nombre_sub_modulo' => 'required',
+            'modulo_id' => 'required',
+        );
+        $messages = [
+            'url.required' => "Url es requerido",
+            'nombre_modulo.required' => "Nombre es requerido",
+            'modulo_id.required' => "Selecione un modulo",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+        $insert = DB::table('sub_modulo')->insertGetId([
+            'url' => $request->url,
+            'nombre_sub_modulo' => $request->nombre_sub_modulo,
+            'class_icon' => ' ',
+            'modulo_id' => $request->modulo_id,
+        ]);
+        if ($insert) {
+            return response()->json([
+                "status" => 1,
+                "message" => "Registrado correctamente",
+                "data" => null,
+            ]);
+        } else {
+            return response()->json([
+                "status" => 0,
+                "message" => "Ocurrio un error",
+                "data" => null,
+            ]);
+        }
     }
 
     /**

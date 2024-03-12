@@ -81,7 +81,7 @@
                     </h4>
                     <hr>
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary nuevo mb-2" type="button">
+                        <button class="btn btn-primary nuevo_super_modulo mb-2" type="button">
                             Nueva seccion
                         </button>
                     </div>
@@ -140,7 +140,7 @@
                     </h4>
                     <hr>
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary nuevo mb-2" type="button">
+                        <button class="btn btn-primary nuevo_sub_modulo mb-2" type="button">
                             Nueva sub modulo
                         </button>
                     </div>
@@ -164,6 +164,14 @@
     <x-components.modal size="modal-xl" id="modal_modulo" nameBtnSave="Guardar" nameBtnClose="Cancelar"
         idBtnSave="btn_save">
         @include('modulo.components.form-modulo')
+    </x-components.modal>
+    <x-components.modal size="modal-md" id="modal_super_modulo" nameBtnSave="Guardar" nameBtnClose="Cancelar"
+        idBtnSave="btn_super_save">
+        @include('modulo.components.form-super-modulo')
+    </x-components.modal>
+    <x-components.modal size="modal-lg" id="modal_sub_modulo" nameBtnSave="Guardar" nameBtnClose="Cancelar"
+        idBtnSave="btn_sub_save">
+        @include('modulo.components.form-sub-modulo')
     </x-components.modal>
 @endsection
 
