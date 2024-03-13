@@ -1,5 +1,6 @@
 <div class="row">
     <form id="form_super_modulo" action="">
+        <input type="text" id="super_modulo_id" name="super_modulo_id" class="form-control" hidden >
         <div class="row">
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="mb-3">

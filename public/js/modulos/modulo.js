@@ -21,7 +21,7 @@ const columnsModulo = [{
     searchable: false,
     render: function (data, type, row, meta) {
         return `
-            <i data-id="${row.super_modulo_id}" class="editar fas fa-pencil-alt text-info m-1 cursor-pointer" title="Editar"></i>
+            <i data-id="${row.super_modulo_id}" class="editar_modulo fas fa-pencil-alt text-info m-1 cursor-pointer" title="Editar"></i>
             <i data-id="${row.super_modulo_id}" class="delete far fa-trash-alt text-danger m-1 cursor-pointer" title="Eliminar"></i>
         `;
     }
@@ -32,6 +32,7 @@ let tableModulo = dataTable($('.data-table-modulo'), `${base_url}/modulo/data-ta
 
 $(document).on("click", ".nuevo_modulo", function () {
     const btn = $(this);
+    btn.prop('disabled', true);
     console.log('editar')
     //const id = $(this).data('id');
     ajax(`${base_url}/modulo/create`, 'GET').then((response) => {
@@ -39,7 +40,30 @@ $(document).on("click", ".nuevo_modulo", function () {
         $('#modal_modulo').modal('show');
         BtnAddSave($('#btn_save'), 'store_modulo', 'update_modulo')
         $('#modal_modulo .modal-title').text('Nuevo Modulo');
-        const options = addOpcionModulo(response.data.super_modulos)
+        const options = addOpcionSuperModulo(response.data.super_modulos)
+        $('#modal_modulo #select_super_modulo').html('')
+        $('#modal_modulo #select_super_modulo').append(options);
+        $('#form_modulo').trigger("reset");
+    }).catch(() => {
+        btn.prop('disabled', false)
+    });
+});
+
+$(document).on("click", ".editar_modulo", function () {
+    const btn = $(this);
+    btn.prop('disabled', true);
+    const id = $(this).data('id');
+    ajax(`${base_url}/modulo/${id}`, 'GET').then((response) => {
+        btn.prop('disabled', false);
+        $('#modal_modulo').modal('show');
+        BtnAddUpdate($('#btn_save'), 'store_modulo', 'update_modulo')
+        $('#modal_modulo .modal-title').text('Editar Modulo');
+        nombre_modulo
+        url
+        class_icon
+        super_modulo_id
+        $('#form_modulo nombre_modulo').va(response.data.super_modulo.);
+        const options = addOpcionSuperModulo(response.data.super_modulos)
         $('#modal_modulo #select_super_modulo').html('')
         $('#modal_modulo #select_super_modulo').append(options)
     }).catch(() => {
@@ -59,6 +83,7 @@ $(document).on("change keyup", "#class_icon, #nombre_modulo", function () {
 
 $(document).on("click", ".store_modulo", function () {
     const btn = $(this);
+    btn.prop('disabled', true);
     ajax(`${base_url}/modulo`, 'POST', $('#form_modulo').serialize()).then((response) => {
         btn.prop('disabled', false);
         $('#modal_modulo').modal('hide');
@@ -69,7 +94,7 @@ $(document).on("click", ".store_modulo", function () {
     });
 });
 
-function addOpcionModulo(options) {
+function addOpcionSuperModulo(options) {
     optionHTML = ``;
     options.map((o) => {
         optionHTML += `<option value="${o.super_modulo_id}">${o.nombre_super_modulo}</option>`;
