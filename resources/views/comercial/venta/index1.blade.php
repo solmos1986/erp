@@ -10,6 +10,8 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+        type="text/css" />
 @endpush
 
 @section('contenido')
@@ -35,8 +37,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto"
-                            required>
+                        <input type="text" class="form-control" id="totalVentas" placeholder="Buscar producto" required>
                     </div>
                 </div>
                 <div class="col-lg-5">
@@ -47,49 +48,109 @@
                         <a href="{{ url('comercial/venta/create') }}"><button type="button" id="serchbtn"
                                 class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
                                 Nueva Venta </button></a>
-                        {{-- <button type="button" class="btn btn-light waves-effect mb-2">Export</button> --}}
+
                     </div>
                 </div>
-                {{-- <div class="col-md-3 col-md-push mb-2">
-
-                    <div class="input-group">
-                        <a href="{{ url('comercial/compra/create') }}"><button type="button" id="serchbtn"
-                                class="btn rounded-pill btn-success">NUEVO</button></a>
-
-                    </div>
-                </div> --}}
             </div>
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <table id="dtIngresos" class="dtIngresos table dt-responsive nowrap w-100">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Fecha</th>
-                                        <th>Cliente</th>
-                                        <th>Comprobante</th>
-                                        <th>Impuestos</th>
-                                        <th>Metodo Pago</th>
-                                        <th>Total</th>
-                                        <th>Usuario</th>
-                                        <th>Estado</th>
-                                        <th>Accion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <label class="form-label">Desde</label>
+                                <input class="filtrar form-control" id="IngresoDesde" type="date" name="date"
+                                    value="<?php echo date('Y-m-d'); ?>">
+                            </div>
+                            <div class="col-2">
+                                <label class="form-label">Hasta</label>
+                                <input class="filtrar form-control" id="IngresoHasta" type="date" name="date"
+                                    value="<?php echo date('Y-m-d'); ?>">
+
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Cliente</label>
+                                <select class="filtrar form-select" id="idCliente">
+                                    <option value="">Filtrar cliente</option>
+                                    @foreach ($cliente as $cli)
+                                        <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Comprobante</label>
+                                <select class="filtrar form-select" id="idTipoComprobante">
+                                    <option value="">Filtrar comprobante</option>
+                                    @foreach ($tipo_comprobante as $tcp)
+                                        <option value="{{ $tcp->idTipoComprobante }}">{{ $tcp->nomTipoComprobante }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Forma de Pago</label>
+                                <select class="filtrar form-select" id="idTipoPago">
+                                    <option value="">Filtrar pago</option>
+                                    @foreach ($tipopago as $tp)
+                                        <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label for="example-select" class="form-label">Usuario</label>
+                                <select class="filtrar form-select" id="idUsuario">
+                                    <option value="">Filtrar cajero</option>
+                                    @foreach ($usuario as $user)
+                                        <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end card -->
+
+            </div>
+            <div class="row">
+
+                <div class="card">
+                    <div class="card-body">
+                        <table id="dtIngresos" class="dtIngresos table dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>Comprobante</th>
+                                    <th>Impuestos</th>
+                                    <th>Metodo Pago</th>
+                                    <th>Total</th>
+                                    <th>Usuario</th>
+                                    <th>Estado</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
 
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
 
-                        </div> <!-- end card body-->
-                        {{--  <div>
-                    {{ $categorias->render() }}
-                </div> --}}
-                    </div> <!-- end card -->
-                </div><!-- end col-->
+                    </div> <!-- end card body-->
+                    {{--  <div>
+                                {{ $categorias->render() }}
+                        </div> --}}
+                </div> <!-- end card -->
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-primary">
+                        Total: <span id="total" class="badge badge-light"></span>
+                    </button>
+                </div>
             </div>
 
             <!-- end row-->
@@ -115,6 +176,9 @@
 
     <!-- Quill js -->
     <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
+    <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('/js/pages/form-pickers.init.js') }}"></script>
+    <script src="{{ asset('/libs/datatables.net/plug-ins/1.10.20/api/sum().js') }}"></script>
 
     <!-- Init js-->
     {{--   <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
@@ -123,14 +187,32 @@
     <script src="{{ asset('/js/pages/add-product.init.js') }}"></script> --}}
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
-        $(function() {
+        var ventas = [];
 
-            var table = $('.dtIngresos').DataTable({
+        $(document).ready(function() {
+            console.log($('#IngresoHasta').val() + 'T23:59:59', "DATE INUT EDIT")
+            const table = $('.dtIngresos').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('index.venta') }}",
+                searchin: true,
+                ajax: {
+                    url: "{{ route('index.venta') }}",
+                    data: function(d) {
 
-                columns: [{
+                        d.startDate = $('#IngresoDesde').val() + 'T00:00:00',
+                            d.endDate = $('#IngresoHasta').val() + 'T23:59:59',
+                            d.idCliente = $('#idCliente').val(),
+                            d.idTipoPago = $('#idTipoPago').val(),
+                            d.idTipoComprobante = $('#idTipoComprobante').val(),
+                            d.idUsuario = $('#idUsuario').val()
+                    },
+                },
+                dataType: 'json',
+                type: "post",
+
+                columns: [
+
+                    {
                         data: 'idIngreso',
                         name: 'idIngreso'
                     },
@@ -172,11 +254,13 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, row, meta) {
-                            console.log("LLEGO FILA", row)
                             return `<a href="{{ url('almacen/producto/${row.idIngreso}') }}"  data-id="${row.idIngreso}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idIngreso}" class="delete fas fa-trash-alt text-danger"></a>`;
+
                         }
+
                     },
                 ],
+
                 language: {
                     paginate: {
                         previous: "<i class='mdi mdi-chevron-left'>",
@@ -185,8 +269,20 @@
                 },
                 drawCallback: function() {
                     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+                    var tot = table.columns(6).data().sum();
+                    console.log(tot, "SuMA TOTALES")
+                    $('#totalVentas').val(tot);
                 }
+
             });
+            var tot = table.columns(6).data().sum();
+            console.log(tot, "SuMA TOTALES")
+            $('#totalVentas').text(tot);
+
+            $(document).on('keyup change', '.filtrar', function() {
+                table.draw()
+            });
+
         });
     </script>
     <!-- Bootstrap Tables js -->

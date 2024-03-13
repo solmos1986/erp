@@ -565,11 +565,11 @@
         const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
 
         $(document).on("click", "#capturar", function() {
-            var base64Image = webcam.snap();
-            console.log(base64Image, "BASE &$");
-            $('#foto_tomada').prop('src', base64Image)
+            var base64Imagen = webcam.snap();
+            console.log(base64Imagen, "BASE &$");
+            $('#foto_tomada').prop('src', base64Imagen)
             $('#webcam').hide(),
-                resizeBase64Image(base64Image);
+                resizeBase64Image(base64Imagen);
             /* $.ajax({
                 type: "POST",
                 url: `${base_url}/comercial/clienteImagen`,
@@ -627,12 +627,12 @@
         })
 
 
-        function resizeBase64Image(base64Image) {
+        function resizeBase64Image(base64Imagen) {
             return new Promise((resolve, reject) => {
                 const maxSizeInMB = 1;
                 const maxSizeInBytes = maxSizeInMB * 350 * 350;
                 const img = new Image();
-                img.src = base64Image;
+                img.src = base64Imagen;
                 img.onload = function() {
                     const canvas = document.createElement("canvas");
                     const ctx = canvas.getContext('2d');
@@ -647,12 +647,25 @@
                     let quality = 0.8;
                     let dataURL = canvas.toDataURL('image/jpeg', quality);
                     var base64rz = dataURL;
-
+                    console.log(base64rz, "ES LO QUE NECESOTPP???")
                     $('#base64').val(base64rz),
                         resolve(dataURL);
                 }
             })
 
         }
+
+        /*  function fileJPEG(base64Imagen) {
+             let base64String = base64Imagen; // Not a real image
+             // Remove header
+             let base64Image = base64String.split(';base64,').pop();
+
+             import fs from 'fs';
+             fs.writeFile('image.png', base64Image, {
+                 encoding: 'base64'
+             }, function(err) {
+                 console.log('File created');
+             });
+         } */
     </script>
 @endpush

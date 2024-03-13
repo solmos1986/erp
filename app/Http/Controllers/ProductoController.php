@@ -16,6 +16,7 @@ class ProductoController extends Controller
     }
     public function obtener_producto()
     {
+
         $productos = DB::table('producto')->where('condicionProducto', '=', 1)->get();
         $clientes = DB::table('cliente')->where('condicionCliente', '=', 1)->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', 1)->get();
