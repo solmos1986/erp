@@ -188,9 +188,9 @@
                 <div class="card-body pb-2">
                     <div class="float-end d-none d-md-inline-block">
                         <div class="btn-group mb-2">
-                            <button type="button" class="btn btn-xs btn-light">Today</button>
-                            <button type="button" class="btn btn-xs btn-light">Weekly</button>
-                            <button type="button" class="btn btn-xs btn-secondary">Monthly</button>
+                            <button type="button" class="semana btn btn-xs btn-light">Semana</button>
+                            <button type="button" class="mes btn btn-xs btn-light">Mes</button>
+                            <button type="button" class="anio btn btn-xs btn-secondary">Año</button>
                         </div>
                     </div>
 
@@ -581,6 +581,7 @@
 
 @push('javascript')
     <script src="{{ asset('/js/pages/dashboard-1.init.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
     <script>
         var ventas = [];
         var compras = [];
@@ -612,8 +613,6 @@
                     idTipoPago: null,
                     idTipoComprobante: null,
                     idUsuario: $("#idUsuario").val(),
-
-
                 },
                 success: function(response) {
                     console.log(response, "VOLVIO DE OBTENER DASHBOARD")
@@ -627,8 +626,6 @@
                     SumCompras();
                     SumImpuestos();
                     SumInscripciones();
-                    rangeYear();
-
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log('error de programacion');
@@ -648,7 +645,6 @@
             const totalesV = ventas.map((itemV) => {
                 return itemV.total
             });
-            console.log(totalesV, "Object VENTASS")
             const initialValueV = 0;
             const sumTotalV = totalesV.reduce(
                 (accumulatorV, currentValueV) => accumulatorV + currentValueV,
@@ -663,7 +659,6 @@
                 return item.total
 
             });
-            console.log(totalesC, "object TotalesC");
             const initialValue = 0;
             const sumTotal = totalesC.reduce(
                 (accumulator, currentValue) => accumulator + currentValue,
@@ -678,7 +673,6 @@
                 return item.impuestoIngreso
 
             });
-            console.log(totalesImp, "object TotalesImp");
             const initialValue = 0;
             const sumTotal = totalesImp.reduce(
                 (accumulator, currentValue) => accumulator + currentValue,
@@ -693,7 +687,6 @@
                 return item.costoPaquete
 
             });
-            console.log(totalesIns, "object TotalesIns");
             const initialValue = 0;
             const sumTotal = totalesIns.reduce(
                 (accumulator, currentValue) => accumulator + currentValue,
@@ -711,24 +704,94 @@
         //Para Obtener rango de año para grafica = FechaActual - 1 año
 
         /// Adaptar para obtener un array 
-        function rangeYear() {
-            const max = new Date()
-            const min = new Date(max.setMonth(max.getMonth() - 1))
-            const ymin = new Date(max.setMonth(max.getMonth() - 12))
-            const max1 = new Date()
-            const years = []
-            console.log(max1, "Mes Actual");
-            console.log(min, "Mes inicial");
-            console.log(ymin, "Año inicial");
+        $(document).on('click', '.mes', function() {
+            /* function rangeMonth() { */
+            console.log("onclick MES");
+            var today = new Date();
+            var end = new Date();
+            var start = new Date(end.setMonth(end.getMonth() - 1));
+            console.log(start, "MOMENT MES");
+            var daysOfMonth = [];
+            for (var d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
 
-            for (let i = max; i >= min; i--) {
-                years.push(i)
-
+                daysOfMonth.push(moment(d).format("YYYY-MM-DD"));
             }
-            console.log(years, "Arreglo de años0");
-            return years
+            console.log(daysOfMonth, "daysOfMonth")
+            graficar(start, today, daysOfMonth);
+        })
 
-            console.log(years, "Arreglo de años")
+        function rangeWeek() {
+            var todayW = new Date();
+            var endW = new Date();
+            var startW = new Date(endW.setDate(endW.getDate() - 7));
+            var daysOfWeek = [];
+            for (var dW = new Date(startW); dW <= todayW; dW.setDate(dW.getDate() + 1)) {
+                daysOfWeek.push(moment(dW).format("YYYY-MM-DD"));
+            }
+            console.log(daysOfWeek, "daysOfWeek")
+            graficar(startW, todayW);
+        }
+
+        function rangeYear() {
+            var todayY = new Date();
+            var endY = new Date();
+            var startY = new Date(endY.setMonth(endY.getMonth() - 12));
+            var monthsOfYear = [];
+            for (var dY = new Date(startY); dY <= todayY; dY.setMonth(dY.getMonth() + 1)) {
+                monthsOfYear.push(dY.getFullYear() + "-" + (dY.getMonth() + 1));
+            }
+            console.log(monthsOfYear, "monthsOfYear")
+            graficar(startY, todayY);
+        }
+
+        function graficar(startDate, endDate, rango) {
+            $.ajax({
+                type: "post",
+                url: `${base_url}/dashboard/totales`,
+                dataType: 'json',
+                data: {
+                    startDate: moment(startDate).format("YYYY-MM-DD") + 'T00:00:00',
+                    endDate: moment(endDate).format("YYYY-MM-DD") + 'T23:59:59',
+                },
+                success: function(response) {
+
+                    ventas = response.data;
+                    compras = response.data2;
+                    /*   inscripciones = response.data3; */
+                    console.log(ventas, "nuevo valor VENTAS");
+                    console.log(compras, "nuevo valor COMPRAS");
+                    mapeando(ventas, rango);
+                    /*    console.log(inscripciones, "nuevo valor INSCRIPCIONES") */
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplosdsfs!',
+                    });
+                },
+                fail: function() {
+                    console.log('error servidor')
+                }
+            })
+
+        }
+
+        function mapeando(ventas, rango) {
+            var range = rango
+            var Data1 = [];
+
+            range.forEach(element => {
+                const validar = ventas.find((venta) => venta.fechaIngreso == element)
+                if (validar != undefined) {
+                    Data1.push(validar.total)
+
+                } else {
+                    Data1.push(0)
+                }
+            })
+            console.log(Data1, 'resultado')
         }
     </script>
 @endpush

@@ -136,4 +136,32 @@ class DashboardController extends Controller
         /*  return view('comercial/venta/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
      */
     }
+    public function obtener_totales(Request $request)
+    {
+        //dd($request, "LLEGUE OBTENER TOTALES");
+        $data = DB::table('ingresos as i')
+            ->select(DB::raw('sum(di.cantidadVenta*precioVenta) as total'), 'i.fechaIngreso')
+            ->join('detalle_ingreso as di', 'i.idIngreso', '=', 'di.idIngreso')
+            ->whereBetween('i.fechaIngreso', [$request->get('startDate'), $request->get('endDate')])
+
+            ->groupBy('i.fechaIngreso')
+            ->get()->toArray();
+
+        $data2 = DB::table('egresos as e')
+            ->select(DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'), 'e.fechaEgreso')
+            ->join('detalle_egreso as de', 'e.idEgreso', '=', 'de.idEgreso')
+            ->whereBetween('e.fechaEgreso', [$request->get('startDate'), $request->get('endDate')])
+            ->groupBy('e.fechaEgreso')
+            ->get()->toArray();
+
+        //dd($data, "Resultado Totales");
+        return response()->json([
+            "status" => 1,
+            "message" => "GuarDado correctamnte",
+            "data" => $data,
+            "data2" => $data2,
+            /* "data3" => $data3, */
+        ]);
+
+    }
 }

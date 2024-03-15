@@ -189,5 +189,7 @@ Route::prefix('paquetes')->group(function () {
 });
 Route::prefix('dashboard')->group(function () {
     Route::post('/', [DashboardController::class, 'obtener_ventas']);
+    Route::post('/totales', [DashboardController::class, 'obtener_totales']);
+
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
