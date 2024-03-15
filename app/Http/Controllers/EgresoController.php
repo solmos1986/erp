@@ -19,16 +19,45 @@ class EgresoController extends Controller
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
     {
+        //dd($request, "ESTO ESTA LLEGANDO");
+        $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
+        $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
+        $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
+        $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+
         if ($request->ajax()) {
             $query = trim($request->get('searchText'));
-            $data = DB::table('egresos as e') /* ->get() */
+            $data = DB::table('egresos as e')
+                ->select('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'), 'u.nomUsuario', 'e.estadoEgreso')
                 ->join('proveedor as p', 'e.idProveedor', '=', 'p.idProveedor')
                 ->join('detalle_egreso as de', 'e.idEgreso', '=', 'de.idEgreso')
                 ->join('tipo_comprobante as tc', 'e.idTipoComprobante', '=', 'tc.idTipoComprobante')
                 ->join('tipopago as tp', 'e.idTipoPago', '=', 'tp.idTipoPago')
-                ->select('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'), 'e.estadoEgreso')
+                ->join('usuario as u', 'e.idUsuario', '=', 'u.idUsuario')
+                ->when(($request->get('startDate') != '' && $request->get('endDate') != ''), function ($query) use ($request) {
+                    $query->where('e.fechaEgreso', '>=', $request->get('startDate'))
+                        ->where('e.fechaEgreso', '<=', $request->get('endDate'));
+                })
+                ->when(($request->get('idCliente') != ''), function ($query) use ($request) {
+                    $query->where('e.idCliente', '=', $request->get('idCliente'));
+
+                })
+                ->when(($request->get('idTipoComprobante') != ''), function ($query) use ($request) {
+                    $query->where('e.idTipoComprobante', '=', $request->get('idTipoComprobante'));
+
+                })
+                ->when(($request->get('idTipoPago') != ''), function ($query) use ($request) {
+                    $query->where('e.idTipoPago', '=', $request->get('idTipoPago'));
+
+                })
+                ->when(($request->get('idUsuario') != ''), function ($query) use ($request) {
+                    $query->where('e.idUsuario', '=', $request->get('idUsuario'));
+
+                })
+                ->where('e.fechaEgreso', '>=', $request->get('startDate'))
+                ->where('e.fechaEgreso', '<=', $request->get('endDate'))
                 ->where('e.numeroComprobante', 'LIKE', '%' . $query . '%')
-                ->groupBy('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', 'e.estadoEgreso')
+                ->groupBy('e.idEgreso', 'e.fechaEgreso', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', 'u.nomUsuario', 'e.estadoEgreso')
                 ->get();
             /*   dd($data,"HOLAAA"); */
             /* return view('comercial.compra.index',compact('data')); */
@@ -37,7 +66,7 @@ class EgresoController extends Controller
                 ->rawColumns([])
                 ->make(true);
         }
-        return view('comercial/compra/index');
+        return view('comercial/compra/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
     }
     public function create(Request $request)
     {

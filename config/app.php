@@ -214,11 +214,12 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-        //'Image' => Intervention\Image\ImageManagerStatic::class,
+
+        // 'Image' => Intervention\Image\Facades\Image::class,
+
     ])->toArray(),
     'Form' => Collective\Html\FormFacade::class,
     'Html' => Collective\Html\HtmlFacade::class,
     'DataTables' => \Yajra\DataTables\Facades\DataTables::class,
-    
 
 ];
