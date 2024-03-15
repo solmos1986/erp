@@ -20,6 +20,7 @@ class ClienteController extends Controller
         $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
+
     {
 
         if ($request->ajax()) {
@@ -64,7 +65,7 @@ class ClienteController extends Controller
 
         return response()->json([
             "data" => $clientes,
-            "img" => $imageName,
+            "img" => $clientes->fotoCliente,
         ]);
 
     }

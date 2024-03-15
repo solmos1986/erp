@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\InscripcionController;
 
 //hace referencia a nuestro request
-use App\SocketIo\SocketDispositivo;
+use App\SocketIo\SocketCliente;
 use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -112,8 +112,8 @@ class InscripcionController extends Controller
             'fechaFin' => $request->fechaFin,
             'costoPaquete' => $request->costoPaquete,
         ]);
-        $socket = new SocketDispositivo();
-        $socket->emit_data();
+        $socket = new SocketCliente();
+        $socket->store_cliente(['idInscripcion' => "60"]);
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",
