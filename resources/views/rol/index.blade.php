@@ -102,5 +102,4 @@
     <script src="{{ asset('/js/roles/checkList.js') }}"></script>
     <!-- Sockets-->
     <script src="{{ asset('/js/socket/dispositivo-socket.js') }}"></script>
-
 @endpush

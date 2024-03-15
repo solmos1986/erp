@@ -90,7 +90,6 @@
     <script src="{{ asset('/js/components/ajax.js') }}"></script>
     <script src="{{ asset('/js/components/swall-alerts.js') }}"></script>
     <script src="{{ asset('/js/components/buttons.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
     <script>

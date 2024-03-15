@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorizacionController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\EstadoPedidosController;
 use App\Http\Controllers\IngresoController;
@@ -215,5 +216,11 @@ Route::prefix('producto')->group(function () {
 
 Route::prefix('paquetes')->group(function () {
     Route::get('/', [PaquetesGymController::class, 'obtener_paquetes']);
+    //Route::get('store', [ProductoController::class, 'obtener_producto']);
+});
+Route::prefix('dashboard')->group(function () {
+    Route::post('/', [DashboardController::class, 'obtener_ventas']);
+    Route::post('/totales', [DashboardController::class, 'obtener_totales']);
+
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
