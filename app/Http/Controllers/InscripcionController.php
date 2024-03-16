@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\InscripcionController;
 
 //hace referencia a nuestro request
-use App\SocketIo\SocketCliente;
+
+use App\SocketCliente\Usuario;
 use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -14,7 +15,7 @@ class InscripcionController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
 
@@ -112,7 +113,7 @@ class InscripcionController extends Controller
             'fechaFin' => $request->fechaFin,
             'costoPaquete' => $request->costoPaquete,
         ]);
-        $socket = new SocketCliente();
+        $socket = new Usuario();
         $socket->store_cliente(['idInscripcion' => "60"]);
         return response()->json([
             "status" => 1,
