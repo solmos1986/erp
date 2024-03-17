@@ -9,6 +9,7 @@ use App\Http\Controllers\InscripcionController;
 use App\SocketCliente\Usuario;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class InscripcionController extends Controller
@@ -18,8 +19,8 @@ class InscripcionController extends Controller
         $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
-
     {
+        Log::info("inciando inscripcion");
 //dd($request, "ESTO ESTA LLEGANDO");
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
