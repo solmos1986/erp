@@ -7,8 +7,9 @@ use App\Models\Cliente; //agrega la ruta del modelo
 use App\Models\DetalleIngreso; //agrega la ruta del modelo
 use App\Models\Ingreso; //para hacer algunas redirecciones
 use App\Models\salida_producto_almacen;
-use DB; //hace referencia a nuestro request
-use Illuminate\Http\Request; // sar la base de datos
+use Barryvdh\DomPDF\Facade\Pdf; //hace referencia a nuestro request
+use DB; // sar la base de datos
+use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class IngresoController extends Controller
@@ -66,6 +67,13 @@ class IngresoController extends Controller
         };
 
         return view('comercial/venta/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
+
+    }
+    public function pdf()
+    {
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML('<h1>Test</h1>');
+        return $pdf->stream();
 
     }
     public function create(Request $request)

@@ -109,6 +109,7 @@ Route::delete('rrhh/usuario/{id}', [UsuarioController::class, 'destroy']);
 //
 //
 Route::get('comercial/compra', [EgresoController::class, 'index'])->name('index.compra');
+Route::get('comercial/compra-pdf/{id}', [EgresoController::class, 'pdf'])->name('pdf.compra');
 Route::post('comercial/compra', [EgresoController::class, 'store']);
 Route::get('comercial/compra/index', [EgresoController::class, 'index']);
 Route::get('comercial/compra/create', [EgresoController::class, 'create'])->name('create.compra');

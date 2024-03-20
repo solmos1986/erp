@@ -154,13 +154,21 @@ class DashboardController extends Controller
             ->groupBy('e.fechaEgreso')
             ->get()->toArray();
 
-        //dd($data, "Resultado Totales");
+        $data3 = DB::table('inscripcion as in')
+            ->select('in.fechaInscripcion', 'di.costoPaquete')
+            ->join('detalle_inscripcion as di', 'in.idInscripcion', '=', 'di.idInscripcion')
+            ->whereBetween('in.fechaInscripcion', [$request->get('startDate'), $request->get('endDate')])
+
+            ->groupBy('in.fechaInscripcion')
+            ->get()->toArray();
+
+        //dd($data3, "Resultado Totales");
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",
             "data" => $data,
             "data2" => $data2,
-            /* "data3" => $data3, */
+            "data3" => $data3,
         ]);
 
     }

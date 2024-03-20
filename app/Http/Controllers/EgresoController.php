@@ -7,8 +7,10 @@ use App\Models\DetalleEgreso; //agrega la ruta del modelo
 use App\Models\Egreso; //agrega la ruta del modelo
 use App\Models\entrada_producto_almacen; //para hacer algunas redirecciones
 use App\Models\Proveedor; //hace referencia a nuestro request
-use DB; // sar la base de datos
+use Barryvdh\DomPDF\Facade\Pdf; // sar la base de datos
+use DB;
 use Illuminate\Http\Request;
+use Luecano\NumeroALetras\NumeroALetras;
 use Yajra\DataTables\DataTables;
 
 class EgresoController extends Controller
@@ -68,11 +70,41 @@ class EgresoController extends Controller
         }
         return view('comercial/compra/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
     }
+    public function pdf(Request $request, $id)
+    {
+        $egreso = DB::table('egresos as e')
+            ->select('e.idEgreso', 'e.fechaEgreso', 'e.idProveedor', 'p.nomProveedor', 'tc.nomTipoComprobante', 'e.numeroComprobante', 'e.impuestoEgreso', 'tp.nomTipoPago', DB::raw('sum(de.cantidadCompra*precioCompraEgreso) as total'), 'u.nomUsuario', 'e.estadoEgreso')
+            ->join('proveedor as p', 'e.idProveedor', '=', 'p.idProveedor')
+            ->join('detalle_egreso as de', 'e.idEgreso', '=', 'de.idEgreso')
+            ->join('tipo_comprobante as tc', 'e.idTipoComprobante', '=', 'tc.idTipoComprobante')
+            ->join('tipopago as tp', 'e.idTipoPago', '=', 'tp.idTipoPago')
+            ->join('usuario as u', 'e.idUsuario', '=', 'u.idUsuario')
+            ->where('e.idEgreso', '=', $id)
+            ->first();
+        $detalle = DB::table('detalle_egreso as de')
+            ->select('de.idProducto', 'pro.nomProducto', 'de.cantidadCompra', 'de.precioCompraEgreso', DB::raw('de.cantidadCompra*precioCompraEgreso as subtotal'))
+            ->join('producto as pro', 'de.idProducto', '=', 'pro.idProducto')
+            ->join('egresos as e', 'e.idEgreso', '=', 'de.idEgreso')
+            ->where('de.idEgreso', '=', $id)
+            ->groupBy('de.idProducto')
+            ->get();
+        $infoNego = DB::table('info_negocio')->first();
+        $formatter = new NumeroALetras();
+        $literal = $formatter->toInvoice($egreso->total, 2, 'BOLIVIANOS');
+        //dd($literal);
+
+        $pdf = Pdf::setPaper([0, 0, 226.77, 2267.72])->loadView('comercial.compra.reporte.compra-pdf', ['egreso' => $egreso, 'detalle' => $detalle, 'infoNego' => $infoNego, 'literal' => $literal]);
+
+        return $pdf->stream();
+
+    }
     public function create(Request $request)
     {
         $proveedor = DB::table('proveedor')->where('condicionProveedor', '=', '1')->get();
         $tipopago = DB::table('tipopago')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->get();
+        $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+
         if ($request->ajax()) {
             $data = DB::table('producto')
                 ->where('condicionProducto', '=', '1')
@@ -84,7 +116,7 @@ class EgresoController extends Controller
 
         }
 
-        return view('comercial/compra/create', ['proveedor' => $proveedor, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante]);
+        return view('comercial/compra/create', ['proveedor' => $proveedor, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
 
     }
 
@@ -153,7 +185,7 @@ class EgresoController extends Controller
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",
-            "data" => null,
+            "data" => $insertCompra,
         ]);
     }
 }

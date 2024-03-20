@@ -71,8 +71,11 @@
                     </div>
                     <div class="col-lg-3">
                         <label for="nomUsuario" class="form-label">Usuario <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="nomUsuario" placeholder="# Usuario" value="8888"
-                            readonly>
+                        <select class="form-control select2" id="nomUsuario">
+                            @foreach ($usuario as $user)
+                                <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
+                            @endforeach
+                        </select>
 
                     </div>
                 </div>
@@ -439,11 +442,6 @@
     <script src="{{ asset('/js/pages/form-advanced.init.js') }}"></script> --}}
     <style>
         .texto {
-            /* display: -webkit-box;
-                                                                                                                                                        -webkit-line-clamp: 1;
-                                                                                                                                                        -webkit-box-orient: vertical;
-                                                                                                                                                        overflow: hidden; */
-            /* margin: 1rem; */
             min-width: 80px;
             max-width: 180px;
             overflow: hidden;
@@ -623,8 +621,25 @@
                 dataType: 'json',
                 data: dato,
                 success: function(response) {
-                    console.log(response, "ACTUALIZO")
-                    window.location = "index";
+                    console.log(response.data, "ACTUALIZO")
+                    // window.location = "index";
+                    Swal.fire({
+                        title: 'Desea imprimir?',
+                        text: "Esta proceso es irreversible",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si, imprimir!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            verPDF(response.data)
+
+                        } else {
+                            window.location = "index";
+                        }
+                    })
+
 
 
 
@@ -642,6 +657,12 @@
                 }
             });
         });
+
+        function verPDF(id) {
+            window.open(`${base_url}/comercial/compra-pdf/${id}`, '_blank');
+            window.location = "index";
+        }
+
         $(document).on('keyup change', '.precio', function() {
 
             let precio = $(this).val();

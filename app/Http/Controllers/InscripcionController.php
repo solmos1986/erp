@@ -6,6 +6,7 @@ use App\Http\Controllers\InscripcionController;
 
 //hace referencia a nuestro request
 use App\SocketIo\SocketCliente;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -70,6 +71,13 @@ class InscripcionController extends Controller
         }
 
         return view('comercial/inscripcion/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
+
+    }
+    public function pdf()
+    {
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML('<h1>Test</h1>');
+        return $pdf->stream();
 
     }
     public function create(Request $request)
