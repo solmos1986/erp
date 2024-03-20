@@ -82,9 +82,14 @@ class AuthorizacionController extends Controller
             ->where('usuario.condicionUsuario', 1)
             ->where('authenticacion.authenticacion_id', $id)
             ->first();
+        $roles = DB::table('rol_authenticacion')
+            ->join('rol', 'rol.rol_id', 'rol_authenticacion.rol_id')
+            ->where('rol_authenticacion.authenticacion_id', $id)
+            ->get();
+        $usuario->roles = $roles;
         return response()->json([
             'status' => 1,
-            'message' => 'Todos los modulos',
+            'message' => 'mostrar un usuario',
             'data' => $usuario,
         ]);
     }

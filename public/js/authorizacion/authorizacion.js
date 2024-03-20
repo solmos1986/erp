@@ -36,7 +36,6 @@ const columns = [{
     render: function (data, type, row, meta) {
         return `
             <i data-id="${row.authenticacion_id}" class="editar fas fa-pencil-alt text-info m-1 cursor-pointer" title="Editar"></i>
-            <i data-id="${row.authenticacion_id}" class="delete far fa-trash-alt text-danger m-1 cursor-pointer" title="Eliminar"></i>
         `;
     }
 }];
@@ -54,11 +53,24 @@ $(document).on("click", ".editar", function () {
         data = response.data;
         BtnAddUpdate($('#btn_save'), 'store', 'update')
         $('#modal_authorizacion').modal('show');
+        form(response.data);
     }).catch(() => {
         btn.prop('disabled', false)
     });
 });
 
+function form(data) {
+    $('#form_autorizacion #nomUsuario').text(data.nomUsuario);
+    $('#form_autorizacion #mailUsuario').text(data.mailUsuario);
+    $('#form_autorizacion #dirUsuario').text(data.dirUsuario);
+    $('#form_autorizacion #docUsuario').text(data.docUsuario);
+    $('#form_autorizacion #telUsuario').text(data.telUsuario);
+    $("#roles").val()
+}
+$(document).ready(function() {
+    console.log('inizializando select 2')
+    $('#roles').select2();
+});
 /* 
 const initial = {
     rol_id: 0,
