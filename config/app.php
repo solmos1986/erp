@@ -185,7 +185,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         \Yajra\DataTables\HtmlServiceProvider::class,
         \Yajra\DataTables\DataTablesServiceProvider::Class,
-
+        \Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
