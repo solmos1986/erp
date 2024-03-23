@@ -13,7 +13,7 @@ class Config
 
     public function __construct($message)
     {
-        $this->client = new \WebSocket\Client("ws://localhost:8000",[ 'headers' => [
+        $this->client = new \WebSocket\Client("ws://localhost:3000/devices",[ 'headers' => [
             'origin' => 'localhost',
             'token' => 'web'
         ]]);

@@ -21,19 +21,22 @@ class Usuario
     public function store_cliente($data)
     {
         $this->config->data = $data;
-        $this->config->channel = "store";
+        $this->config->type = "store:init";
+        $this->config->channel = "web";
         $this->socket->set_message($this->config);
     }
     public function update_cliente($inscripcion)
     {
         $this->config->data = $data;
-        $this->config->channel = "update";
+        $this->config->type = "edit:init";
+        $this->config->channel = "web";
         $this->socket->set_message($this->config);
     }
     public function delete_cliente($inscripcion)
     {
         $this->config->data = $data;
-        $this->config->channel = "delete";
+        $this->config->type = "destroy:init";
+        $this->config->channel = "web";
         $this->socket->set_message($this->config);
     }
 }
