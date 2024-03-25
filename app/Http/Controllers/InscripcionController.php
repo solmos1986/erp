@@ -19,6 +19,7 @@ class InscripcionController extends Controller
         $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
+
     {
         Log::info("inciando inscripcion");
 //dd($request, "ESTO ESTA LLEGANDO");
@@ -76,10 +77,12 @@ class InscripcionController extends Controller
     }
     public function create(Request $request)
     {
+        Log::info("InscripcionController/create()");
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $paquetes = DB::table('paquetesgym')->where('condicionPaquete', '=', '1')->get();
+        Log::info("InscripcionController/create inciando");
         if ($request->ajax()) {
             $data = DB::table('paquetes')
                 ->where('condicionPaquete', '=', '1')
