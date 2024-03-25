@@ -11,7 +11,7 @@ class Config
 
     public function __construct($message)
     {
-        $this->client = new \WebSocket\Client("ws://localhost:3000/devices", ['headers' => [
+        $this->client = new \WebSocket\Client("wss://gym-socket.todo-soft.net/devices", ['headers' => [
             'origin' => 'localhost',
             'token' => 'web',
         ]]);
