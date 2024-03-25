@@ -60,7 +60,7 @@ class ClienteController extends Controller
         $image = str_replace(' ', '+', $image);
         $imageName = "image" . uniqid() . time() . ".jpg";
         $IMAGENES = base64_decode($image);
-        dd("COMO ESL LA IMAGEN .JPG", $IMAGENES);
+        //dd("COMO ESL LA IMAGEN .JPG", $IMAGENES);
         \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
         //dd($clientes, "VER fotoCliente");
         $clientes->fotoCliente = $imageName;

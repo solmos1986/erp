@@ -14,7 +14,7 @@ class Usuario
     public function __construct()
     {
         $this->config = new stdClass();
-        $this->config->emit = "usuario";
+        $this->config->event = "usuario";
         $this->config->data = null;
         $this->socket = new Config($this->config);
     }
