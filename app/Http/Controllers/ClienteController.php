@@ -8,6 +8,7 @@ use App\Models\Cliente; //para hacer algunas redirecciones
 use DataTables; //hace referencia a nuestro request
 use DB;
 use Illuminate\Http\Request;
+use Validator;
 
 // sar la base de datos
 /* use Intervention\Image\Facades\Image; */
@@ -45,7 +46,25 @@ class ClienteController extends Controller
     }
     public function store(ClienteRequest $request)
     {
-        //dd("LLEGUE CONTROL BASE64 STORE");
+        $rules = array(
+            'nomCliente' => 'required',
+            'docCliente' => 'required',
+            'tel1Cliente' => 'required',
+            'dirCliente' => 'required',
+        );
+        $messages = [
+            'nomCliente.required' => "Url es requerido",
+            'docCliente.required' => "Icon es requerido",
+            'tel1Cliente.required' => "Nombre es requerido",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+
         $clientes = new Cliente;
         $clientes->nomCliente = $request->get('nomCliente');
         $clientes->docCliente = $request->get('docCliente');
