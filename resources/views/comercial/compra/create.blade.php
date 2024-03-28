@@ -23,7 +23,7 @@
         type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
-    {{-- <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> --}}
+    <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
 @section('contenido')
@@ -84,13 +84,28 @@
                         <div class="mb-3" id="12">
                             <label for="nomProveedor" class="form-label">Proveedor <span
                                     class="text-danger">*</span></label>
-                            <select class="form-control select2" id="nomProveedor">
-                                @foreach ($proveedor as $pro)
-                                    <option value="{{ $pro->idProveedor }}">{{ $pro->nomProveedor }}</option>
-                                @endforeach
-                            </select>
+                            <div class="row">
+                                <div class="col-10 col-lg-10 col-md-9">
+                                    <select class="form-control select2" id="nomProveedor">
+                                        <option value="">Seleccione...</option>
+                                        @foreach ($proveedor as $pro)
+                                            <option value="{{ $pro->idProveedor }}">{{ $pro->nomProveedor }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-2 col-lg-2 col-xg-2 col-md-2 text-lg-start">
+                                    <a style="padding-right: 7.2px"><button type="button" id="serchbtn"
+                                            class="nuevop btn btn-success waves-effect waves-light mb-0 me-0 form-control"
+                                            style="padding-right: 7.2px"><i class="mdi mdi-plus me-1"
+                                                style="padding: 0px 7px 0px 0px; margin: 0px 7px 0px 0px"></i>
+                                        </button></a>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
+
                     <div class="col-lg-3">
                         <div class="mb-3" id="12">
                             <label for="MetodoPago" class="form-label">Metodo de Pago <span
@@ -232,154 +247,6 @@
             </div>
         </div>
     </div>
-    {{-- <div class="card shadow-0 border rounded-3">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12 col-xl-12">
-                                    <h5>DETALLE</h5>
-                                    <div class="table-responsive">
-                                        <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
-                                            style="min-block-size: ;">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th style="max-width: 35%; overflow: hidden; word-break: break-all;">
-                                                        Producto</th>
-
-                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
-                                                        Cant.</th>
-                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
-                                                        Precio</th>
-                                                    <th style="max-width: 20%; overflow: hidden; word-break: break-all;">
-                                                        Total</th>
-                                                    <th style="max-width: 5%; overflow: hidden; word-break: break-all;">
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="dtOC">
-
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th><b>Total.</b>
-                                                    </th>
-                                                    <th id="TotalCart"></th>
-                                                    <th></th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
-
-    {{-- <div class="col-md-6">
-
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="text-uppercase mt-0 mb-3  p-2"><B>DETALLE DE COMPRA</B></h5>
-                            <div class="table-responsive">
-                                <table class=" table  table-nowrap table-centered mb-0" id="dtCart">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th width="45%">Producto</th>
-                                            <th width="15%">Cantidad</th>
-                                            <th width="15%">Precio</th>
-                                            <th width="15%">Total</th>
-                                            <th width="10%" style="width: 50px;"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="dtOC">
-
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;<b>Total Bs.</b></th>
-                                            <th id="TotalCart"></th>
-                                            <th></th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-
-                                <div class="border p-3 mt-4 mt-lg-0 rounded">
-                                    <h4 class="header-title mb-3">Order Summary</h4>
-
-                                    <div class="table-responsive">
-                                        <table class="table mb-0">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Grand Total :</td>
-                                                    <td>$1571.19</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Discount : </td>
-                                                    <td>-$157.11</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Shipping Charge :</td>
-                                                    <td>$25</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Estimated Tax : </td>
-                                                    <td>$19.22</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Total :</th>
-                                                    <th>$1458.3</th>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div> <!-- end table-responsive-->
-
-                                <!-- Add note input-->
-
-                                <div class="mt-3">
-                                    <label for="example-textarea" class="form-label">Add a Note:</label>
-                                    <textarea class="form-control" id="example-textarea" rows="3" placeholder="Write some note.."></textarea>
-                                </div>
-
-                                <!-- action buttons-->
-                                <div class="row mt-4">
-                                    <div class="col-sm-6">
-                                        <a href="ecommerce-products.html"
-                                        class="btn text-muted d-none d-sm-inline-block btn-link fw-semibold">
-                                        <i class="mdi mdi-arrow-left"></i> Continue Shopping </a>
-                                    </div> <!-- end col -->
-                                    <div class="col-sm-6">
-                                        <div class="text-sm-end">
-                                            <i class="procesar mdi mdi-cart-plus btn btn-danger">Procesar</i>
-                                        </div>
-                                    </div> <!-- end col -->
-                                </div> <!-- end row-->
-                            </div>
-                            <!-- end col -->
-
-                            <div class="col-lg-4">
-
-
-                                <!-- Preview -->
-                                <div class="dropzone-previews mt-3" id="file-previews"></div>
-                            </div>
-                        </div> <!-- end col-->
-
-
-
-                    </div> <!-- end col-->
-                    <!-- end card -->
-                </div>
-                <!-- end row --> --}}
 
     <div class="row">
         <div class="col-12">
@@ -393,6 +260,9 @@
         </div> <!-- end col -->
     </div>
     <!-- end row -->
+    @include('commom.ModalCrear_Proveedor')
+    @include('commom.ModalCrear_Producto')
+    @include('commom.ModalImprimir_VentaCompra')
 @endsection
 
 @push('javascript')
@@ -431,15 +301,7 @@
     <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('/libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
-    {{-- <script src="{{ asset('/js/pages/form-pickers.init.js') }}"></script> --}}
-
-    {{-- <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
-    <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
-    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script>
-    <!-- Init js -->
-    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script>
-    <!-- Select2 js-->
-    <script src="{{ asset('/js/pages/form-advanced.init.js') }}"></script> --}}
+    <script src="{{ asset('/libs/printjs/print.min.js') }}"></script>
     <style>
         .texto {
             min-width: 80px;
@@ -450,46 +312,17 @@
     </style>
     <script>
         var detallecompra = []
-        console.log('detallecompra inicial', detallecompra)
-        /*    $(document).ready(function() {
-               $.ajax({
-                   type: "get",
-                   url: `${base_url}/comercial/detalle-compra`,
-                   dataType: 'json',
-                   success: function callbackFuntion(response) {
-                       console.log(response, "ACTUALIZO")
-                       detallecompra =
 
-                   },
-                   error: function(jqXHR, textStatus, errorThrown) {
-                       console.log('error de programacion');
-                       Swal.fire({
-                           type: 'error',
-                           title: 'Oops...',
-                           text: 'ejemplosdsfs!',
-                       });
-                   },
-                   fail: function() {
-                       console.log('error servidor')
-                   }
-
-               });
-           }); */
-        /* $(document).ready(function() {
-            var dttable = $('#dtProducto').DataTable({
-                columnDefs: [{
-                    targets: 1,
-                    className: "text-truncate"
-                }],
-                createdRow: function(row) {
-                    var td = $(row).find(".text-truncate");
-                    var td = $(row).find(".");
-                    td.attr("title", td.html());
-                }
-            });
-        }); */
         $(document).ready(function() {
+            var message = "Custom message here";
+            var title = "Hello World!";
 
+            // alert dialog
+            eModal
+                .alert(message, title)
+                .then(function() {
+                    console.log("Emodal")
+                });
             let table = $('.dtProducto').DataTable({
                 columnDefs: [{
                     targets: 1,
@@ -537,10 +370,7 @@
 
 
             function agregarOpciones(domElement, proveedor) {
-                // Cargar todos los selects
-                console.log(proveedor, "add options");
                 let selects = document.getElementsByName(domElement);
-                // Seleccionar el último
                 let select = selects[selects.length - 1];
 
                 for (value in proveedor) {
@@ -555,7 +385,6 @@
                 //push
                 const validador = detallecompra.find(((item) => item.idProducto == data
                     .idProducto));
-                console.log('detallecompra1', detallecompra, validador)
                 if (validador == undefined) {
                     detallecompra.push({
                         ...data,
@@ -573,7 +402,6 @@
                         }
                     });
                 }
-                console.log('detallecompraAddCard', detallecompra)
                 SumaTotales();
                 renderDetalleVenta()
             });
@@ -614,14 +442,13 @@
 
 
             };
-            console.log(dato, "ENVIADO A STORE");
             $.ajax({
                 type: "post",
                 url: `${base_url}/comercial/compra`,
                 dataType: 'json',
                 data: dato,
                 success: function(response) {
-                    console.log(response.data, "ACTUALIZO")
+
                     // window.location = "index";
                     Swal.fire({
                         title: 'Desea imprimir?',
@@ -649,27 +476,45 @@
                     Swal.fire({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'ejemplosdsfs!',
+                        text: 'ejemplos!',
                     });
                 },
-                fail: function() {
-                    console.log('error servidor')
-                }
+                fail: function() {}
             });
         });
 
         function verPDF(id) {
-            window.open(`${base_url}/comercial/compra-pdf/${id}`, '_blank');
-            window.location = "index";
-        }
+            var frame = $('#iframePDF');
+            var ahref = $('#cancelPDF');
+            //LOADER
+            $.ajax({
+                type: "GET",
+                url: `${base_url}/comercial/compra-pdf/${id}`,
+                dataType: 'json',
+                success: function(response) {
+                    var src = `data:application/pdf;base64,${response.data}`;
+                    $('#modalImprimir .modal-title').text('ORDEN DE COMPRA');
+                    ahref.attr('href', "{{ url('comercial/compra/index') }}");
+                    frame.attr('src', `data:application/pdf;base64,${response.data}`);
+                    $('#modalImprimir').modal('show');
+                    $('#iframePDF').data('url', response.data)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplo!',
+                    });
+                },
+                fail: function() {}
+            });
 
+        }
         $(document).on('keyup change', '.precio', function() {
 
             let precio = $(this).val();
             let posicion = $(this).data('id');
-            /* let td = '#pro' + posicion
-            let colum = $(this).data('td');
-            console.log(precio, posicion, colum, "PROBANDO") */
             let total = 0;
             detallecompra.map((item, i) => {
                 if (i == posicion) {
@@ -680,14 +525,12 @@
                 }
                 total += item.precioTotal
             })
-
-            console.log(detallecompra, "Mapeando Precio")
             SumaTotales();
         });
+
         $(document).on('keyup change', '.cantidad', function() {
             let cantidad = $(this).val();
             let posicion = $(this).data('id');
-            console.log(cantidad, posicion)
             detallecompra.map((item, i) => {
                 if (i == posicion) {
                     item.precioTotal = parseFloat(item.precio * cantidad);
@@ -695,23 +538,19 @@
                     $(`.total${posicion}`).text(item.precioTotal);
                 }
             })
-            console.log(detallecompra, "Mapeando cantidad")
             SumaTotales();
         });
+
         var comprobante = document.getElementById("TipoComprobante");
         comprobante.addEventListener("change", function() {
-            console.log("Comprobante cambio", comprobante.value)
             calcularImpuesto();
         });
 
         function calcularImpuesto() {
             var impuesto = comprobante.value;
-            var costoIns = $("#TotalCart").val();;
-            console.log("Valor Total CArt", costoIns)
+            var costoIns = $("#TotalCart").val();
             var tImpuesto = impuesto * costoIns;
             $('#impuestoCompra').val(tImpuesto);
-            console.log(tImpuesto, "Valor Comprobante");
-
         }
 
         function SumaTotales() {
@@ -722,15 +561,6 @@
                 $("#TotalCart").val(total);
             });
             $("#TotalCart").html(total);
-            /* console.log(longitud, "numero de filas") */
-            /* for (let i = 0, celda; i < tabla.rows.length; i++) {
-                let celda = tabla.rows[i].cells[3].firstChild.data;
-                console.log(celda, "CELDAAAA")
-                total += parseFloat(celda);
-                console.log(total, "cTotal");
-                $("#TotalCart").html(total);
-                //renderDetalleVenta();
-            } */
             calcularImpuesto();
         }
 
@@ -738,17 +568,52 @@
             let posicion = $(this).data('id');
             let tr = document.querySelector('#fila' + posicion)
             tr.remove();
-            console.log('eliminando elemento', posicion)
             detallecompra.splice(posicion, 1);
-            console.log('resultado', detallecompra)
             SumaTotales();
             //renderDetalleVenta()
         })
+
+        $(document).on("click", ".nuevop", function() {
+            $('#formProveedor').modal('show');
+
+        });
+
+        $(document).on("click", ".guardarp", function() {
+            $.ajax({
+                type: "post",
+                url: "{{ route('store.proveedor') }}",
+                dataType: 'json',
+                data: {
+                    nomProveedor: $('#nomProveedorp').val(),
+                    tel1Proveedor: $('#tel1Proveedorp').val(),
+                    tel2Proveedor: $('#tel2Proveedorp').val(),
+                    dirProveedor: $('#dirProveedorp').val(),
+                    mailProveedor: $('#mailProveedorp').val(),
+                },
+                success: function(response) {
+                    $('#formProveedor').modal('hide');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    //error_status(jqXHR)
+                },
+                fail: function() {
+                    //fail()
+                }
+            })
+        });
+        $(document).on('click', '.imprimir', function() {
+            const base64 = $('#iframePDF').data('url')
+            printJS({
+                printable: base64,
+                type: 'pdf',
+                base64: true,
+                onPrintDialogClose: () => {
+                    $('#modalImprimir').modal('hide');
+                    window.location = "index";
+                }
+            });
+
+        })
     </script>
-
-    {{--  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> --}}
-
-
     <!-- Init js -->
 @endpush

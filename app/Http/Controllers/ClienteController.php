@@ -64,7 +64,7 @@ class ClienteController extends Controller
                 'message' => $error->errors()->all(),
             ]);
         }
-        //dd($request, "LLEGUE CONTROL BASE64 STORE");
+
         $clientes = new Cliente;
         $clientes->nomCliente = $request->get('nomCliente');
         $clientes->docCliente = $request->get('docCliente');

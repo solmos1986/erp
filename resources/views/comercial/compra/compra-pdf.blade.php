@@ -22,6 +22,7 @@
 </head>
 
 <body style="/* background-color: yellow; */">
+
     <ul style="margin:0px 40px 8px 45px; text-align: center; ">
         <li style="font-weight: bold; font-size: 15px;">{{ $infoNego->nomNegocio }}</li>
         <li style="padding-top: 5px;">{{ $infoNego->dirNegocio }}</li>
@@ -54,20 +55,24 @@
     </table>
     <hr style="margin:0px 0px 8px 0x; padding-top:0; border-height:0.3px;">
     <table style="padding:0px 0px 5px 0px;">
-        {{--      <tr style="margin:0px 0px 0px 0x; padding-top:0;"> --}}
-        <td style="min-width:1cm; padding: 0px; text-align: center;">
-            COD
-        </td>
-        <td style="min-width:2.5cm; padding: 0px; text-align: center;">
-            CONCEPTO
-        </td>
-        <td style="min-width:1.5cm; padding: 0px; text-align: center;">
-            P/U
-        </td>
-        <td style="min-width:2cm; padding: 0px; text-align: center;">
-            SUBTOTAL
-        </td>
-        {{--      </tr> --}}
+        <tr style="margin:0px 0px 0px 0x; padding-top:0;">
+            <td style="min-width:1cm; padding: 0px; text-align: center;">
+                COD
+            </td>
+            <td style="min-width:2cm; padding: 0px; text-align: center;">
+                CONCEPTO
+            </td>
+            <td style="min-width:1cm; padding: 0px; text-align: center;">
+                CANT
+            </td>
+            <td style="min-width:1cm; padding: 0px; text-align: center;">
+                P/U
+            </td>
+            <td style="min-width:2cm; padding: 0px; text-align: center;">
+                SUB
+                <br> TOTAL
+            </td>
+        </tr>
     </table>
     <hr style="margin:0px 0px 8px 0x; padding-top:0; border-height:0.3px;">
     <table>
@@ -75,13 +80,18 @@
         {{-- EN ESTA TABLE DEBO HACER EL FOREACH --}}
         @foreach ($detalle as $det)
             <tr>
-                <td style="min-width:3.5cm; padding: 0px; text-align: center;">
+                <td style="min-width:3cm; padding: 0px; text-align: center;">
                     <ul style="margin:0px 0px 8px 0px;  text-align: left;">
                         <li> {{ $det->idProducto }}</li>
                         <li> {{ $det->nomProducto }}</li>
                     </ul>
                 </td>
-                <td style="min-width:1.5cm; padding: 0px; text-align: center;">
+                <td style="min-width:1cm; padding: 0px; text-align: center;">
+                    <ul style="margin:1px 0px 8px 0px; text-align: center; ">
+                        <li> {{ $det->cantidadCompra }}</li>
+                    </ul>
+                </td>
+                <td style="min-width:1cm; padding: 0px; text-align: center;">
                     <ul style="margin:1px 0px 8px 0px; text-align: center; ">
                         <li> {{ $det->precioCompraEgreso }}</li>
                     </ul>
@@ -110,6 +120,7 @@
     <ul style="margin:20px 0px 8px 2px;  text-align: center;">
         <li> GRACIAS POR SU PREFERENCIA !!!</li>
     </ul>
+
 </body>
 
 

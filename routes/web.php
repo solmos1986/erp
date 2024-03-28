@@ -80,14 +80,14 @@ Route::delete('almacen/marcas/borrar/{id}', [MarcasController::class, 'destroy']
 //
 Route::get('almacen/producto', [ProductoController::class, 'index'])->name('index.producto');
 Route::get('almacen/producto/index', [ProductoController::class, 'index']);
-Route::post('almacen/producto', [ProductoController::class, 'store']);
+Route::post('almacen/producto', [ProductoController::class, 'store'])->name('store.producto');
 Route::get('almacen/producto/create', [ProductoController::class, 'create'])->name('create.producto');
 Route::post('almacen/producto/update', [ProductoController::class, 'update'])->name('update.producto');
 Route::get('almacen/producto/{id}', [ProductoController::class, 'edit'])->name('edita.producto');
 Route::delete('almacen/producto/{id}', [ProductoController::class, 'destroy']);
 //
 Route::get('comercial/cliente', [ClienteController::class, 'index'])->name('index.cliente');
-Route::post('comercial/cliente', [ClienteController::class, 'store']);
+Route::post('comercial/cliente', [ClienteController::class, 'store'])->name('store.cliente');
 Route::post('comercial/clienteImagen', [ClienteController::class, 'Base64toFile']);
 Route::put('comercial/cliente/{id}', [ClienteController::class, 'update']);
 Route::get('comercial/cliente/{id}', [ClienteController::class, 'edit'])->name('edita.cliente');
@@ -95,7 +95,7 @@ Route::delete('comercial/cliente/{id}', [ClienteController::class, 'destroy']);
 //dd("route ok");
 //
 Route::get('almacen/proveedor', [ProveedorController::class, 'index'])->name('index.proveedor');
-Route::post('almacen/proveedor', [ProveedorController::class, 'store']);
+Route::post('almacen/proveedor', [ProveedorController::class, 'store'])->name('store.proveedor');
 Route::put('almacen/proveedor/{id}', [ProveedorController::class, 'update']);
 Route::get('almacen/proveedor/{id}', [ProveedorController::class, 'edit'])->name('edita.proveedor');
 Route::delete('almacen/proveedor/{id}', [ProveedorController::class, 'destroy']);
@@ -180,6 +180,8 @@ Route::prefix('sub-modulo')->group(function () {
 Route::get('comercial/venta', [IngresoController::class, 'index'])->name('index.venta');
 Route::post('comercial/venta', [IngresoController::class, 'store']);
 Route::get('comercial/venta/index', [IngresoController::class, 'index']);
+Route::get('comercial/venta-pdf/{id}', [IngresoController::class, 'pdf'])->name('pdf.venta');
+
 Route::get('comercial/venta/create', [IngresoController::class, 'create'])->name('create.venta');
 Route::put('comercial/venta/{id}', [IngresoController::class, 'update']);
 Route::get('comercial/venta/{id}', [IngresoController::class, 'edit'])->name('edita.venta');
@@ -191,6 +193,8 @@ Route::delete('comercial/venta/{id}', [IngresoController::class, 'destroy']);
 Route::get('comercial/inscripcion', [InscripcionController::class, 'index'])->name('index.inscripcion');
 Route::post('comercial/inscripcion', [InscripcionController::class, 'store']);
 Route::get('comercial/inscripcion/index', [InscripcionController::class, 'index']);
+Route::get('comercial/inscripcion-pdf/{id}', [InscripcionController::class, 'pdf'])->name('pdf.inscripcion');
+
 Route::get('comercial/inscripcion/create', [InscripcionController::class, 'create'])->name('create.inscripcion');
 Route::put('comercial/inscripcion/{id}', [InscripcionController::class, 'update']);
 Route::get('comercial/inscripcion/{id}', [InscripcionController::class, 'edit'])->name('edita.inscripcion');
@@ -220,6 +224,7 @@ Route::prefix('paquetes')->group(function () {
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
 Route::prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'obtener_ventas']);
     Route::post('/', [DashboardController::class, 'obtener_ventas']);
     Route::post('/totales', [DashboardController::class, 'obtener_totales']);
 

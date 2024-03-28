@@ -14,7 +14,7 @@ class InventarioController extends Controller
 
         if ($request->ajax()) {
             $query = trim($request->get('searchText'));
-            $data = DB::select('CALL stock ()');
+            $data = DB::select('SELECT * FROM stock_producto');
             /* ->get() */
 
             //dd($data, "HOLAAA");

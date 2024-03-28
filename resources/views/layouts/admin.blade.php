@@ -72,12 +72,14 @@
 
     <!-- App js -->
     <script src="{{ asset('/js/app.min.js') }}"></script>
-
+    <script src="{{ asset('libs/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- Plugins js-->
+    <script src="{{ asset('/libs/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('/libs/eModal.min.js') }}"></script>
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('/libs/swatalert/swatalert.min.js') }}"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {

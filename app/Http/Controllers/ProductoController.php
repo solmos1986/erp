@@ -17,12 +17,16 @@ class ProductoController extends Controller
     public function obtener_producto()
     {
 
-        $productos = DB::table('producto')->where('condicionProducto', '=', 1)->get();
+        $productos = DB::table('producto as pro')
+            ->select('pro.idProducto', 'pro.codProducto', 'pro.nomProducto', 'cat.nomCategoria', 'pro.imagenProducto', 'pro.precioVentaProducto', 'pro.unidadMedida', 'sp.stock')
+            ->join('stock_producto as sp', 'sp.idProducto', '=', 'pro.idProducto')
+            ->join('categoria as cat', 'cat.idCategoria', '=', 'pro.idCategoria')
+            ->where('condicionProducto', '=', 1)->get();
         $clientes = DB::table('cliente')->where('condicionCliente', '=', 1)->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', 1)->get();
         $tipoPago = DB::table('tipopago')->where('condicionTipoPago', '=', 1)->get();
-        $stock = DB::select('CALL stock ()');
-
+        $stock = DB::select('SELECT * FROM stock_producto');
+        //dd($productos, "productos");
         return response()->json([
             "data" => $productos,
             "stock" => $stock,
