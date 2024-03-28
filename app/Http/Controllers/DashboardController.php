@@ -133,8 +133,8 @@ class DashboardController extends Controller
 
         };
 
-        /*  return view('comercial/venta/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
-     */
+        return view('dashboard/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
+
     }
     public function obtener_totales(Request $request)
     {

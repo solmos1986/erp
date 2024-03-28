@@ -354,6 +354,31 @@
                 $('#formProveedor').modal('show');
 
             });
+            /*<!-- AJAX GUARDAR Modal -->*/
+            $(document).on("click", ".guardar", function() {
+                $.ajax({
+                    type: "post",
+                    url: "{{ route('store.proveedor') }}",
+                    dataType: 'json',
+                    data: {
+                        /*  $('#idProveedor').val() */
+                        nomProveedor: $('#nomProveedor').val(),
+                        tel1Proveedor: $('#tel1Proveedor').val(),
+                        tel2Proveedor: $('#tel2Proveedor').val(),
+                        dirProveedor: $('#dirProveedor').val(),
+                        mailProveedor: $('#mailProveedor').val(),
+                    },
+                    success: function(response) {
+                        $('#formProveedor').modal('hide');
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        //error_status(jqXHR)
+                    },
+                    fail: function() {
+                        //fail()
+                    }
+                })
+            });
 
             /*<!-- AJAX UPDATE Modal -->*/
             $(document).on("click", ".update", function() {

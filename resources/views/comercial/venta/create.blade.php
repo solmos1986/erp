@@ -18,6 +18,11 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('/libs/clockpicker/bootstrap-clockpicker.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css">
     {{-- <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> --}}
 @endpush
 
@@ -118,31 +123,42 @@
                                         <label for="fechaVenta" class="form-label col-2 col-xl-2">Fecha</label>
                                         <div class="col-4 col-xl-4">
                                             <input type="text" class="form-control form-control-sm" id="fechaVenta"
-                                                name="date" placeholder="Fecha" value="<?php echo date('Y-m-d H:i:s'); ?>">
+                                                name="date" placeholder="Fecha" value="<?php echo date('Y-m-d H:i:s'); ?>" readonly>
                                         </div>
                                         <label for="idVendedor" class="form-label col-2 col-xl-2">Vendedor</label>
-                                        <select class="form-control form-control-sm" id="idTipoPago">
-                                            @foreach ($usuario as $user)
-                                                <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
-                                            @endforeach
-                                        </select>
+                                        <div class="col-4 col-xl-4">
+                                            <select class="form-control form-control-sm" id="idVendedor">
+                                                @foreach ($usuario as $user)
+                                                    <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
                                     </div>
-                                    <div class="row mb-1">
+                                    <div class="row mt-1 mb-1">
                                         <label for="idCliente" class="form-label col-2 col-xl-2">Cliente</label>
-                                        <div class="col-10 col-xl-10">
+                                        <div class="col-8 col-xl-8 col-md-6">
                                             <select class="form-control form-control-sm" id="idCliente">
+                                                <option value="">Seleccione...</option>
                                                 @foreach ($cliente as $cli)
                                                     <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
                                                     </option>
                                                 @endforeach
                                             </select>
-
+                                        </div>
+                                        <div class="col-2 col-xl-2 col-md-4 text-lg-end {{-- my-1 --}} my-lg-0">
+                                            <a><button type="button" id="serchbtn"
+                                                    class="nuevo btn btn-success waves-effect waves-light mb-0 me-0 form-control-sm"
+                                                    style="padding: 0px 6px 0px 3px"><i class="mdi mdi-plus me-1"
+                                                        style="padding: 0px"></i>
+                                                    Add Cliente </button></a>
                                         </div>
                                     </div>
                                     <div class="row mb-1">
-                                        <label for="docCliente" class="form-label col-2 col-xl-2">NIT/CI</label>
+                                        <label for="docCliente1" class="form-label col-2 col-xl-2">NIT/CI</label>
                                         <div class="col-4 col-xl-4">
-                                            <input type="select" class="form-control form-control-sm" id="docCliente"
+                                            <input type="select" class="form-control form-control-sm" id="docCliente1"
                                                 placeholder="NIT/CI">
                                         </div>
                                         <label for="idTipoPago" class="form-label col-2 col-xl-2">Tipo Pago</label>
@@ -245,7 +261,7 @@
                                         <a href="{{ url('comercial/venta') }}"><button type="button"
                                                 class="btn w-sm btn-light waves-effect">Cancelar</button></a>
                                         <button type="button"
-                                            class="procesar btn w-sm btn-success waves-effect waves-light guardar">Guardar</button>
+                                            class="procesar btn w-sm btn-success waves-effect waves-light">Guardar</button>
                                         <button type="button"
                                             class="btn w-sm btn-danger waves-effect waves-light">Borrar</button>
                                     </div>
@@ -257,11 +273,11 @@
             </div>
         </div>
     </div>
+    @include('commom.ModalCrear_Cliente')
+    @include('commom.ModalImprimir_VentaCompra')
 @endsection
 
 @push('javascript')
-    {{--  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> --}}
     <script src="{{ asset('/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -289,7 +305,10 @@
     <script src="{{ asset('/libs/bootstrap-maxlength/bootstrap-maxlength.min.js') }}"></script>
     <script src="{{ asset('/libs/mohithg-switchery/switchery.min.js') }}"></script>
     <script src="{{ asset('/libs/multiselect/js/jquery.multi-select.js') }}"></script>
-
+    <script src="{{ asset('/libs/clockpicker/bootstrap-clockpicker.min.js') }}"></script>
+    <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('/libs/printjs/print.min.js') }}"></script>
 
     <script>
         var productos = [];
@@ -307,11 +326,12 @@
                     console.log(response, "lista de productos")
                     productos = response.data;
                     stock = response.stock;
-                    const array3 = productos.concat(stock);
-                    array3.join()
-                    console.log(array3, "CONCAT")
+                    /* const array3 = productos.concat(stock); */
+                    /* array3.join() */
+                    /* console.log(array3, "CONCAT") */
+                    console.log(stock, "STOCKK")
+                    renderCard();
 
-                    renderCard()
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log('error de programacion');
@@ -381,11 +401,12 @@
                                     </p>
                                 </div>
                                 <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start ">
-                                    <div class="d-flex flex-row justify-content-center align-items-center mb-1">
-                                        <h4 class="mb-1 me-1">Bs. ${item.precioVentaProducto}</h4>
-                                       
+                                    <div class="d-flex flex-row justify-content-center align-items-center mb-0">
+                                        <h4 class="me-1">Bs. ${item.precioVentaProducto}</h4>
                                     </div>
-                                        
+                                        <div class="d-flex flex-row justify-content-center align-items-center mb-0">
+                                       <h5 class="me-1">Stock: ${item.stock}</h5>
+                                    </div>
                                     <div class="d-flex flex-column mt-4">
                                         <button data-id="${i}" class="add_product btn btn-outline-primary btn-sm mt-2 " type="button">
                                             Agregar
@@ -555,9 +576,24 @@
                 dataType: 'json',
                 data: dato,
                 success: function(response) {
-                    console.log(response, "ACTUALIZO")
-                    window.location = "index";
+                    /* console.log(response, "ACTUALIZO")
+                    window.location = "index"; */
+                    Swal.fire({
+                        title: 'Desea imprimir?',
+                        text: "Esta proceso es irreversible",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si, imprimir!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            verPDF(response.data)
 
+                        } else {
+                            window.location = "index";
+                        }
+                    })
 
 
                 },
@@ -566,13 +602,89 @@
                     Swal.fire({
                         type: 'error',
                         title: 'Oops...',
-                        text: 'ejemplosdsfs!',
+                        text: 'ejemplos!',
                     });
                 },
                 fail: function() {
                     console.log('error servidor')
                 }
             })
+        });
+
+        function verPDF(id) {
+            var frame = $('#iframePDF');
+            var ahref = $('#cancelPDF');
+            //LOADER
+            $.ajax({
+                type: "GET",
+                url: `${base_url}/comercial/venta-pdf/${id}`,
+                dataType: 'json',
+                success: function(response) {
+                    var src = `data:application/pdf;base64,${response.data}`;
+                    $('#modalImprimir .modal-title').text('RECIBO DE VENTA');
+                    ahref.attr('href', "{{ url('comercial/venta/index') }}");
+                    frame.attr('src', `data:application/pdf;base64,${response.data}`);
+                    $('#modalImprimir').modal('show');
+                    $('#iframePDF').data('url', response.data)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplo!',
+                    });
+                },
+                fail: function() {}
+            });
+        };
+
+        $(document).on("click", ".nuevo", function() {
+            $('#formCliente').modal('show');
+
+        });
+
+        $(document).on("click", ".guardar", function() {
+
+            $.ajax({
+                type: "post",
+                url: "{{ route('store.cliente') }}",
+                dataType: 'json',
+                data: {
+                    nomCliente: $('#nomCliente').val(),
+                    docCliente: $('#docCliente').val(),
+                    tel1Cliente: $('#tel1Cliente').val(),
+                    tel2Cliente: $('#tel2Cliente').val(),
+                    dirCliente: $('#dirCliente').val(),
+                    mailCliente: $('#mailCliente').val(),
+                    imagen: $('#base64').val(),
+                },
+                success: function(response) {
+                    console.log(response.img, "LLEGO NAMEEEEE?")
+                    console.log(response.data, "LLEGO NAMEEEEE?")
+                    $('#formCliente').modal('hide');
+                    /*  $('.dtCliente').DataTable().ajax.reload(); */
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    //error_status(jqXHR)
+                    //console.log(response, "ERROR?")
+                },
+                fail: function() {
+                    //fail()
+                }
+            })
+
+        });
+        $(document).on('click', '.imprimir', function() {
+            const base64 = $('#iframePDF').data('url')
+            printJS({
+                printable: base64,
+                type: 'pdf',
+                base64: true,
+                onPrintDialogClose: () => {
+                    console.log(' detecion de cierre')
+                }
+            });
         })
     </script>
     <style>

@@ -227,6 +227,10 @@
                     {
                         data: 'nomTipoComprobante',
                         name: 'nomTipoComprobante',
+                        render: function(data, type, row, meta) {
+                            // esto es lo que se va a renderizar como html
+                            return `<b>${row.nomTipoComprobante}</b> ${row.idIngreso}`;
+                        }
                     },
                     {
                         data: 'impuestoIngreso',

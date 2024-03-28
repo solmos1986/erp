@@ -93,9 +93,11 @@ class EgresoController extends Controller
         $literal = $formatter->toInvoice($egreso->total, 2, 'BOLIVIANOS');
         //dd($literal);
 
-        $pdf = Pdf::setPaper([0, 0, 226.77, 2267.72])->loadView('comercial.compra.reporte.compra-pdf', ['egreso' => $egreso, 'detalle' => $detalle, 'infoNego' => $infoNego, 'literal' => $literal]);
+        $pdf = Pdf::setPaper([0, 0, 226.77, 2267.72])->loadView('comercial.compra.compra-pdf', ['egreso' => $egreso, 'detalle' => $detalle, 'infoNego' => $infoNego, 'literal' => $literal]);
 
-        return $pdf->stream();
+        return response()->json([
+            'data' => base64_encode($pdf->output()),
+        ]);
 
     }
     public function create(Request $request)

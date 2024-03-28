@@ -21,7 +21,7 @@
     <link href="{{ asset('/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
-    {{-- <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> --}}
+    <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css">
 @endpush
 
 @section('contenido')
@@ -91,18 +91,22 @@
                                 <label for="fechaInscripcion" class="form-label col-2 col-xl-2">Fecha</label>
                                 <div class="col-4 col-xl-4">
                                     <input type="text" id="datetime-datepicker" class="form-control"
-                                        placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>">
+                                        placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>" disabled>
                                 </div>
                                 <label for="idVendedor" class="form-label col-2 col-xl-2">Vendedor</label>
                                 <div class="col-4 col-xl-4">
-                                    <input type="text" class="form-control form-control-sm" id="idVendedor"
-                                        placeholder="Vendedor" value="8888">
+                                    <select class="form-control select2" id="idVendedor">
+                                        @foreach ($usuario as $user)
+                                            <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-1">
                                 <label for="idCliente" class="form-label col-2 col-xl-2">Cliente</label>
                                 <div class="col-10 col-xl-10">
                                     <select class="form-control form-control-sm" id="idCliente">
+                                        <option value="">Seleccionar cliente...</option>
                                         @foreach ($cliente as $cli)
                                             <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
                                             </option>
@@ -189,7 +193,7 @@
                                         <tr>
                                             <td><select class="form-control form-control-sm" id="paquetes"
                                                     name="paquetes">
-                                                    <option value="">Seleccion un Paquete</option>
+                                                    <option value="0">Seleccion un Paquete</option>
                                                     @foreach ($paquetes as $pq)
                                                         <option data-id="{{ $pq->idPaquete }}"
                                                             value="{{ $pq->idPaquete }}">
@@ -206,16 +210,16 @@
                                             <td>
 
                                                 <input type="text" id="fechaInicio" class="form-control"
-                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>">
+                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d'); ?>">
                                             </td>
                                             <td>
 
                                                 <input type="text" id="fechaFin" class="form-control"
-                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>" readonly>
+                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d'); ?>" readonly>
                                             </td>
                                             <td>
                                                 <input type="number" class="form-control form-control-sm"
-                                                    id="costoPaquete" placeholder="costo" value="0" readonly>
+                                                    id="costoPaquete" placeholder="costo" value="" readonly>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -254,6 +258,7 @@
             </div>
         </div>
     </div>
+    @include('commom.ModalImprimir_VentaCompra')
 @endsection
 
 @push('javascript')
@@ -289,6 +294,7 @@
     <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('/js/pages/form-pickers.init.js') }}"></script>
+    <script src="{{ asset('/libs/printjs/print.min.js') }}"></script>
 
 
     <script>
@@ -366,7 +372,7 @@
             var hour = ("0" + fecha.getHours());
             var day = ("0" + fecha.getDate()).slice(-2);
             var month = ("0" + (fecha.getMonth() + 1)).slice(-2);
-            var date = fecha.getFullYear() + "-" + (month) + "-" + (day) + "T" + (hour) + ":" + (min) + ":" + (seg);
+            var date = fecha.getFullYear() + "-" + (month) + "-" + (day) /* + "T" + (hour) + ":" + (min) + ":" + (seg) */ ;
             return date;
         }
         $(document).on('click', '.procesar', function() {
@@ -386,8 +392,8 @@
                 estadoInscripcion: 1,
                 idUsuario: $('#idVendedor').val(),
                 idPaquete: $('#paquetes').val(),
-                fechaInicio: $('#fechaInicio').val(),
-                fechaFin: $('#fechaFin').val(),
+                fechaInicio: $('#fechaInicio').val() + 'T00:00:00',
+                fechaFin: $('#fechaFin').val() + 'T23:59:59',
                 costoPaquete: $('#costoPaquete').val(),
 
 
@@ -399,9 +405,24 @@
                 dataType: 'json',
                 data: dato,
                 success: function(response) {
-                    console.log(response, "ACTUALIZO")
-                    window.location = "index";
+                    /*   console.log(response, "ACTUALIZO")
+                      window.location = "index"; */
+                    Swal.fire({
+                        title: 'Desea imprimir?',
+                        text: "Esta proceso es irreversible",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si, imprimir!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            verPDF(response.data)
 
+                        } else {
+                            window.location = "index";
+                        }
+                    })
 
 
                 },
@@ -418,5 +439,46 @@
                 }
             });
         });
+
+        function verPDF(id) {
+            var frame = $('#iframePDF');
+            var ahref = $('#cancelPDF');
+            //LOADER
+            $.ajax({
+                type: "GET",
+                url: `${base_url}/comercial/inscripcion-pdf/${id}`,
+                dataType: 'json',
+                success: function(response) {
+                    var src = `data:application/pdf;base64,${response.data}`;
+                    $('#modalImprimir .modal-title').text('RECIBO DE INSCRIPCION');
+                    ahref.attr('href', "{{ url('comercial/inscripcion/index') }}");
+                    frame.attr('src', `data:application/pdf;base64,${response.data}`);
+                    $('#modalImprimir').modal('show');
+                    $('#iframePDF').data('url', response.data)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplo!',
+                    });
+                },
+                fail: function() {}
+            });
+
+        }
+        $(document).on('click', '.imprimir', function() {
+            const base64 = $('#iframePDF').data('url')
+            printJS({
+                printable: base64,
+                type: 'pdf',
+                base64: true,
+                onPrintDialogClose: () => {
+                    $('#modalImprimir').modal('hide');
+                    window.location = "index";
+                }
+            });
+        })
     </script>
 @endpush
