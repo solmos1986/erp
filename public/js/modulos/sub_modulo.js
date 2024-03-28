@@ -28,10 +28,11 @@ let tableSubModulo = dataTable($('.data-table-sub-modulo'), `${base_url}/sub-mod
 
 $(document).on("click", ".nuevo_sub_modulo", function () {
     const btn = $(this);
+    btn.prop('disabled', true);
     console.log('editar')
     //const id = $(this).data('id');
-    btn.prop('disabled', false);
     ajax(`${base_url}/sub-modulo/create`, 'GET').then((response) => {
+        btn.prop('disabled', false);
         $('#modal_sub_modulo').modal('show');
         BtnAddSave($('#btn_sub_save'), 'store_sub_modulo', 'update_sub_modulo')
         $('#modal_sub_modulo .modal-title').text('Nuevo sub modulo');

@@ -62,7 +62,7 @@ $(document).on("click", ".editar_modulo", function () {
         url
         class_icon
         super_modulo_id
-        $('#form_modulo nombre_modulo').va(response.data.super_modulo.);
+        $('#form_modulo nombre_modulo').va(response.data.super_modulo.nombre_modulo);
         const options = addOpcionSuperModulo(response.data.super_modulos)
         $('#modal_modulo #select_super_modulo').html('')
         $('#modal_modulo #select_super_modulo').append(options)

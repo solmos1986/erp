@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use DB;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use Validator;
+use Yajra\DataTables\DataTables;
 
 class RolController extends Controller
 {
@@ -60,10 +60,10 @@ class RolController extends Controller
                 foreach ($sub_modulos as $key => $sub_modulo) {
                     $sub_modulo->validate = false;
                 }
-                $modulo->sub_modulos = $sub_modulos;
+                $modulo->sub_modulos = $sub_modulos ? $sub_modulos : [];
                 $modulo->validate = false;
             }
-            $super_modulo->modulos = $modulos;
+            $super_modulo->modulos = $modulos ? $modulos : [];
             $super_modulo->validate = false;
         }
         return response()->json([
@@ -89,7 +89,7 @@ class RolController extends Controller
             'nombre_rol' => 'required',
         );
         $messages = [
-            'nombre_rol.required' => "Nombre rol es requerido"
+            'nombre_rol.required' => "Nombre rol es requerido",
         ];
         $error = Validator::make($request->all(), $rules, $messages);
         if ($error->errors()->all()) {
@@ -98,7 +98,7 @@ class RolController extends Controller
                 'message' => $error->errors()->all(),
             ]);
         }
-        $this->insertMasivo($request);
+        $rol_insert = $this->insertMasivo($request);
         return response()->json([
             'status' => 1,
             'message' => 'Registrado correctamente',
@@ -119,25 +119,31 @@ class RolController extends Controller
                         'super_modulo_id' => $super_modulo['super_modulo_id'],
                     ]);
             }
-            foreach ($super_modulo['modulos'] as $key => $modulo) {
-                if ($modulo['validate'] == 'true') {
-                    $rol_modulo_insert = DB::table('rol_modulo')
-                        ->insertGetId([
-                            'rol_super_modulo_id' => $rol_super_modulo_insert,
-                            'modulo_id' => $modulo['modulo_id'],
-                        ]);
-                }
-                foreach ($modulo['sub_modulos'] as $key => $sub_modulo) {
-                    if ($sub_modulo['validate'] == 'true') {
-                        $rol_modulo_sub_insert = DB::table('rol_sub_modulo')
+            //dump($super_modulo);
+            if (isset($super_modulo['modulos'])) {
+                foreach ($super_modulo['modulos'] as $key => $modulo) {
+                    if ($modulo['validate'] == 'true') {
+                        $rol_modulo_insert = DB::table('rol_modulo')
                             ->insertGetId([
-                                'rol_modulo_id' => $rol_modulo_insert,
-                                'sub_modulo_id' => $sub_modulo['sub_modulo_id'],
+                                'rol_super_modulo_id' => $rol_super_modulo_insert,
+                                'modulo_id' => $modulo['modulo_id'],
                             ]);
+                    }
+                    if (isset($modulo['sub_modulos'])) {
+                        foreach ($modulo['sub_modulos'] as $key => $sub_modulo) {
+                            if ($sub_modulo['validate'] == 'true') {
+                                $rol_modulo_sub_insert = DB::table('rol_sub_modulo')
+                                    ->insertGetId([
+                                        'rol_modulo_id' => $rol_modulo_insert,
+                                        'sub_modulo_id' => $sub_modulo['sub_modulo_id'],
+                                    ]);
+                            }
+                        }
                     }
                 }
             }
         }
+        return $rol_insert;
     }
 
     /**
@@ -255,7 +261,13 @@ class RolController extends Controller
             ]);
         }
         $this->destroy($id);
-        $this->insertMasivo($request);
+        $rol_insert = $this->insertMasivo($request);
+
+        $update_rol = DB::table('rol_authenticacion')
+            ->where('rol_authenticacion.rol_id', $id)
+            ->update([
+                'rol_id' => $rol_insert,
+            ]);
         return response()->json([
             'status' => 1,
             'message' => 'Modificado correctamente',

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\InscripcionController;
 
 //hace referencia a nuestro request
-
 use App\SocketCliente\Usuario;
+use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -73,6 +73,13 @@ class InscripcionController extends Controller
         }
 
         return view('comercial/inscripcion/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
+
+    }
+    public function pdf()
+    {
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML('<h1>Test</h1>');
+        return $pdf->stream();
 
     }
     public function create(Request $request)

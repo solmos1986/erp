@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "barryvdh/laravel-dompdf": "^2.1",
         "elephantio/elephant.io": "^4.7",
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^3.4",
@@ -16,10 +17,8 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravelcollective/html": "^6.4",
-        "psr/http-message": "1.1",
-        "ratchet/pawl": "^0.4.1",
         "textalk/websocket": "^1.6",
-        "wrench/wrench": "^2.0",
+        "luecano/numero-a-letras": "^3.0",
         "yajra/laravel-datatables": "^9.0",
         "yajra/laravel-datatables-html": "^9.4",
         "yajra/laravel-datatables-oracle": "^10.11"

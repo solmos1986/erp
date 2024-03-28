@@ -8,8 +8,10 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
+    <link href="{{ asset('/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('contenido')
@@ -48,7 +50,7 @@
                     </div> <!-- end row-->
                 </div>
             </div> <!-- end widget-rounded-circle-->
-        </div> 
+        </div>
         <div class="col-xl-4 col-md-4 col-ms-6">
             <div class="widget-rounded-circle card">
                 <div class="card-body">
@@ -99,7 +101,8 @@
             </div> <!-- end card-->
         </div>
     </div>
-    <x-components.modal size="modal-xl" id="modal_authorizacion" nameBtnSave="Guardar" nameBtnClose="Cancelar" idBtnSave="btn_save">
+    <x-components.modal size="modal-lg" id="modal_authorizacion" nameBtnSave="Guardar" nameBtnClose="Cancelar"
+        idBtnSave="btn_save">
         @include('authorizacion.components.form-authorizacion')
     </x-components.modal>
 @endsection
