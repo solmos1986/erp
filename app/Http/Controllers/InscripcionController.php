@@ -5,21 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\InscripcionController;
 
 //hace referencia a nuestro request
-use App\SocketIo\SocketCliente;
+use App\SocketCliente\Usuario;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class InscripcionController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
 
     {
+        Log::info("inciando inscripcion");
 //dd($request, "ESTO ESTA LLEGANDO");
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
@@ -82,10 +84,12 @@ class InscripcionController extends Controller
     }
     public function create(Request $request)
     {
+        Log::info("InscripcionController/create()");
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $paquetes = DB::table('paquetesgym')->where('condicionPaquete', '=', '1')->get();
+        Log::info("InscripcionController/create inciando");
         if ($request->ajax()) {
             $data = DB::table('paquetes')
                 ->where('condicionPaquete', '=', '1')
@@ -120,8 +124,8 @@ class InscripcionController extends Controller
             'fechaFin' => $request->fechaFin,
             'costoPaquete' => $request->costoPaquete,
         ]);
-        $socket = new SocketCliente();
-        $socket->store_cliente(['idInscripcion' => "60"]);
+        $socket = new Usuario();
+        $socket->store_cliente(['idInscripcion' => $insertInscripcion]);
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",

@@ -8,6 +8,7 @@ use App\Models\Cliente; //para hacer algunas redirecciones
 use DataTables; //hace referencia a nuestro request
 use DB;
 use Illuminate\Http\Request;
+use Validator;
 
 // sar la base de datos
 /* use Intervention\Image\Facades\Image; */
@@ -45,6 +46,24 @@ class ClienteController extends Controller
     }
     public function store(ClienteRequest $request)
     {
+        $rules = array(
+            'nomCliente' => 'required',
+            'docCliente' => 'required',
+            'tel1Cliente' => 'required',
+            'dirCliente' => 'required',
+        );
+        $messages = [
+            'nomCliente.required' => "Url es requerido",
+            'docCliente.required' => "Icon es requerido",
+            'tel1Cliente.required' => "Nombre es requerido",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
         //dd($request, "LLEGUE CONTROL BASE64 STORE");
         $clientes = new Cliente;
         $clientes->nomCliente = $request->get('nomCliente');
@@ -60,7 +79,7 @@ class ClienteController extends Controller
         $image = str_replace(' ', '+', $image);
         $imageName = "image" . uniqid() . time() . ".jpg";
         $IMAGENES = base64_decode($image);
-        dd("COMO ESL LA IMAGEN .JPG", $IMAGENES);
+        //dd("COMO ESL LA IMAGEN .JPG", $IMAGENES);
         \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
         //dd($clientes, "VER fotoCliente");
         $clientes->fotoCliente = $imageName;

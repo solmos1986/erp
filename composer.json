@@ -17,6 +17,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravelcollective/html": "^6.4",
+        "textalk/websocket": "^1.6",
         "luecano/numero-a-letras": "^3.0",
         "yajra/laravel-datatables": "^9.0",
         "yajra/laravel-datatables-html": "^9.4",
