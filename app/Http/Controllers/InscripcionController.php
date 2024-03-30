@@ -6,12 +6,12 @@ use App\Http\Controllers\InscripcionController;
 
 //hace referencia a nuestro request
 
+use App\SocketCliente\Usuario;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Illuminate\Http\Request;
-use Luecano\NumeroALetras\NumeroALetras;
-use App\SocketCliente\Usuario;
 use Illuminate\Support\Facades\Log;
+use Luecano\NumeroALetras\NumeroALetras;
 use Yajra\DataTables\DataTables;
 
 class InscripcionController extends Controller
@@ -159,5 +159,15 @@ class InscripcionController extends Controller
             "data" => $insertInscripcion,
         ]);
 
+    }
+    public function eliminar_clientes_dispositivo()
+    {
+        $socket = new Usuario();
+        $socket->eliminar_clientes_automatico([]);
+        return response()->json([
+            "status" => 1,
+            "message" => "Socket activado",
+            "data" => null,
+        ]);
     }
 }

@@ -39,11 +39,13 @@
                             required>
                     </div>
                 </div>
-                <div class="col-lg-5">
-
-                </div>
                 <div class="col-lg-4">
-                    <div class="text-lg-end">
+                </div>
+                <div class="col-lg-5">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" id="limpiar_equipos"
+                            class="btn btn-danger waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                            Eliminar registros </button>
                         <a href="{{ url('comercial/inscripcion/create') }}"><button type="button" id="serchbtn"
                                 class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
                                 Nueva Inscripcion </button></a>

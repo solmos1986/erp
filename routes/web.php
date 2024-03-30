@@ -186,6 +186,8 @@ Route::get('comercial/venta/create', [IngresoController::class, 'create'])->name
 Route::put('comercial/venta/{id}', [IngresoController::class, 'update']);
 Route::get('comercial/venta/{id}', [IngresoController::class, 'edit'])->name('edita.venta');
 Route::delete('comercial/venta/{id}', [IngresoController::class, 'destroy']);
+//temporal
+Route::get('comercial/eliminar-cliente-automatico', [InscripcionController::class, 'eliminar_clientes_dispositivo'])->name('inscripcion.eliminar_clientes_automatico');
 //Route::get('comercial/venta/filter', [IngresoController::class, 'filter'])->name('filter.venta');
 
 //

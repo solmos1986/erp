@@ -22,6 +22,8 @@
     <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons css -->
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
+
     @stack('css')
 </head>
 
@@ -94,14 +96,9 @@
     <script src="{{ asset('/js/components/buttons.js') }}"></script>
     <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
-    <script>
-        /*const socket = io('{{ env('ROUTE_SOCKET_IO') }}');
-             console.log('{{ env('ROUTE_SOCKET_IO') }}')
-            socket.on('ping', (e) => {
-                console.log('escuchado por el servidor', e)
-            }); */
-    </script>
+    <script src="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
     @stack('javascript')
+    <script src="{{ asset('/js/socket/dispositivo-socket.js') }}"></script>
 </body>
 
 </html>
