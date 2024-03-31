@@ -18,7 +18,7 @@ class Config
         $this->data->message = '';
         $this->data->channel = 'erpBackend';
 
-        $this->client = new \WebSocket\Client(env('ROUTE_SOCKET_IO'), ['headers' => [
+        $this->client = new \WebSocket\Client(env('ROUTE_SOCKET_IO').'/devices', ['headers' => [
             'origin' => 'localhost',
             'token' => 'web',
         ]]);
