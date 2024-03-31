@@ -11,6 +11,7 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('/images/favicon.ico') }}">
     <!-- Plugins css -->
+    <link href="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
 
@@ -21,8 +22,9 @@
     <!-- App css -->
     <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons css -->
+
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
+
 
     @stack('css')
 </head>
@@ -74,10 +76,7 @@
 
     <!-- App js -->
     <script src="{{ asset('/js/app.min.js') }}"></script>
-    <script src="{{ asset('libs/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- Plugins js-->
-    <script src="{{ asset('/libs/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('/libs/eModal.min.js') }}"></script>
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>

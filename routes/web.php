@@ -226,7 +226,7 @@ Route::prefix('paquetes')->group(function () {
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
 Route::prefix('dashboard')->group(function () {
-    Route::get('/', [DashboardController::class, 'obtener_ventas']);
+    Route::get('/', [DashboardController::class, 'obtener_ventas'])->name('dashboard');
     Route::post('/', [DashboardController::class, 'obtener_ventas']);
     Route::post('/totales', [DashboardController::class, 'obtener_totales']);
 

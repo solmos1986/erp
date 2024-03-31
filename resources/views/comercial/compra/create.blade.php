@@ -317,12 +317,6 @@
             var message = "Custom message here";
             var title = "Hello World!";
 
-            // alert dialog
-            eModal
-                .alert(message, title)
-                .then(function() {
-                    console.log("Emodal")
-                });
             let table = $('.dtProducto').DataTable({
                 columnDefs: [{
                     targets: 1,
