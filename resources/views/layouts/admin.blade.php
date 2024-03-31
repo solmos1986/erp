@@ -69,6 +69,7 @@
     <!-- Theme Settings -->
     <script type="text/javascript">
         var base_url = "{{ url('/') }}";
+        var socket_url = {{ env('ROUTE_SOCKET_IO') }}
     </script>
 
     <!-- Vendor js -->

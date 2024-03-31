@@ -1,5 +1,5 @@
 function connect() {
-    var ws = new WebSocket('ws://localhost:3000/devices', "front-end");
+    var ws = new WebSocket(`${socket_url}/devices`, "front-end");
     ws.onopen = function () {
         // subscribe to some channels
         ws.send(JSON.stringify({
