@@ -151,8 +151,8 @@ class InscripcionController extends Controller
             'fechaFin' => $request->fechaFin,
             'costoPaquete' => $request->costoPaquete,
         ]);
-        /*  $socket = new Usuario();
-        $socket->store_cliente(['idInscripcion' => $insertInscripcion]); */
+        $socket = new Usuario();
+        $socket->store_cliente(['idInscripcion' => $insertInscripcion]);
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",
