@@ -13,7 +13,7 @@
     <!-- Plugins css -->
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
-
+    @stack('css')
     <!-- Theme Config Js -->
     <script src="{{ asset('/js/head.js') }}"></script>
     <!-- Bootstrap css -->
@@ -22,7 +22,7 @@
     <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons css -->
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-    @stack('css')
+
 </head>
 
 <body>
@@ -96,10 +96,10 @@
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
     <script>
         /*const socket = io('{{ env('ROUTE_SOCKET_IO') }}');
-             console.log('{{ env('ROUTE_SOCKET_IO') }}')
-            socket.on('ping', (e) => {
-                console.log('escuchado por el servidor', e)
-            }); */
+                     console.log('{{ env('ROUTE_SOCKET_IO') }}')
+                    socket.on('ping', (e) => {
+                        console.log('escuchado por el servidor', e)
+                    }); */
     </script>
     @stack('javascript')
 </body>
