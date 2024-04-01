@@ -232,3 +232,9 @@ Route::prefix('dashboard')->group(function () {
 
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
+Route::prefix('clientes')->group(function () {
+    Route::get('/', [ClienteController::class, 'obtener_clientes']);
+    Route::get('/documento', [ClienteController::class, 'obtener_documento']);
+
+    //Route::get('store', [ProductoController::class, 'obtener_producto']);
+});

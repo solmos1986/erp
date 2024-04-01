@@ -48,9 +48,25 @@
     <div class="row">
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">INFO COMPRA</h5>
+
+                <div class="row bg-light p-2 mt-0 mb-3">
+                    <div class="col-lg-6">
+                        <h5 class="text-uppercase  ">INFO COMPRAS</h5>
+                    </div>
+                    <div class="col-lg-2">
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-lg-end mr-0">
+                            <a id="creaProducto"><button type="button" id="serchbtn"
+                                    class="nuevop btn btn-success waves-effect waves-light mb-0 me-0 mr-1"><i
+                                        class="mdi mdi-plus me-1"></i>
+                                    Crear Proveedor</button></a>
+                        </div>
+                    </div>
+
                 </div>
+
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="mb-3">
@@ -84,25 +100,12 @@
                         <div class="mb-3" id="12">
                             <label for="nomProveedor" class="form-label">Proveedor <span
                                     class="text-danger">*</span></label>
-                            <div class="row">
-                                <div class="col-10 col-lg-10 col-md-9">
-                                    <select class="form-control select2" id="nomProveedor">
-                                        <option value="">Seleccione...</option>
-                                        @foreach ($proveedor as $pro)
-                                            <option value="{{ $pro->idProveedor }}">{{ $pro->nomProveedor }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-2 col-lg-2 col-xg-2 col-md-2 text-lg-start">
-                                    <a style="padding-right: 7.2px"><button type="button" id="serchbtn"
-                                            class="nuevop btn btn-success waves-effect waves-light mb-0 me-0 form-control"
-                                            style="padding-right: 7.2px"><i class="mdi mdi-plus me-1"
-                                                style="padding: 0px 7px 0px 0px; margin: 0px 7px 0px 0px"></i>
-                                        </button></a>
-                                </div>
-                            </div>
-
-
+                            <select class="form-control select2" id="nomProveedor" name="nomProveedor">
+                                <option value="">Seleccione...</option>
+                                @foreach ($proveedor as $pro)
+                                    <option value="{{ $pro->idProveedor }}">{{ $pro->nomProveedor }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
@@ -167,7 +170,24 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="text-uppercase bg-light p-2 mt-0 mb-3">SELECCIONA PRODUCTOS</h5>
+                    <div class="row bg-light p-2 mt-0 mb-3">
+                        <div class="col-lg-6">
+                            <h5 class="text-uppercase  ">SELECCIONA PRODUCTOS</h5>
+                        </div>
+                        <div class="col-lg-2">
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="text-lg-end mr-0">
+                                <a id="creaProducto"><button type="button" id="serchbtn"
+                                        class="creaProducto btn btn-success waves-effect waves-light mb-0 me-0 mr-1"><i
+                                            class="mdi mdi-plus me-1"></i>
+                                        Crear Producto</button></a>
+                            </div>
+                        </div>
+
+                    </div>
+
 
                     <table id="dtProducto" class="dtProducto table dt-responsive nowrap w-100" style="min-block-size: ;">
                         <thead>
@@ -200,7 +220,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12 col-lg-12 col-xl-12">
-                                    <h5>DETALLE</h5>
+                                    <h5><b>DETALLE</b></h5>
                                     <div class="table-responsive">
                                         <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
                                             style="min-block-size: ;">
@@ -359,21 +379,10 @@
                     $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
                 },
 
-
             });
 
 
-            function agregarOpciones(domElement, proveedor) {
-                let selects = document.getElementsByName(domElement);
-                let select = selects[selects.length - 1];
 
-                for (value in proveedor) {
-                    let option = document.createElement("option");
-                    option.value = proveedor[value];
-                    option.text = proveedor[value];
-                    select.add(option);
-                }
-            }
             $('#dtProducto').on('click', '.addCart', function() {
                 var data = table.row($(this).closest('tr')).data();
                 //push
@@ -433,8 +442,6 @@
                 impuestoEgreso: $('#impuestoCompra').val(),
                 estadoEgreso: 1,
                 idUsuario: $('#nomUsuario').val(),
-
-
             };
             $.ajax({
                 type: "post",
@@ -460,10 +467,6 @@
                             window.location = "index";
                         }
                     })
-
-
-
-
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log('error de programacion');
@@ -586,6 +589,13 @@
                 },
                 success: function(response) {
                     $('#formProveedor').modal('hide');
+                    var proveedor = response.data
+                    var id = proveedor.idProveedor
+                    var nom = proveedor.nomProveedor
+                    $('#nomProveedor')
+                        .append($("<option selected></option>")
+                            .attr("value", id)
+                            .text(nom));
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     //error_status(jqXHR)
@@ -595,6 +605,7 @@
                 }
             })
         });
+
         $(document).on('click', '.imprimir', function() {
             const base64 = $('#iframePDF').data('url')
             printJS({
@@ -606,6 +617,35 @@
                     window.location = "index";
                 }
             });
+
+        })
+        $(document).on('click', '.creaProducto', function() {
+            $('#crearProducto').modal('show');
+        })
+        $(document).on('click', '.guardarprod', function() {
+            $.ajax({
+                type: "post",
+                url: `${base_url}/almacen/producto`,
+                dataType: 'json',
+                data: {
+                    codProducto: $('#codProducto').val(),
+                    nomProducto: $('#nomProducto').val(),
+                    stockMinimo: $('#stockMinimo').val(),
+                    unidadMedida: $('#unidadMedida').val(),
+                    idCategoria: 1,
+                },
+                success: function(response) {
+                    console.log(response.data, "GUARDO PRODUCTO CON EXITOOO")
+                    $('#crearProducto').modal('hide');
+                    $('.dtProducto').DataTable().ajax.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    //error_status(jqXHR)
+                },
+                fail: function() {
+                    //fail()
+                }
+            })
 
         })
     </script>

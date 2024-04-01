@@ -14,7 +14,7 @@
     <link href="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
-
+    @stack('css')
     <!-- Theme Config Js -->
     <script src="{{ asset('/js/head.js') }}"></script>
     <!-- Bootstrap css -->
@@ -24,8 +24,6 @@
     <!-- Icons css -->
 
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-
-
     @stack('css')
 </head>
 

@@ -12,7 +12,10 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@types/node": "^20.12.2",
         "convert-base64-to-image": "^0.0.16",
+        "fs-extra": "^11.2.0",
+        "node-fs": "^0.1.7",
         "webcam-easy": "^1.1.1"
     }
 }
