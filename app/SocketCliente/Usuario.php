@@ -20,23 +20,20 @@ class Usuario
     }
     public function store_cliente($data)
     {
-        $this->config->data = $data;
-        $this->config->type = "store:init";
-        $this->config->channel = "web";
-        $this->socket->set_message($this->config);
+        $message = new stdClass();
+        $message->event = 'insertInscripcion:init';
+        $message->req = [];
+        $message->res = [];
+        $message->data = $data;
+        $this->socket->set_message($message);
     }
-    public function update_cliente($inscripcion)
+    public function eliminar_clientes_automatico($data)
     {
-        $this->config->data = $data;
-        $this->config->type = "edit:init";
-        $this->config->channel = "web";
-        $this->socket->set_message($this->config);
-    }
-    public function delete_cliente($inscripcion)
-    {
-        $this->config->data = $data;
-        $this->config->type = "destroy:init";
-        $this->config->channel = "web";
-        $this->socket->set_message($this->config);
+        $message = new stdClass();
+        $message->event = 'deleteAutomatico:init';
+        $message->req = [];
+        $message->res = [];
+        $message->data = $data;
+        $this->socket->set_message($message);
     }
 }

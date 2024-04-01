@@ -11,6 +11,7 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('/images/favicon.ico') }}">
     <!-- Plugins css -->
+    <link href="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
     @stack('css')
@@ -21,8 +22,9 @@
     <!-- App css -->
     <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons css -->
-    <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
+    <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
+    @stack('css')
 </head>
 
 <body>
@@ -65,6 +67,7 @@
     <!-- Theme Settings -->
     <script type="text/javascript">
         var base_url = "{{ url('/') }}";
+        var socket_url = "{{ env('ROUTE_SOCKET_IO') }}"
     </script>
 
     <!-- Vendor js -->
@@ -72,10 +75,7 @@
 
     <!-- App js -->
     <script src="{{ asset('/js/app.min.js') }}"></script>
-    <script src="{{ asset('libs/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- Plugins js-->
-    <script src="{{ asset('/libs/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('/libs/eModal.min.js') }}"></script>
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>
@@ -94,14 +94,9 @@
     <script src="{{ asset('/js/components/buttons.js') }}"></script>
     <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
-    <script>
-        /*const socket = io('{{ env('ROUTE_SOCKET_IO') }}');
-                     console.log('{{ env('ROUTE_SOCKET_IO') }}')
-                    socket.on('ping', (e) => {
-                        console.log('escuchado por el servidor', e)
-                    }); */
-    </script>
+    <script src="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
     @stack('javascript')
+    <script src="{{ asset('/js/socket/dispositivo-socket.js') }}"></script>
 </body>
 
 </html>

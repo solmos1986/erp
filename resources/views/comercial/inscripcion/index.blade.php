@@ -39,11 +39,13 @@
                             required>
                     </div> --}}
                 </div>
-                <div class="col-lg-5">
-
-                </div>
                 <div class="col-lg-4">
-                    <div class="text-lg-end">
+                </div>
+                <div class="col-lg-5">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" id="limpiar_equipos"
+                            class="btn btn-danger waves-effect waves-light mb-2 me-2">
+                            Limpiar dispositivos </button>
                         <a href="{{ url('comercial/inscripcion/create') }}"><button type="button" id="serchbtn"
                                 class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
                                 Nueva Inscripcion </button></a>
@@ -260,6 +262,17 @@
             $(document).on('keyup change', '.filtrar', function() {
                 table.draw()
             });
+        });
+    </script>
+    <script>
+        $(document).on('click', '#limpiar_equipos', function() {
+            const btn = $(this);
+            btn.prop('disable', true)
+            ajax(`${base_url}/comercial/eliminar-cliente-automatico`, 'GET').catch(
+                (response) => {
+                    console.log(response)
+                }
+            )
         });
     </script>
     <!-- Bootstrap Tables js -->
