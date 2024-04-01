@@ -9,9 +9,8 @@ use App\Http\Controllers\InscripcionController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Illuminate\Http\Request;
-use Luecano\NumeroALetras\NumeroALetras;
-use App\SocketCliente\Usuario;
 use Illuminate\Support\Facades\Log;
+use Luecano\NumeroALetras\NumeroALetras;
 use Yajra\DataTables\DataTables;
 
 class InscripcionController extends Controller
@@ -151,8 +150,8 @@ class InscripcionController extends Controller
             'fechaFin' => $request->fechaFin,
             'costoPaquete' => $request->costoPaquete,
         ]);
-        $socket = new Usuario();
-        $socket->store_cliente(['idInscripcion' => $insertInscripcion]);
+        /*  $socket = new Usuario();
+        $socket->store_cliente(['idInscripcion' => $insertInscripcion]); */
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",

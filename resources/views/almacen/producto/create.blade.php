@@ -222,45 +222,6 @@
         }
         /*<!-- AJAX GUARDAR Producto -->*/
         $(document).on("click", ".guardar", function() {
-
-            /*  $.ajax({
-                 type: "post",
-                 url: `${base_url}/almacen/producto/`,
-                 dataType: 'json',
-                 data: {
-                     detalle: $('#nomProducto').val(),
-                     codProducto: $('#codProducto').val(),
-                     idCategoria: $('#idCategoria').val(),
-                     unidadMedida: $('#unidadMedida').val(),
-                     stockMinimo: $('#stockMinimo').val(),
-                     imagenProducto: $('#imagenProducto').val(),
-                     nomProducto: $('#nomProducto').val(),
-
-                 },
-                 success: function callbackFuntion(response) {
-                     console.log(response, "ACTUALIZO")
-                     window.location = "index";
-
-                     Swal.fire({
-                         type: 'success',
-                         title: 'OK',
-                         text: response.message,
-                     });
-
-                 },
-                 error: function(jqXHR, textStatus, errorThrown) {
-                     console.log('error de programacion');
-                     Swal.fire({
-                         type: 'error',
-                         title: 'Oops...',
-                         text: 'ejemplosdsfs!',
-                     });
-                 },
-                 fail: function() {
-                     console.log('error servidor')
-                 }
-             }) */
-
             var formData = new FormData($('#form_product')[0]);
 
             $.ajax({

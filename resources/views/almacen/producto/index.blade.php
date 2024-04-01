@@ -75,6 +75,7 @@
                                 <th>Stock Min.</th>
                                 <th>P. Compra</th>
                                 <th>P. Venta</th>
+                                <th>Stock Actual</th>
                                 <th>Accion</th>
                             </tr>
                         </thead>
@@ -175,8 +176,8 @@
                         name: 'unidadMedida'
                     },
                     {
-                        data: 'idCategoria',
-                        name: 'idCategoria'
+                        data: 'nomCategoria',
+                        name: 'nomCategoria'
                     },
                     {
                         data: 'stockMinimo',
@@ -189,6 +190,10 @@
                     {
                         data: 'precioVentaProducto',
                         name: 'precioVentaProducto'
+                    },
+                    {
+                        data: 'stock',
+                        name: 'stock'
                     },
                     {
                         data: 'idProducto',

@@ -36,9 +36,9 @@
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="input-group">
+                    {{--  <div class="input-group">
                         <input type="text" class="form-control" id="totalVentas" placeholder="Buscar producto" required>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-lg-5">
 

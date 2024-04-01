@@ -106,6 +106,7 @@ class EgresoController extends Controller
         $tipopago = DB::table('tipopago')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+        $categoria = DB::table('categoria')->where('condicionCategoria', '=', '1')->get();
 
         if ($request->ajax()) {
             $data = DB::table('producto')
@@ -118,7 +119,7 @@ class EgresoController extends Controller
 
         }
 
-        return view('comercial/compra/create', ['proveedor' => $proveedor, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
+        return view('comercial/compra/create', ['proveedor' => $proveedor, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario, 'categoria' => $categoria]);
 
     }
 

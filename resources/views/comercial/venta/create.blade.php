@@ -51,7 +51,7 @@
                     <div class="row justify-content-between">
                         <div class="col-auto">
                             <form class="d-flex flex-wrap align-items-center">
-                                <label for="inputPassword2" class="visually-hidden">Search</label>
+                                {{-- <label for="inputPassword2" class="visually-hidden">Search</label>
                                 <div class="me-3">
                                     <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2"
                                         placeholder="Search...">
@@ -65,15 +65,15 @@
                                         <option value="3">Price High</option>
                                         <option value="4">Sold Out</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
                         <div class="col-auto">
                             <div class="text-lg-end my-1 my-lg-0">
-                                <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
-                                        class="mdi mdi-cog"></i></button>
-                                <a href="ecommerce-product-edit.html" class="btn btn-danger waves-effect waves-light"><i
-                                        class="mdi mdi-plus-circle me-1"></i> Add New</a>
+                                {{-- <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
+                                        class="mdi mdi-cog"></i></button> --}}
+                                <a id="addClienteV" class="nuevoCli btn btn-success waves-effect waves-light"><i
+                                        class="mdi mdi-plus-circle me-1"></i> Crear Cliente</a>
                             </div>
                         </div><!-- end col-->
                     </div> <!-- end row -->
@@ -137,8 +137,8 @@
 
                                     </div>
                                     <div class="row mt-1 mb-1">
-                                        <label for="idCliente" class="form-label col-2 col-xl-2">Cliente</label>
-                                        <div class="col-8 col-xl-8 col-md-6">
+                                        <label for="idCliente" class="form-label col-2 col-xl-2 col-md-4">Cliente</label>
+                                        <div class="col-10 col-xl-10 col-md-8">
                                             <select class="form-control form-control-sm" id="idCliente">
                                                 <option value="">Seleccione...</option>
                                                 @foreach ($cliente as $cli)
@@ -146,13 +146,6 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                        </div>
-                                        <div class="col-2 col-xl-2 col-md-4 text-lg-end {{-- my-1 --}} my-lg-0">
-                                            <a><button type="button" id="serchbtn"
-                                                    class="nuevo btn btn-success waves-effect waves-light mb-0 me-0 form-control-sm"
-                                                    style="padding: 0px 6px 0px 3px"><i class="mdi mdi-plus me-1"
-                                                        style="padding: 0px"></i>
-                                                    Add Cliente </button></a>
                                         </div>
                                     </div>
                                     <div class="row mb-1">
@@ -639,7 +632,7 @@
             });
         };
 
-        $(document).on("click", ".nuevo", function() {
+        $(document).on("click", ".nuevoCli", function() {
             $('#formCliente').modal('show');
 
         });

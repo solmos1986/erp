@@ -46,6 +46,7 @@ class ClienteController extends Controller
     }
     public function store(ClienteRequest $request)
     {
+        //dd($request, "LLEGUE CLieNTE STORE");
         $rules = array(
             'nomCliente' => 'required',
             'docCliente' => 'required',
@@ -67,6 +68,7 @@ class ClienteController extends Controller
 
         $clientes = new Cliente;
         $clientes->nomCliente = $request->get('nomCliente');
+        //dd($clientes, "nombbeee");
         $clientes->docCliente = $request->get('docCliente');
         $clientes->tel1Cliente = $request->get('tel1Cliente');
         $clientes->tel2Cliente = $request->get('tel2Cliente');
@@ -155,6 +157,50 @@ class ClienteController extends Controller
             "data" => $imageName,
         ]);
 
+    }
+    public function obtener_clientes(Request $request)
+    {
+        // dd($request->query('query'));
+        $term = trim($request->query('query'));
+
+        if (empty($term)) {
+            return \Response::json([]);
+        }
+
+        $clientes = Cliente::where('nomCliente', 'LIKE', '%' . $term . '%')->limit(5)->get();
+
+        $resultados = [];
+
+        foreach ($clientes as $cliente) {
+            $resultados[] = ['value' => $cliente->nomCliente, 'data' => $cliente->idCliente, 'docCliente' => $cliente->docCliente];
+        }
+
+        return \Response::json([
+            'query' => $term,
+            'suggestions' => $resultados,
+        ]);
+    }
+    public function obtener_documento(Request $request)
+    {
+        // dd($request->query('query'));
+        $term = trim($request->query('query'));
+
+        if (empty($term)) {
+            return \Response::json([]);
+        }
+
+        $clientes = Cliente::where('docCliente', 'LIKE', '%' . $term . '%')->limit(5)->get();
+
+        $resultados = [];
+
+        foreach ($clientes as $cliente) {
+            $resultados[] = ['value' => $cliente->nomCliente, 'data' => $cliente->idCliente, 'docCliente' => $cliente->docCliente];
+        }
+
+        return \Response::json([
+            'query' => $term,
+            'suggestions' => $resultados,
+        ]);
     }
 
 }

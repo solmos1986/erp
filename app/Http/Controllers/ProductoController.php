@@ -37,8 +37,12 @@ class ProductoController extends Controller
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
     {
+
         if ($request->ajax()) {
-            $data = DB::table('producto')
+            $data = DB::table('producto as pro')
+                ->select('pro.imagenProducto', 'pro.idProducto', 'pro.codProducto', 'pro.nomProducto', 'pro.unidadMedida', 'cat.nomCategoria', 'pro.stockMinimo', 'pro.precioVentaProducto', 'sp.stock')
+                ->join('categoria as cat', 'cat.idCategoria', '=', 'pro.idCategoria')
+                ->join('stock_producto as sp', 'sp.idProducto', '=', 'pro.idProducto')
                 ->where('condicionProducto', '=', '1')
                 ->get();
             return Datatables::of($data)
@@ -69,7 +73,7 @@ class ProductoController extends Controller
         $producto->idCategoria = $request->get('idCategoria');
         $producto->precioVentaProducto = $request->get('precioVentaProducto');
         $producto->condicionProducto = '1';
-        dd($producto);
+        //dd($producto);
 
         if ($request->hasFile('imagenProducto')) {
 
