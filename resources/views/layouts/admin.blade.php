@@ -96,7 +96,7 @@
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
     <script src="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
     @stack('javascript')
-    <script src="{{ asset('/js/socket/dispositivo-socket.js') }}"></script>
+    {{-- <script src="{{ asset('/js/socket/dispositivo-socket.js') }}"></script> --}}
 </body>
 
 </html>
