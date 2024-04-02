@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('hour:update')->cron('* * * * *');
+        $schedule->command('hour:update')->cron('* * * * *'); //todos los dias '05 00 * * *' 00:05:00 am
         //$schedule->job(new CustomTask);
     }
 

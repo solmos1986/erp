@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\Utils;
+use App\SocketCliente\Usuario;
 use DB;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use Mail;
 
 class CustomTask extends Command
 {
@@ -36,28 +37,36 @@ class CustomTask extends Command
     public function handle()
     {
         $this->info('Custom task executed successfully!');
-        Log::info("job recorido actualizado");
+        Log::info("job recorido actualizado => " . date('Y-m-d H:i:s'));
+        $inscripcion_eliminar = DB::table('detalle_inscripcion')
+            ->join('cliente', 'cliente.idCliente', 'detalle_inscripcion.idCliente')
+            ->join('inscripcion', 'inscripcion.idInscripcion', 'detalle_inscripcion.idInscripcion')
+            ->where('inscripcion.estado', 'vig')
+            ->where('detalle_inscripcion.fechaFin', '>=', DB::raw("DATE_FORMAT((NOW() - INTERVAL 1 DAY), '%Y-%m-%d 00:00:00')"))
+            ->where('detalle_inscripcion.fechaFin', '<=', DB::raw("DATE_FORMAT((NOW() - INTERVAL 1 DAY), '%Y-%m-%d 23:59:59')"))
+            ->get();
+
+        $inscripcion_nuevas = DB::table('detalle_inscripcion')
+            ->where('inscripcion.estado', 'ant')
+            ->join('cliente', 'cliente.idCliente', 'detalle_inscripcion.idCliente')
+            ->join('inscripcion', 'inscripcion.idInscripcion', 'detalle_inscripcion.idInscripcion')
+            ->where('detalle_inscripcion.fechaFin', '>=', DB::raw("DATE_FORMAT((NOW()), '%Y-%m-%d 00:00:00')"))
+            ->where('detalle_inscripcion.fechaFin', '<=', DB::raw("DATE_FORMAT((NOW()), '%Y-%m-%d 23:59:59')"))
+            ->get();
+
+        Log::info("inscripciones inscripcion_eliminar =>" . Utils::jsonLog($inscripcion_eliminar));
+        Log::info("inscripciones inscripcion_nueva =>" . Utils::jsonLog($inscripcion_nuevas));
 
         $ejecutar_actualizacion = DB::select('CALL ACT_ESTADO_INSCRIPCIONES();');
-        Log::info($ejecutar_actualizacion[0]->mensaje);
+        Log::info('sp ACT_ESTADO_INSCRIPCIONES=>' . $ejecutar_actualizacion[0]->mensaje);
 
-        Mail::send([], [], function ($message) {
-            $message->to('stivenlovera@gmail.com');
+        $socket = new Usuario();
+        $socket->eliminacion_programada([
+            'eliminar' => $inscripcion_eliminar,
+            'anadir' => $inscripcion_nuevas,
+        ]);
 
-            $message->cc('stivenlovera@gmail.com');
-            $message->subject('prueba');
-            /* $message->attachData($pdf->output(), "$goal->subempresa-VisitReport$goal->Codigo.pdf", [
-            'mime' => 'application/pdf',
-            ]); */
-            //$message->setBody('test');
-            $message->html('<h5> test</h5>');
-        });
-        //dd($ejecutar_actualizacion);
-        if ($ejecutar_actualizacion) {
-            Log::info("se actualizo las inscripciones correctamente ");
-        } else {
-            Log::info("ocurrio un error ");
-        }
         //return Command::SUCCESS;
+
     }
 }
