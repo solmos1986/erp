@@ -28,7 +28,7 @@ class Config
             'origin' => 'localhost',
             'token' => 'web',
         ]]);
-        Log::info("Estableciendo conexion => " . json_encode($this->data, JSON_PRETTY_PRINT));
+        Log::info("Config() socket conexion => " . json_encode($this->data, JSON_PRETTY_PRINT));
         $this->client->text(json_encode((array) $this->data));
     }
 
@@ -43,7 +43,7 @@ class Config
             'origin' => 'localhost',
             'token' => 'web',
         ]]);
-        Log::info("Estableciendo conexion => " . json_encode($this->data, JSON_PRETTY_PRINT));
+        Log::info("Config/subscribe_server() estableciendo socket conexion => " . json_encode($this->data, JSON_PRETTY_PRINT));
         $this->client->text(json_encode((array) $this->data));
     }
 
@@ -55,12 +55,12 @@ class Config
             $this->data->message = $inscripcion;
             $this->data->channel = 'cliente-' . auth()->user()->obtener_usuario()->authenticacion_id;
             $this->client->text(json_encode((array) $this->data));
-            Log::info('Enviando mensaje => ' . json_encode($this->data, JSON_PRETTY_PRINT));
+            Log::info('Config/set_message() set_message enviando mensaje canal:' . $this->data->channel . ' socket => ' . json_encode($this->data, JSON_PRETTY_PRINT));
             $this->client->close();
         } catch (\Throwable $th) {
             dd($th);
+            Log::critical('Config/set_message() enviando mensaje canal:' . $this->data->channel . ' socket => ' . $th->getMessage());
         }
-
     }
     public function set_mesage_interno($inscripcion)
     {
@@ -70,11 +70,10 @@ class Config
             $this->data->message = $inscripcion;
             $this->data->channel = 'server';
             $this->client->text(json_encode((array) $this->data));
-            Log::info('Enviando mensaje => ' . json_encode($this->data, JSON_PRETTY_PRINT));
+            Log::info('Config/set_mesage_interno() enviando mensaje canal:' . $this->data->channel . ' socket  => ' . json_encode($this->data, JSON_PRETTY_PRINT));
             $this->client->close();
         } catch (\Throwable $th) {
-            dd($th);
+            Log::critical('Config/set_mesage_interno() enviando mensaje canal:' . $this->data->channel . ' socket => ' . $th->getMessage());
         }
-
     }
 }
