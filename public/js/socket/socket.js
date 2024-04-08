@@ -5,24 +5,16 @@ function connect() {
         ws.send(JSON.stringify({
             "request": "SUBSCRIBE",
             "message": "",
-            "channel": "erpFrontEnd"
+            "channel": channel
         }));
     };
 
     ws.onmessage = function (e) {
-        const data = JSON.parse(e.data)
+        const data = JSON.parse(e.data);
+        limpiarAutomatico(data)
+        insertInscripcion(data)
         console.log(data.message)
-        switch (data.message.event) {
-            case 'insertInscripcion:show':
-                $.toast(data.message.notificacion)
-                break;
-            case 'insertFoto:show':
-                $.toast(data.message.notificacion)
-                break;
-            default:
-                $.toast(data.message.notificacion)
-                break;
-        }
+
     };
 
     ws.onclose = function (e) {

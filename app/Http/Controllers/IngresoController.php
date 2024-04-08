@@ -134,6 +134,7 @@ class IngresoController extends Controller
                 'idUsuario' => $request->idUsuario,
             ]);
 
+        $datos = [];
         foreach ($request->detalleVenta as $key => $value) {
             /* dump($value['idProducto']); */
             $insertDetalleVenta = DB::table('detalle_ingreso')
@@ -142,10 +143,8 @@ class IngresoController extends Controller
                     'idProducto' => $value['idProducto'],
                     'cantidadVenta' => $value['cantidad'],
                     'precioVenta' => $value['precioVentaProducto'],
-
                 ]);
 
-            $datos = [];
             for ($i = 1; $i <= $value['cantidad']; $i++) {
                 //dump($i);
                 //dd($value['cantidad']);
@@ -154,11 +153,7 @@ class IngresoController extends Controller
                     'idProducto' => $value['idProducto'],
                     'idDetalleIngreso' => $insertDetalleVenta,
                 ));
-                /*   $datos = array(
-            'serie' => 'serie',
-            'producto_id' => $value['idProducto'],
-            'idDetalleEgreso' => $insertDetalleCompra,
-            ); */
+
             }
             // dump(count($datos));
 
