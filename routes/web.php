@@ -87,6 +87,7 @@ Route::get('almacen/producto/{id}', [ProductoController::class, 'edit'])->name('
 Route::delete('almacen/producto/{id}', [ProductoController::class, 'destroy']);
 //
 Route::get('comercial/cliente', [ClienteController::class, 'index'])->name('index.cliente');
+Route::get('comercial/cliente/data-table', [ClienteController::class, 'dataTable'])->name('index.dataTable');
 Route::post('comercial/cliente', [ClienteController::class, 'store'])->name('store.cliente');
 Route::post('comercial/clienteImagen', [ClienteController::class, 'Base64toFile']);
 Route::put('comercial/cliente/{id}', [ClienteController::class, 'update']);
@@ -233,8 +234,8 @@ Route::prefix('dashboard')->group(function () {
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
 Route::prefix('clientes')->group(function () {
-    Route::get('/', [ClienteController::class, 'obtener_clientes']);
-    Route::get('/documento', [ClienteController::class, 'obtener_documento']);
+    Route::get('/buscar-nombre', [ClienteController::class, 'obtener_clientes']);
+    Route::get('/buscar-ci', [ClienteController::class, 'obtener_documento']);
 
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });

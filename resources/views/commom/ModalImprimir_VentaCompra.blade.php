@@ -8,9 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="height:600px" id="areaImprimir">
-
                 <iframe id="iframePDF" name="iframePDF" src="" style="height: 100%; width: 100%"></iframe>
-
             </div>
             <div class="modal-footer">
                 <a href="" id="cancelPDF"><button type="button" class="btn btn-secondary"

@@ -12,6 +12,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Luecano\NumeroALetras\NumeroALetras;
+use Validator;
 use Yajra\DataTables\DataTables;
 
 class InscripcionController extends Controller
@@ -71,9 +72,7 @@ class InscripcionController extends Controller
                 ->addIndexColumn()
                 ->rawColumns([])
                 ->make(true);
-
         }
-
         return view('comercial/inscripcion/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
 
     }
@@ -127,39 +126,86 @@ class InscripcionController extends Controller
                 ->make(true);
 
         }
-
         return view('comercial/inscripcion/create', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'paquetes' => $paquetes, 'usuario' => $usuario]);
-
     }
     public function store(Request $request)
     {
+        $rules = array(
+            'idCliente' => 'required',
+            'idTipoPago' => 'required',
+            'idTipoComprobante' => 'required',
+        );
+        $messages = [
+            'idCliente.required' => "Selecione cliente",
+            'idTipoPago.required' => "Selecione tipo pago",
+            'idTipoComprobante.required' => "Selecione comprabante",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+        //set fechas
+        $fechaInicio = date('Y-m-d', strtotime($request->fechaInicio)) . ' 00:00:00';
+        $fechaFin = date('Y-m-d', strtotime($request->fechaFin)) . ' 23:59:59';
+
+        $estado = $this->estado_inscripcion($request->fechaInicio);
         $insertInscripcion = DB::table('inscripcion')
             ->insertGetId([
                 'idCliente' => $request->idCliente,
                 'idTipoPago' => $request->idTipoPago,
                 'idTipoComprobante' => $request->idTipoComprobante,
-                'fechaInscripcion' => now(),
                 'impuestoInscripcion' => $request->impuestoInscripcion,
-                'estadoInscripcion' => $request->estadoInscripcion,
-                'idUsuario' => $request->idUsuario,
+                'idUsuario' => auth()->user()->obtener_usuario()->idUsuario,
+                'estado' => $estado,
             ]);
+
         $insertDetalleInscripcion = DB::table('detalle_inscripcion')->insertGetId([
             'idInscripcion' => $insertInscripcion,
             'idCliente' => $request->idCliente,
             'idPaquete' => $request->idPaquete,
-            'fechaInicio' => $request->fechaInicio,
-            'fechaFin' => $request->fechaFin,
+            'fechaInicio' => $fechaInicio,
+            'fechaFin' => $fechaFin,
             'costoPaquete' => $request->costoPaquete,
         ]);
-        $socket = new Usuario();
-        $socket->store_cliente(['idInscripcion' => $insertInscripcion]);
+        if ($estado == 'vig') {
+            $this->insertWebSocket($request->idCliente, $insertInscripcion, $fechaInicio, $fechaFin);
+        }
+
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",
             "data" => $insertInscripcion,
         ]);
-
     }
+
+    public function estado_inscripcion($fechaInicio)
+    {
+        $fechaActual = strtotime(date('Y-m-d'));
+        $fechaInicio = date('Y-m-d', strtotime($fechaInicio));
+        if ($fechaInicio > $fechaActual) {
+            return 'ant';
+        } else {
+            return 'vig';
+        }
+    }
+    public function insertWebSocket($idCliente, $insertInscripcion, $fechaInicio, $fechaFin)
+    {
+        $socket = new Usuario();
+        $cliente = DB::table('cliente')
+            ->where('idCliente', $idCliente)
+            ->first();
+        $socket->store_cliente([
+            'idInscripcion' => $insertInscripcion,
+            'idCliente' => $cliente->idCliente,
+            'docCliente' => $cliente->docCliente,
+            'fechaInicio' => $fechaInicio,
+            'fechaFin' => $fechaFin,
+        ]);
+    }
+
     public function eliminar_clientes_dispositivo()
     {
         $socket = new Usuario();

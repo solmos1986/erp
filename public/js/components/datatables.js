@@ -2,6 +2,7 @@ function dataTable(element, url, columns) {
     var dataTable = element.DataTable({
         processing: true,
         serverSide: true,
+        order: [],
         ajax: {
             url: url,
             data: [],
