@@ -5,7 +5,7 @@
     <link href="{{ asset('/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/mohithg-switchery/switchery.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/multiselect/css/multi-select.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
@@ -24,272 +24,241 @@
         type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <!-- App css -->
+    {{-- <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" /> --}}
 @endpush
 
 @section('contenido')
     <!-- start page title -->
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                        <li class="breadcrumb-item active">Inscripciones</li>
-                    </ol>
+    <form action="" id="form_inscripcion">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Erp</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Sistema venta</a></li>
+                            <li class="breadcrumb-item active">Inscripciones</li>
+                        </ol>
+                    </div>
+                    <h4 class="page-title">Nueva inscripcion</h4>
                 </div>
-                <h4 class="page-title">INSCRIPCION</h4>
             </div>
         </div>
-    </div>
-    <!-- end page title -->
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <form class="d-flex flex-wrap align-items-center">
-                                {{-- <label for="inputPassword2" class="visually-hidden">Search</label>
-                                <div class="me-3">
-                                    <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2"
-                                        placeholder="Search...">
-                                </div> --}}
-                                {{-- <label for="status-select" class="me-2">Sort By</label>
-                                <div class="me-sm-3">
-                                    <select class="form-select my-1 my-lg-0" id="status-select">
-                                        <option selected="">All</option>
-                                        <option value="1">Popular</option>
-                                        <option value="2">Price Low</option>
-                                        <option value="3">Price High</option>
-                                        <option value="4">Sold Out</option>
-                                    </select>
-                                </div> --}}
-                            </form>
+        <!-- end row-->
+        <div class="card shadow-0 border rounded-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="fechaInscripcion" class="form-label col-12 col-xl-3">Fecha</label>
+                            <div class="col-12 col-xl-9">
+                                <input type="text" id="Fecha" name="Fecha" class="form-control form-control-sm"
+                                    placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>" disabled>
+                            </div>
                         </div>
-                        <div class="col-auto">
-                            <div class="text-lg-end my-1 my-lg-0">
-                                {{-- <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
-                                        class="mdi mdi-cog"></i></button> --}}
-                                <a id="addCliente" class="addCliente btn btn-success waves-effect waves-light"><i
-                                        class="mdi mdi-plus-circle me-1"></i> Agregar Cliente</a>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="idVendedor" class="form-label col-12 col-xl-3">Vendedor</label>
+                            <div class="col-12 col-xl-9">
+                                <select class="form-control select2 form-control-sm" id="idVendedor" name="idVendedor">
+                                    @foreach ($usuario as $user)
+                                        <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                        </div><!-- end col-->
-                    </div> <!-- end row -->
-                </div>
-            </div> <!-- end card -->
-        </div> <!-- end col-->
-    </div>
-    <!-- end row-->
-
-    <div class="row justify-content-center mb-0">
-        <div class="col-md-12 col-xl-12">
-            <div class="card shadow-0 border rounded-3">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4 mb-lg-0">
-                            <div class="row mb-1">
-                                <label for="fechaInscripcion" class="form-label col-2 col-xl-2">Fecha</label>
-                                <div class="col-4 col-xl-4">
-                                    <input type="text" id="datetime-datepicker" class="form-control form-control-sm"
-                                        placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>" disabled>
-                                </div>
-                                <label for="idVendedor" class="form-label col-2 col-xl-2">Vendedor</label>
-                                <div class="col-4 col-xl-4">
-                                    <select class="form-control select2 form-control-sm" id="idVendedor">
-                                        @foreach ($usuario as $user)
-                                            <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="idCliente" class="form-label col-12 col-xl-3">Cliente</label>
+                            <div class="col-12 col-xl-9">
+                                <select class="form-control form-control-sm" name="idCliente" id="idCliente">
+                                </select>
                             </div>
-                            <div class="row mb-1">
-                                <label for="idCliente" class="form-label col-2 col-xl-2">Cliente</label>
-
-                                <div class="col-10 col-xl-10">
-                                    <input type="text" class="form-control form-control-sm autocompleteNom"
-                                        style=" z-index: 2; background: transparent;" name="nomCliente" id="nomCliente" />
-                                    <input type="text" name="idCliente" id="idCliente" hidden />
-
-                                </div>
-                            </div>
-                            <div class="row mb-1">
-                                <label for="docCliente" class="form-label col-2 col-xl-2">NIT/CI</label>
-                                <div class="col-4 col-xl-4">
-                                    <input type="text" class="form-control form-control-sm autocompleteDoc"
-                                        style=" z-index: 2; background: transparent;" name="docCliente"
-                                        id="docCliente" />
-                                    {{-- <input type="text" name="idCliente" id="idCliente" hidden /> --}}
-                                    {{-- <input type="select" class="form-control form-control-sm" id="docCliente"
-                                        placeholder="NIT/CI"> --}}
-                                </div>
-                                <label for="idTipoPago" class="form-label col-2 col-xl-2">Tipo Pago</label>
-                                <div class="col-4 col-xl-4">
-                                    <select class="form-control form-control-sm" id="idTipoPago">
-                                        @foreach ($tipopago as $tp)
-                                            <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}</option>
-                                        @endforeach
-                                    </select>
-
-                                </div>
-
-                            </div>
-                            <div class="row mb-1">
-                                <label for="idTipoComprobante" class="form-label col-2 col-xl-2">Comprobante</label>
-                                <div class="col-4 col-xl-4">
-                                    <div class="col-12 col-xl-12">
-                                        <select class="form-control form-control-sm" id="idTipoComprobante"
-                                            value='1'>
-                                            @foreach ($tipo_comprobante as $tp)
-                                                <option value="{{ $tp->impuestoComprobante }}">
-                                                    {{ $tp->nomTipoComprobante }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="idCliente" class="form-label col-12 col-xl-3">&nbsp;</label>
+                            <div class="col-12 col-xl-9">
+                                <div class="col-auto">
+                                    <div class="text-lg-end">
+                                        <button type="button"
+                                            class="nuevo btn btn-sm btn-success waves-effect waves-light w-100">
+                                            <i class="mdi mdi-plus-circle me-1"></i> Agregar Cliente</button>
                                     </div>
                                 </div>
-                                <label for="impuestoInscripcion" class="form-label col-2 col-xl-2">Impuestos</label>
-                                <div class="col-4 col-xl-4">
-                                    <input type="number" class="form-control form-control-sm" id="impuestoInscripcion"
-                                        placeholder="% impuesto" value="0" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="docCliente" class="form-label col-12 col-xl-3">NIT/CI</label>
+                            <div class="col-12 col-xl-9">
+                                <select class="form-control form-control-sm" name="docCliente" id="docCliente">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="idTipoPago" class="form-label col-12 col-xl-3">Tipo Pago</label>
+                            <div class="col-12 col-xl-9">
+                                <select class="form-control form-control-sm" name="idTipoPago" id="idTipoPago">
+                                    @foreach ($tipopago as $tp)
+                                        <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="idTipoComprobante" class="form-label col-12 col-xl-3">Comprobante</label>
+                            <div class="col-12 col-xl-9">
+                                <div class="col-12 col-xl-12">
+                                    <select class="form-control form-control-sm" id="idTipoComprobante"
+                                        name="idTipoComprobante">
+                                        @foreach ($tipo_comprobante as $tp)
+                                            <option value="{{ $tp->idTipoComprobante }}">
+                                                {{ $tp->nomTipoComprobante }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                {{-- <label for="example-input-small"
-                                            class="form-label col-2 col-xl-2">Vendedor</label>
-                                        <div class="col-4 col-xl-4">
-                                            <input type="select" class="form-control form-control-sm"
-                                                id="example-input-small" placeholder="Vendedor">
-                                        </div> --}}
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12 col-lg-12 col-xl-12 mb-4 mb-lg-0">
-
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div class="row mb-1">
+                            <label for="impuestoInscripcion" class="form-label col-12 col-xl-3">Impuestos</label>
+                            <div class="col-12 col-xl-9">
+                                <input type="number" class="form-control form-control-sm" name="impuestoInscripcion"
+                                    id="impuestoInscripcion" placeholder="% impuesto" value="0" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center mb-0">
-        <div class="col-md-12 col-xl-12">
-            <div class="card shadow-0 border rounded-3">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-12 col-xl-12">
-                            <h5>DETALLE</h5>
-                            <div class="table-responsive">
-                                <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
-                                    style="min-block-size: ">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Paquete</th>
-                                            <th>Duracion</th>
-                                            <th>Inicio</th>
-                                            <th>fin</th>
-                                            <th>Precio</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="dtVE">
-                                        <tr>
-                                            <td><select class="form-control form-control-sm" id="paquetes"
-                                                    name="paquetes">
-                                                    <option value="0">Seleccione un Paquete</option>
-                                                    @foreach ($paquetes as $pq)
-                                                        <option data-id="{{ $pq->idPaquete }}"
-                                                            value="{{ $pq->idPaquete }}">
-                                                            {{ $pq->nomPaquete }}
-                                                        </option>
-                                                    @endforeach
-                                                </select></td>
-                                            <td>
 
-                                                <input type="text" class="form-control form-control-sm"
-                                                    id="duracionPaquete" placeholder="duracion" value="" readonly>
-
-                                            </td>
-                                            <td>
-
-                                                <input type="text" id="fechaInicio"
-                                                    class="form-control form-control-sm" placeholder="Date and Time"
-                                                    value="<?php echo date('Y-m-d'); ?>">
-                                            </td>
-                                            <td>
-
-                                                <input type="text" id="fechaFin" class="form-control form-control-sm"
-                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d'); ?>" readonly>
-                                            </td>
-                                            <td>
-                                                <input type="number" class="form-control form-control-sm"
-                                                    id="costoPaquete" placeholder="costo" value="" readonly>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th></th>
-
-                                            <th style="text-align:right;"><b>Total Bs.</b>
-                                            </th>
-                                            <th style="text-align:left;"><span id="TotalCart"
-                                                    style="padding-left: 15px"></span></th>
-
-                                        </tr>
-                                    </tfoot>
-                                </table>
+        <div class="row justify-content-center mb-0">
+            <div class="col-md-12 col-xl-12">
+                <div class="card shadow-0 border rounded-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-xl-12">
+                                <h5>DETALLE</h5>
+                                <div class="table-responsive">
+                                    <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
+                                        style="min-block-size: ">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Paquete</th>
+                                                <th>Duracion</th>
+                                                <th>Inicio</th>
+                                                <th>fin</th>
+                                                <th>Precio</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dtVE">
+                                            <tr>
+                                                <td>
+                                                    <select class="form-control form-control-sm" id="idPaquete"
+                                                        name="idPaquete">
+                                                        @foreach ($paquetes as $key => $pq)
+                                                            <option data-id="{{ $pq->idPaquete }}"
+                                                                value="{{ $pq->idPaquete }}"
+                                                                data-duracion="{{ $pq->duracionPaquete }}"
+                                                                data-costo="{{ $pq->costoPaquete }}"
+                                                                {{ $key == 0 ? 'selected' : '' }}>
+                                                                {{ $pq->nomPaquete }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        id="duracionPaquete" placeholder="duracion"
+                                                        name="duracionPaquete" value="" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="fechaInicio" name="fechaInicio"
+                                                        class="form-control form-control-sm" placeholder="Fecha inicio">
+                                                </td>
+                                                <td>
+                                                    <input type="text" id="fechaFin" name="fechaFin"
+                                                        class="form-control form-control-sm" placeholder="Fecha fin"
+                                                        readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        name="costoPaquete" id="costoPaquete" placeholder="costo"
+                                                        value="" readonly>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th style="text-align:right;"><b>Total Bs.</b>
+                                                </th>
+                                                <th style="text-align:left;"><span id="TotalCart"
+                                                        style="padding-left: 15px"></span></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <br>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 col-lg-12 col-xl-12">
-                            <div class="text-lg-end my-1 my-lg-0">
-                                <a href="{{ url('comercial/inscripcion') }}"><button type="button"
-                                        class="btn w-sm btn-light waves-effect">Cancelar</button></a>
-                                <button type="button"
-                                    class="procesar btn w-sm btn-success waves-effect waves-light guardar">Guardar</button>
-                                <button type="button"
-                                    class="btn w-sm btn-danger waves-effect waves-light">Borrar</button>
-                            </div>
-                        </div> <!-- end col -->
+                        <div class="row">
+                            <br>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-xl-12">
+                                <div class="text-lg-end my-1 my-lg-0">
+                                    <a href="{{ url('comercial/inscripcion') }}"><button type="button"
+                                            class="btn w-sm btn-light waves-effect">Cancelar</button></a>
+                                    <button type="button"
+                                        class="procesar btn w-sm btn-success waves-effect waves-light guardar">Guardar</button>
+                                    <button type="button"
+                                        class="btn w-sm btn-danger waves-effect waves-light">Borrar</button>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    @include('commom.ModalCrear_Cliente')
+    </form>
+    <x-components.modal size="modal-xl" id="modal_cliente" nameBtnSave="Guardar" nameBtnClose="Cancelar"
+        idBtnSave="btn_save">
+        @include('commom.ModalCrear_Cliente')
+    </x-components.modal>
     @include('commom.ModalImprimir_VentaCompra')
 @endsection
 
 @push('javascript')
-    {{--  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script> --}}
     <script src="{{ asset('/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-    <!-- Select2 js-->
-
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>
 
-    <!-- Dropzone file uploads-->
     <script src="{{ asset('/libs/dropzone/min/dropzone.min.js') }}"></script>
 
-    <!-- Quill js -->
     <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
-
-    <!-- Select2 js-->
     <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
-    <!-- Dropzone file uploads-->
     <script src="{{ asset('/libs/dropzone/min/dropzone.min.js') }}"></script>
 
-    <!-- Quill js -->
     <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
     <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
     <script src="{{ asset('/libs/devbridge-autocomplete/jquery.autocomplete.min.js') }}"></script>
@@ -299,368 +268,13 @@
     <script src="{{ asset('/libs/multiselect/js/jquery.multi-select.js') }}"></script>
     <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
-    <script src="{{ asset('/js/pages/form-pickers.init.js') }}"></script>
     <script src="{{ asset('/libs/printjs/print.min.js') }}"></script>
     <script src="{{ asset('/libs/webcam-easy/webcam-easy.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
-
-    <script>
-        var paquete = [];
-        var detalleVenta = [];
-        var select = document.getElementById("paquetes");
-        select.addEventListener("change", function(e) {
-
-            var id = this.options[this.selectedIndex].value;
-            console.log("Option selected: " + id);
-            $.ajax({
-                type: "get",
-                url: `${base_url}/almacen/paquetes/${id}`,
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response.data.costoPaquete, "lista de paquetes")
-                    $('#costoPaquete').val(response.data.costoPaquete)
-                    $('#duracionPaquete').val(response.data.duracionPaquete)
-                    AddMes();
-                    calcularImpuesto();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('error de programacion');
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'ejemplosdsfs!',
-                    });
-                },
-                fail: function() {
-                    console.log('error servidor')
-                }
-
-            });
-
-        });
-        var inicio = document.getElementById("fechaInicio");
-        inicio.addEventListener("ready", function() {
-            console.log("Cambio fecha inicio");
-            AddMes();
-        });
-        var comprobante = document.getElementById("idTipoComprobante");
-        comprobante.addEventListener("change", function() {
-            calcularImpuesto();
-        });
-
-        function calcularImpuesto() {
-            var impuesto = comprobante.value;
-            var costoIns = $('#costoPaquete').val();
-            var tImpuesto = impuesto * costoIns;
-            $('#impuestoInscripcion').val(tImpuesto);
-            console.log(tImpuesto, "Valor Comprobante");
-
-        }
-
-
-        var obj = document.getElementById('fechaInicio');
-        var obj2 = document.getElementById('duracionPaquete');
-        var obj3 = document.getElementById('fechaFin');
-        obj.value = setFormato(new Date());
-
-        function AddMes() {
-            var fecha = new Date(obj.value);
-            console.log("fechasss", fecha)
-            var mes = fecha.getMonth();
-            var costo = $('#costoPaquete').val();
-            $('#TotalCart').text(costo);
-            console.log("MEESSS", mes);
-            fecha.setMonth(fecha.getMonth() + +(obj2.value));
-            console.log(fecha, "fecha sumada")
-            obj3.value = setFormato(fecha);
-        }
-
-        function setFormato(fecha) {
-            var seg = ("0" + fecha.getSeconds()).slice(-2);
-            var min = ("0" + fecha.getMinutes()).slice(-2);
-            var hour = ("0" + fecha.getHours());
-            var day = ("0" + fecha.getDate()).slice(-2);
-            var month = ("0" + (fecha.getMonth() + 1)).slice(-2);
-            var date = fecha.getFullYear() + "-" + (month) + "-" + (day) /* + "T" + (hour) + ":" + (min) + ":" + (seg) */ ;
-            return date;
-        }
-        $(document).on('click', '.procesar', function() {
-
-            if ($('#impuestoInscripcion').val() == 0) {
-                var idTC = 1
-            } else {
-                var idTC = 2
-            }
-            var dato = {
-
-                idCliente: $('#idCliente').val(),
-                idTipoPago: $('#idTipoPago').val(),
-                idTipoComprobante: idTC,
-
-                impuestoInscripcion: $('#impuestoInscripcion').val(),
-                estadoInscripcion: 1,
-                idUsuario: $('#idVendedor').val(),
-                idPaquete: $('#paquetes').val(),
-                fechaInicio: $('#fechaInicio').val() + 'T00:00:00',
-                fechaFin: $('#fechaFin').val() + 'T23:59:59',
-                costoPaquete: $('#costoPaquete').val(),
-
-
-            };
-            console.log(dato, "ENVIADO A STORE");
-            $.ajax({
-                type: "post",
-                url: `${base_url}/comercial/inscripcion`,
-                dataType: 'json',
-                data: dato,
-                success: function(response) {
-                    Swal.fire({
-                        title: 'Desea imprimir?',
-                        text: "Esta proceso es irreversible",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Si, imprimir!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            verPDF(response.data)
-
-                        } else {
-                            window.location = "index";
-                        }
-                    })
-
-
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('error de programacion');
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'ejemplosdsfs!',
-                    });
-                },
-                fail: function() {
-                    console.log('error servidor')
-                }
-            });
-        });
-
-        function verPDF(id) {
-            var frame = $('#iframePDF');
-            var ahref = $('#cancelPDF');
-            //LOADER
-            $.ajax({
-                type: "GET",
-                url: `${base_url}/comercial/inscripcion-pdf/${id}`,
-                dataType: 'json',
-                success: function(response) {
-                    var src = `data:application/pdf;base64,${response.data}`;
-                    $('#modalImprimir .modal-title').text('RECIBO DE INSCRIPCION');
-                    ahref.attr('href', "{{ url('comercial/inscripcion/index') }}");
-                    frame.attr('src', `data:application/pdf;base64,${response.data}`);
-                    $('#modalImprimir').modal('show');
-                    $('#iframePDF').data('url', response.data)
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('error de programacion');
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'ejemplo!',
-                    });
-                },
-                fail: function() {}
-            });
-
-        }
-        $(document).on('click', '.imprimir', function() {
-            const base64 = $('#iframePDF').data('url')
-            printJS({
-                printable: base64,
-                type: 'pdf',
-                base64: true,
-                onPrintDialogClose: () => {
-                    $('#modalImprimir').modal('hide');
-                    window.location = "index";
-                }
-            });
-        })
-        $('.autocompleteNom').autocomplete({
-            serviceUrl: `${base_url}/clientes`,
-            onSelect: function(cliente) {
-                console.log(cliente)
-                $('#nomCliente').val(cliente.value)
-                $('#idCliente').val(cliente.data)
-                $('#docCliente').val(cliente.docCliente)
-                //alert('You selected: LLEGAMOS AL ALERRA');
-            }
-        });
-        $('.autocompleteDoc').autocomplete({
-            serviceUrl: `${base_url}/clientes/documento`,
-            onSelect: function(cliente) {
-                console.log(cliente)
-                $('#nomCliente').val(cliente.value)
-                $('#idCliente').val(cliente.data)
-                $('#docCliente').val(cliente.docCliente)
-
-                //alert('You selected: LLEGAMOS AL ALERRA');
-            }
-        });
-        $(document).on('click', '.addCliente', function() {
-
-            $('#formCliente').modal('show');
-
-        });
-        var gd = document.getElementById("guardarCliente");
-        gd.addEventListener("click", function(e) {
-            var nom = $('#nomClientep').val()
-            var docu = $('#docClientep').val()
-            console.log("nombre: ", nom)
-            console.log("documento: ", docu)
-            $.ajax({
-                type: "post",
-                url: `${base_url}/comercial/cliente`,
-                dataType: 'json',
-                data: {
-
-                    nomCliente: $('#nomClientep').val(),
-                    docCliente: $('#docClientep').val(),
-                    tel1Cliente: $('#tel1Cliente').val(),
-                    tel2Cliente: $('#tel2Cliente').val(),
-                    dirCliente: $('#dirCliente').val(),
-                    mailCliente: $('#mailCliente').val(),
-                    imagen: $('#base64').val()
-                },
-                success: function(response) {
-                    console.log(response.data, "ACTUALIZO")
-                    var clien = response.data
-                    $('#nomCliente').val(clien.nomCliente)
-                    $('#idCliente').val(clien.idCliente)
-                    $('#formCliente').modal('hide');
-                    Swal.fire({
-                        type: 'success',
-                        title: 'OK',
-                        text: response.message,
-                    });
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('error de programacion');
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'ejemplosdsfs!',
-                    });
-                },
-                fail: function() {
-                    console.log('error servidor')
-                }
-            });
-
-        });
-        const webcamElement = document.getElementById('webcam');
-        const canvasElement = document.getElementById('canvas');
-        const snapSoundElement = document.getElementById('snapSound');
-        const webcam = new Webcam(webcamElement, 'user', canvasElement /* , snapSoundElement */ );
-
-        $(document).on("click", "#capturar", function() {
-            var base64Imagen = webcam.snap();
-            console.log(base64Imagen, "BASE &$");
-            $('#foto_tomada').prop('src', base64Imagen)
-            $('#webcam').hide(),
-                resizeBase64Image(base64Imagen);
-            /* $.ajax({
-                type: "POST",
-                url: `${base_url}/comercial/clienteImagen`,
-                dataType: 'json',
-                data: {
-                    imagen: base64Imagen,
-
-                },
-                success: function(response) {
-                    console.log(response.data, "ACTUALIZO")
-
-                    Swal.fire({
-                        type: 'success',
-                        title: 'OK',
-                        text: response.message,
-                    });
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('error de programacion');
-                    Swal.fire({
-                        type: 'error',
-                        title: 'Oops...',
-                        text: 'ejemplosdsfs!',
-                    });
-                },
-                fail: function() {
-                    console.log('error servidor')
-                },
-            }) */
-
-        });
-
-        $(document).on("click", "#cancelar", function() {
-            $('#foto_tomada').prop('src', '')
-            //$('#foto_tomada').hide();
-            $('#webcam').show();
-        });
-        $("#iniciar").click(function() {
-
-            webcam.start()
-                .then(result => {
-                    console.log("webcam started");
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            console.log("INICIAR CAM")
-        });
-        $('#formCliente').on('hidden.bs.modal', function() {
-            webcam.stop();
-            $(this).removeData();
-        })
-
-        function resizeBase64Image(base64Imagen) {
-            return new Promise((resolve, reject) => {
-                const maxSizeInMB = 1;
-                const maxSizeInBytes = maxSizeInMB * 350 * 350;
-                const img = new Image();
-                img.src = base64Imagen;
-                img.onload = function() {
-                    const canvas = document.createElement("canvas");
-                    const ctx = canvas.getContext('2d');
-                    const width = img.width;
-                    const height = img.height;
-                    const aspectRatio = width / height;
-                    const newWidth = Math.sqrt(maxSizeInBytes * aspectRatio);
-                    const newHeight = Math.sqrt(maxSizeInBytes / aspectRatio);
-                    canvas.width = newWidth;
-                    canvas.height = newHeight;
-                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
-                    let quality = 0.8;
-                    let dataURL = canvas.toDataURL('image/jpeg', quality);
-                    var base64rz = dataURL;
-                    $('#base64').val(base64rz),
-                        resolve(dataURL);
-                }
-            })
-
-        }
-
-        /*  function fileJPEG(base64Imagen) {
-             let base64String = base64Imagen; // Not a real image
-             // Remove header
-             let base64Image = base64String.split(';base64,').pop();
-
-             import fs from 'fs';
-             fs.writeFile('image.png', base64Image, {
-                 encoding: 'base64'
-             }, function(err) {
-                 console.log('File created');
-             });
-         } */
-    </script>
+    <script src="{{ asset('/js/components/datatables.js') }}"></script>
+    <script src="{{ asset('/js/components/select2.js') }}"></script>
+    <script src="{{ asset('/js/cliente/modal.js') }}"></script>
+    <script src="{{ asset('/js/cliente/foto.js') }}"></script>
+    <script src="{{ asset('/js/inscripcion/create.js') }}"></script>
 @endpush
