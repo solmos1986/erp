@@ -106,6 +106,7 @@ class EgresoController extends Controller
         $tipopago = DB::table('tipopago')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+        $categoria = DB::table('categoria')->where('condicionCategoria', '=', '1')->get();
 
         if ($request->ajax()) {
             $data = DB::table('producto')
@@ -118,7 +119,7 @@ class EgresoController extends Controller
 
         }
 
-        return view('comercial/compra/create', ['proveedor' => $proveedor, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
+        return view('comercial/compra/create', ['proveedor' => $proveedor, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario, 'categoria' => $categoria]);
 
     }
 
@@ -138,7 +139,7 @@ class EgresoController extends Controller
     }
     public function store(Request $request)
     {
-        //dd($request->detallecompra);
+        //dump($request->detallecompra);
         $insertCompra = DB::table('egresos')
             ->insertGetId([
                 'idProveedor' => $request->idProveedor,
@@ -151,6 +152,7 @@ class EgresoController extends Controller
                 'idUsuario' => $request->idUsuario,
             ]);
 
+        $datos = [];
         foreach ($request->detallecompra as $key => $value) {
             /* dump($value['idProducto']); */
             $insertDetalleCompra = DB::table('detalle_egreso')
@@ -162,25 +164,16 @@ class EgresoController extends Controller
                     'precioCompraEgreso' => $value['precio'],
                 ]);
 
-            $datos = [];
             for ($i = 1; $i <= $value['cantidad']; $i++) {
-                //dump($i);
-                //dd($value['cantidad']);
                 array_push($datos, array(
                     'serie' => 'serie',
                     'idProducto' => $value['idProducto'],
                     'idDetalleEgreso' => $insertDetalleCompra,
                 ));
-                /*   $datos = array(
-            'serie' => 'serie',
-            'producto_id' => $value['idProducto'],
-            'idDetalleEgreso' => $insertDetalleCompra,
-            ); */
             }
-            // dump(count($datos));
 
         }
-        //dd('stop');
+        //dump('stop', $datos);
 
         entrada_producto_almacen::insert($datos);
 

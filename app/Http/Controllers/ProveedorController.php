@@ -45,6 +45,8 @@ class ProveedorController extends Controller
         $proveedores->mailProveedor = $request->get('mailProveedor');
         $proveedores->condicionProveedor = '1';
         $proveedores->save();
+        //$proveedor = DB::table('proveedor')->where('condicionProveedor', '=', '1')->get();
+
         return response()->json([
             "data" => $proveedores,
         ]);

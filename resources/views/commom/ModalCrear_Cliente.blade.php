@@ -9,8 +9,7 @@
             </ul>
         </div>
     @endif
-    {{--     {!! Form::open(['url' => 'comercial/cliente', 'method' => 'POST', 'autocomplete' => 'off']) !!}
-        {{ Form::token() }} --}}
+
     <div class="modal-dialog modal-full-width">
 
         <div class="modal-content">
@@ -25,17 +24,17 @@
 
                         <div class="col-md-7 mb-1">
                             <div class="row">
-                                <label for="nomCliente" class="form-label">Nombre Cliente</label>
+                                <label for="nomClientep" class="form-label">Nombre Cliente</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="nomCliente"
-                                        placeholder="Ingrese Cliente" required name="nomCliente">
+                                    <input type="text" class="form-control" id="nomClientep"
+                                        placeholder="Ingrese Cliente" required name="nomClientep">
                                 </div>
                             </div>
                             <div class="row mt-2">
-                                <label for="docCliente" class="form-label">NIT / CI</label>
+                                <label for="docClientep" class="form-label">NIT / CI</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="docCliente"
-                                        placeholder="No. Documento" required name="docCliente">
+                                    <input type="text" class="form-control" id="docClientep"
+                                        placeholder="No. Documento" required name="docClientep">
                                 </div>
 
                             </div>
@@ -109,10 +108,11 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary waves-effect"
                         data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="guardar btn btn-info waves-effect waves-light">Guardar</button>
+                    <button type="button" id="guardarCliente"
+                        class="guardarCliente btn btn-info waves-effect waves-light">Guardar</button>
                 </div>
             </div>
         </div>
     </div>
-    {!! Form::close() !!}
+
 </div>

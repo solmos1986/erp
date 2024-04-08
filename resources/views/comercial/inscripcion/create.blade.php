@@ -1,11 +1,13 @@
 @extends('layouts.admin')
 @push('css')
     <!-- third party css -->
-    <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/mohithg-switchery/switchery.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/multiselect/css/multi-select.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('/libs/quill/quill.core.css') }}" rel="stylesheet" type="text/css" />
@@ -21,7 +23,7 @@
     <link href="{{ asset('/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
 @section('contenido')
@@ -49,12 +51,12 @@
                     <div class="row justify-content-between">
                         <div class="col-auto">
                             <form class="d-flex flex-wrap align-items-center">
-                                <label for="inputPassword2" class="visually-hidden">Search</label>
+                                {{-- <label for="inputPassword2" class="visually-hidden">Search</label>
                                 <div class="me-3">
                                     <input type="search" class="form-control my-1 my-lg-0" id="inputPassword2"
                                         placeholder="Search...">
-                                </div>
-                                <label for="status-select" class="me-2">Sort By</label>
+                                </div> --}}
+                                {{-- <label for="status-select" class="me-2">Sort By</label>
                                 <div class="me-sm-3">
                                     <select class="form-select my-1 my-lg-0" id="status-select">
                                         <option selected="">All</option>
@@ -63,15 +65,15 @@
                                         <option value="3">Price High</option>
                                         <option value="4">Sold Out</option>
                                     </select>
-                                </div>
+                                </div> --}}
                             </form>
                         </div>
                         <div class="col-auto">
                             <div class="text-lg-end my-1 my-lg-0">
-                                <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
-                                        class="mdi mdi-cog"></i></button>
-                                <a href="ecommerce-product-edit.html" class="btn btn-danger waves-effect waves-light"><i
-                                        class="mdi mdi-plus-circle me-1"></i> Add New</a>
+                                {{-- <button type="button" class="btn btn-success waves-effect waves-light me-1"><i
+                                        class="mdi mdi-cog"></i></button> --}}
+                                <a id="addCliente" class="addCliente btn btn-success waves-effect waves-light"><i
+                                        class="mdi mdi-plus-circle me-1"></i> Agregar Cliente</a>
                             </div>
                         </div><!-- end col-->
                     </div> <!-- end row -->
@@ -90,12 +92,12 @@
                             <div class="row mb-1">
                                 <label for="fechaInscripcion" class="form-label col-2 col-xl-2">Fecha</label>
                                 <div class="col-4 col-xl-4">
-                                    <input type="text" id="datetime-datepicker" class="form-control"
+                                    <input type="text" id="datetime-datepicker" class="form-control form-control-sm"
                                         placeholder="Date and Time" value="<?php echo date('Y-m-d H:i:s'); ?>" disabled>
                                 </div>
                                 <label for="idVendedor" class="form-label col-2 col-xl-2">Vendedor</label>
                                 <div class="col-4 col-xl-4">
-                                    <select class="form-control select2" id="idVendedor">
+                                    <select class="form-control select2 form-control-sm" id="idVendedor">
                                         @foreach ($usuario as $user)
                                             <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
                                         @endforeach
@@ -104,22 +106,23 @@
                             </div>
                             <div class="row mb-1">
                                 <label for="idCliente" class="form-label col-2 col-xl-2">Cliente</label>
+
                                 <div class="col-10 col-xl-10">
-                                    <select class="form-control form-control-sm" id="idCliente">
-                                        <option value="">Seleccionar cliente...</option>
-                                        @foreach ($cliente as $cli)
-                                            <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control form-control-sm autocompleteNom"
+                                        style=" z-index: 2; background: transparent;" name="nomCliente" id="nomCliente" />
+                                    <input type="text" name="idCliente" id="idCliente" hidden />
 
                                 </div>
                             </div>
                             <div class="row mb-1">
                                 <label for="docCliente" class="form-label col-2 col-xl-2">NIT/CI</label>
                                 <div class="col-4 col-xl-4">
-                                    <input type="select" class="form-control form-control-sm" id="docCliente"
-                                        placeholder="NIT/CI">
+                                    <input type="text" class="form-control form-control-sm autocompleteDoc"
+                                        style=" z-index: 2; background: transparent;" name="docCliente"
+                                        id="docCliente" />
+                                    {{-- <input type="text" name="idCliente" id="idCliente" hidden /> --}}
+                                    {{-- <input type="select" class="form-control form-control-sm" id="docCliente"
+                                        placeholder="NIT/CI"> --}}
                                 </div>
                                 <label for="idTipoPago" class="form-label col-2 col-xl-2">Tipo Pago</label>
                                 <div class="col-4 col-xl-4">
@@ -193,7 +196,7 @@
                                         <tr>
                                             <td><select class="form-control form-control-sm" id="paquetes"
                                                     name="paquetes">
-                                                    <option value="0">Seleccion un Paquete</option>
+                                                    <option value="0">Seleccione un Paquete</option>
                                                     @foreach ($paquetes as $pq)
                                                         <option data-id="{{ $pq->idPaquete }}"
                                                             value="{{ $pq->idPaquete }}">
@@ -209,12 +212,13 @@
                                             </td>
                                             <td>
 
-                                                <input type="text" id="fechaInicio" class="form-control"
-                                                    placeholder="Date and Time" value="<?php echo date('Y-m-d'); ?>">
+                                                <input type="text" id="fechaInicio"
+                                                    class="form-control form-control-sm" placeholder="Date and Time"
+                                                    value="<?php echo date('Y-m-d'); ?>">
                                             </td>
                                             <td>
 
-                                                <input type="text" id="fechaFin" class="form-control"
+                                                <input type="text" id="fechaFin" class="form-control form-control-sm"
                                                     placeholder="Date and Time" value="<?php echo date('Y-m-d'); ?>" readonly>
                                             </td>
                                             <td>
@@ -228,10 +232,11 @@
                                             <th></th>
                                             <th></th>
                                             <th></th>
-                                            <th></th>
-                                            <th><b>Total.</b>
+
+                                            <th style="text-align:right;"><b>Total Bs.</b>
                                             </th>
-                                            <th id="TotalCart"></th>
+                                            <th style="text-align:left;"><span id="TotalCart"
+                                                    style="padding-left: 15px"></span></th>
 
                                         </tr>
                                     </tfoot>
@@ -258,6 +263,7 @@
             </div>
         </div>
     </div>
+    @include('commom.ModalCrear_Cliente')
     @include('commom.ModalImprimir_VentaCompra')
 @endsection
 
@@ -295,6 +301,7 @@
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('/js/pages/form-pickers.init.js') }}"></script>
     <script src="{{ asset('/libs/printjs/print.min.js') }}"></script>
+    <script src="{{ asset('/libs/webcam-easy/webcam-easy.min.js') }}"></script>
 
 
     <script>
@@ -360,6 +367,8 @@
             var fecha = new Date(obj.value);
             console.log("fechasss", fecha)
             var mes = fecha.getMonth();
+            var costo = $('#costoPaquete').val();
+            $('#TotalCart').text(costo);
             console.log("MEESSS", mes);
             fecha.setMonth(fecha.getMonth() + +(obj2.value));
             console.log(fecha, "fecha sumada")
@@ -405,8 +414,6 @@
                 dataType: 'json',
                 data: dato,
                 success: function(response) {
-                    /*   console.log(response, "ACTUALIZO")
-                      window.location = "index"; */
                     Swal.fire({
                         title: 'Desea imprimir?',
                         text: "Esta proceso es irreversible",
@@ -480,5 +487,180 @@
                 }
             });
         })
+        $('.autocompleteNom').autocomplete({
+            serviceUrl: `${base_url}/clientes`,
+            onSelect: function(cliente) {
+                console.log(cliente)
+                $('#nomCliente').val(cliente.value)
+                $('#idCliente').val(cliente.data)
+                $('#docCliente').val(cliente.docCliente)
+                //alert('You selected: LLEGAMOS AL ALERRA');
+            }
+        });
+        $('.autocompleteDoc').autocomplete({
+            serviceUrl: `${base_url}/clientes/documento`,
+            onSelect: function(cliente) {
+                console.log(cliente)
+                $('#nomCliente').val(cliente.value)
+                $('#idCliente').val(cliente.data)
+                $('#docCliente').val(cliente.docCliente)
+
+                //alert('You selected: LLEGAMOS AL ALERRA');
+            }
+        });
+        $(document).on('click', '.addCliente', function() {
+
+            $('#formCliente').modal('show');
+
+        });
+        var gd = document.getElementById("guardarCliente");
+        gd.addEventListener("click", function(e) {
+            var nom = $('#nomClientep').val()
+            var docu = $('#docClientep').val()
+            console.log("nombre: ", nom)
+            console.log("documento: ", docu)
+            $.ajax({
+                type: "post",
+                url: `${base_url}/comercial/cliente`,
+                dataType: 'json',
+                data: {
+
+                    nomCliente: $('#nomClientep').val(),
+                    docCliente: $('#docClientep').val(),
+                    tel1Cliente: $('#tel1Cliente').val(),
+                    tel2Cliente: $('#tel2Cliente').val(),
+                    dirCliente: $('#dirCliente').val(),
+                    mailCliente: $('#mailCliente').val(),
+                    imagen: $('#base64').val()
+                },
+                success: function(response) {
+                    console.log(response.data, "ACTUALIZO")
+                    var clien = response.data
+                    $('#nomCliente').val(clien.nomCliente)
+                    $('#idCliente').val(clien.idCliente)
+                    $('#formCliente').modal('hide');
+                    Swal.fire({
+                        type: 'success',
+                        title: 'OK',
+                        text: response.message,
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplosdsfs!',
+                    });
+                },
+                fail: function() {
+                    console.log('error servidor')
+                }
+            });
+
+        });
+        const webcamElement = document.getElementById('webcam');
+        const canvasElement = document.getElementById('canvas');
+        const snapSoundElement = document.getElementById('snapSound');
+        const webcam = new Webcam(webcamElement, 'user', canvasElement /* , snapSoundElement */ );
+
+        $(document).on("click", "#capturar", function() {
+            var base64Imagen = webcam.snap();
+            console.log(base64Imagen, "BASE &$");
+            $('#foto_tomada').prop('src', base64Imagen)
+            $('#webcam').hide(),
+                resizeBase64Image(base64Imagen);
+            /* $.ajax({
+                type: "POST",
+                url: `${base_url}/comercial/clienteImagen`,
+                dataType: 'json',
+                data: {
+                    imagen: base64Imagen,
+
+                },
+                success: function(response) {
+                    console.log(response.data, "ACTUALIZO")
+
+                    Swal.fire({
+                        type: 'success',
+                        title: 'OK',
+                        text: response.message,
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplosdsfs!',
+                    });
+                },
+                fail: function() {
+                    console.log('error servidor')
+                },
+            }) */
+
+        });
+
+        $(document).on("click", "#cancelar", function() {
+            $('#foto_tomada').prop('src', '')
+            //$('#foto_tomada').hide();
+            $('#webcam').show();
+        });
+        $("#iniciar").click(function() {
+
+            webcam.start()
+                .then(result => {
+                    console.log("webcam started");
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+            console.log("INICIAR CAM")
+        });
+        $('#formCliente').on('hidden.bs.modal', function() {
+            webcam.stop();
+            $(this).removeData();
+        })
+
+        function resizeBase64Image(base64Imagen) {
+            return new Promise((resolve, reject) => {
+                const maxSizeInMB = 1;
+                const maxSizeInBytes = maxSizeInMB * 350 * 350;
+                const img = new Image();
+                img.src = base64Imagen;
+                img.onload = function() {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext('2d');
+                    const width = img.width;
+                    const height = img.height;
+                    const aspectRatio = width / height;
+                    const newWidth = Math.sqrt(maxSizeInBytes * aspectRatio);
+                    const newHeight = Math.sqrt(maxSizeInBytes / aspectRatio);
+                    canvas.width = newWidth;
+                    canvas.height = newHeight;
+                    ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                    let quality = 0.8;
+                    let dataURL = canvas.toDataURL('image/jpeg', quality);
+                    var base64rz = dataURL;
+                    $('#base64').val(base64rz),
+                        resolve(dataURL);
+                }
+            })
+
+        }
+
+        /*  function fileJPEG(base64Imagen) {
+             let base64String = base64Imagen; // Not a real image
+             // Remove header
+             let base64Image = base64String.split(';base64,').pop();
+
+             import fs from 'fs';
+             fs.writeFile('image.png', base64Image, {
+                 encoding: 'base64'
+             }, function(err) {
+                 console.log('File created');
+             });
+         } */
     </script>
 @endpush

@@ -28,9 +28,9 @@
     <!-- end page title -->
     <div class="row">
         <div class="col-lg-3">
-            <div class="input-group">
+            {{--  <div class="input-group">
                 <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto" required>
-            </div>
+            </div> --}}
         </div>
         <div class="col-lg-5">
 
@@ -92,126 +92,7 @@
     <!-- MODAL  -->
 
     <!-- NUEVO Modal -->
-
-    <div id="formCliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="fullWidthModalLabel"
-        aria-hidden="true">
-
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        {{--     {!! Form::open(['url' => 'comercial/cliente', 'method' => 'POST', 'autocomplete' => 'off']) !!}
-        {{ Form::token() }} --}}
-        <div class="modal-dialog modal-full-width">
-
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title" id="fullWidthModalLabel">CREAR CLIENTE</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/" method="post" enctype="multipart/form-data" {{-- class="dropzone" --}} id="form_client"
-                        novalidate>
-                        <div class="row">
-
-                            <div class="col-md-7 mb-1">
-                                <div class="row">
-                                    <label for="nomCliente" class="form-label">Nombre Cliente</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="nomCliente"
-                                            placeholder="Ingrese Cliente" required name="nomCliente">
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <label for="docCliente" class="form-label">NIT / CI</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="docCliente"
-                                            placeholder="No. Documento" required name="docCliente">
-                                    </div>
-
-                                </div>
-                                <div class="row mt-2">
-                                    <label for="tel1Cliente" class="form-label">Telefono 1 Cliente</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="tel1Cliente" placeholder="Telefono 1"
-                                            required name="tel1Cliente">
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <label for="tel2Cliente" class="form-label">Telefono 2 Cliente</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="tel2Cliente"
-                                            placeholder="Telefono 2" required name="tel2Cliente">
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-md-12 mb-1">
-                                        <label for="mailCliente" class="form-label">Correo Electronico</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="mailCliente"
-                                                placeholder="E-mail" required name="mailCliente">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-md-12 mb-1">
-                                        <label for="dirCliente" class="form-label">Direccion</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="dirCliente"
-                                                placeholder="Direccion" required name="dirCliente">
-                                            <input type="text" class="form-control" id="base64" readonly
-                                                value="" required name="base64">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5 mb-1 ml-2">
-
-                                <video id="webcam" autoplay playsinline width="640" height="480"></video>
-                                <img class="mb-1"id="foto_tomada" src="" alt="">
-                                <canvas id="canvas" class="d-none"></canvas>
-                                {{-- <audio id="snapSound" src="audio/snap.wav" preload = "auto"></audio> --}}
-
-                                <button class="btn btn-primary" id="iniciar" type="button">
-                                    Tomar foto
-                                </button>
-                                <button class="btn btn-primary capturar" id="capturar" type="button">
-                                    Capturar foto
-                                </button>
-                                <button class="btn btn-primary" id="cancelar" type="button">
-                                    Cancelar
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="col-md-6 mb-1">
-
-                            </div>
-                            <div class="col-md-6 mb-1">
-
-                            </div>
-
-
-                        </div>
-
-
-                    </form>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary waves-effect"
-                            data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="guardar btn btn-info waves-effect waves-light">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {!! Form::close() !!}
-    </div><!-- /.modal -->
+    @include('commom.ModalCrear_Cliente')
 
     <!-- EDIT Modal -->
 
@@ -239,8 +120,8 @@
                             <div class="col-md-2 mb-1">
                                 <label for="idClienteEdit" class="form-label">Id Cliente</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="idClienteEdit" placeholder=""
-                                        required name="idClienteEdit">
+                                    <input type="text" class="form-control" id="idClienteEdit" placeholder="" required
+                                        name="idClienteEdit">
                                 </div>
                             </div>
                             <div class="col-md-7 mb-1">
@@ -503,38 +384,6 @@
             })
         });
 
-        $(document).on("click", ".guardar", function() {
-
-            $.ajax({
-                type: "post",
-                url: `${base_url}/comercial/cliente`,
-                dataType: 'json',
-                data: {
-                    nomCliente: $('#nomCliente').val(),
-                    docCliente: $('#docCliente').val(),
-                    tel1Cliente: $('#tel1Cliente').val(),
-                    tel2Cliente: $('#tel2Cliente').val(),
-                    dirCliente: $('#dirCliente').val(),
-                    mailCliente: $('#mailCliente').val(),
-                    imagen: $('#base64').val(),
-                },
-                success: function(response) {
-                    console.log(response.img, "LLEGO NAMEEEEE?")
-                    console.log(response.data, "LLEGO NAMEEEEE?")
-                    $('#formCliente').modal('hide');
-                    $('.dtCliente').DataTable().ajax.reload();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    //error_status(jqXHR)
-                    console.log(response, "ERROR?")
-                },
-                fail: function() {
-                    //fail()
-                }
-            })
-
-        })
-
         $(document).ready(function() {
             $("#basic-datatable").DataTable({
                 language: {
@@ -559,10 +408,61 @@
                 }
             });
         });
+        $(document).on('click', '.addCliente', function() {
+
+            $('#formCliente').modal('show');
+
+        });
+        var gd = document.getElementById("guardarCliente");
+        gd.addEventListener("click", function(e) {
+            var nom = $('#nomClientep').val()
+            var docu = $('#docClientep').val()
+            console.log("nombre: ", nom)
+            console.log("documento: ", docu)
+            $.ajax({
+                type: "post",
+                url: `${base_url}/comercial/cliente`,
+                dataType: 'json',
+                data: {
+
+                    nomCliente: $('#nomClientep').val(),
+                    docCliente: $('#docClientep').val(),
+                    tel1Cliente: $('#tel1Cliente').val(),
+                    tel2Cliente: $('#tel2Cliente').val(),
+                    dirCliente: $('#dirCliente').val(),
+                    mailCliente: $('#mailCliente').val(),
+                    imagen: $('#base64').val()
+                },
+                success: function(response) {
+                    console.log(response.data, "ACTUALIZO")
+                    /*  var clien = response.data
+                     $('#nomCliente').val(clien.nomCliente)
+                     $('#idCliente').val(clien.idCliente) */
+                    $('#formCliente').modal('hide');
+                    Swal.fire({
+                        type: 'success',
+                        title: 'OK',
+                        text: response.message,
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('error de programacion');
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'ejemplosdsfs!',
+                    });
+                },
+                fail: function() {
+                    console.log('error servidor')
+                }
+            });
+
+        });
         const webcamElement = document.getElementById('webcam');
         const canvasElement = document.getElementById('canvas');
         const snapSoundElement = document.getElementById('snapSound');
-        const webcam = new Webcam(webcamElement, 'user', canvasElement, snapSoundElement);
+        const webcam = new Webcam(webcamElement, 'user', canvasElement /* , snapSoundElement */ );
 
         $(document).on("click", "#capturar", function() {
             var base64Imagen = webcam.snap();
@@ -575,7 +475,7 @@
                 url: `${base_url}/comercial/clienteImagen`,
                 dataType: 'json',
                 data: {
-                    imagen: base64Image,
+                    imagen: base64Imagen,
 
                 },
                 success: function(response) {
@@ -618,14 +518,10 @@
                 });
             console.log("INICIAR CAM")
         });
-        /*  $('#formCliente').on('dismiss', function() {
-             webcam.stop();
-         }) */
         $('#formCliente').on('hidden.bs.modal', function() {
             webcam.stop();
             $(this).removeData();
         })
-
 
         function resizeBase64Image(base64Imagen) {
             return new Promise((resolve, reject) => {
@@ -647,7 +543,6 @@
                     let quality = 0.8;
                     let dataURL = canvas.toDataURL('image/jpeg', quality);
                     var base64rz = dataURL;
-                    console.log(base64rz, "ES LO QUE NECESOTPP???")
                     $('#base64').val(base64rz),
                         resolve(dataURL);
                 }
