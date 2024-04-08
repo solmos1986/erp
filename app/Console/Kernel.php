@@ -4,11 +4,11 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\CustomTask;
+use App\Console\Commands\EstadoInscripcionTask;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        Commands\CustomTask::class
+        Commands\EstadoInscripcionTask::class
     ];
     /**
      * Define the application's command schedule.
@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('hour:update')->cron('* * * * *');
+        $schedule->command('hour:update')->cron('* * * * *'); //todos los dias '05 00 * * *' 00:05:00 am
         //$schedule->job(new CustomTask);
     }
 

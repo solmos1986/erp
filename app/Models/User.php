@@ -50,6 +50,7 @@ class User extends Authenticatable
     public function obtener_usuario()
     {
         $usuario = DB::table('usuario')
+            ->join('authenticacion', 'authenticacion.usuario_id', 'usuario.idUsuario')
             ->where('idUsuario', auth()->user()->usuario_id)
             ->first();
         return $usuario;
