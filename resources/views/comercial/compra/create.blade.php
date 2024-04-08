@@ -87,11 +87,15 @@
                     </div>
                     <div class="col-lg-3">
                         <label for="nomUsuario" class="form-label">Usuario <span class="text-danger">*</span></label>
-                        <select class="form-control select2" id="nomUsuario">
-                            @foreach ($usuario as $user)
-                                <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
-                            @endforeach
+
+                        <select class="form-control select2" id="nomUsuario" disabled>
+
+
+                            <option value="{{ auth()->user()->obtener_usuario()->idUsuario }}">
+                                {{ auth()->user()->obtener_usuario()->nomUsuario }}</option>
+
                         </select>
+
 
                     </div>
                 </div>
