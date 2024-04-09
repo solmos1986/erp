@@ -11,10 +11,11 @@ function connect() {
 
     ws.onmessage = function (e) {
         const data = JSON.parse(e.data);
-        limpiarAutomatico(data)
-        insertInscripcion(data)
         console.log(data.message)
-
+        if (data.message.auth == client) {
+            limpiarAutomatico(data)
+            insertInscripcion(data)
+        }
     };
 
     ws.onclose = function (e) {

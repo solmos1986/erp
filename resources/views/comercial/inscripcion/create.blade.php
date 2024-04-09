@@ -29,7 +29,7 @@
     <link href="{{ asset('/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
         type="text/css" />
     <!-- App css -->
-    {{-- <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" /> --}}
+    <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 @endpush
 
 @section('contenido')
@@ -66,7 +66,7 @@
                         <div class="row mb-1">
                             <label for="idVendedor" class="form-label col-12 col-xl-3">Vendedor</label>
                             <div class="col-12 col-xl-9">
-                                <select class="form-control select2 form-control-sm" id="idVendedor" name="idVendedor">
+                                <select class="form-control form-control-sm" id="idVendedor" name="idVendedor">
                                     @foreach ($usuario as $user)
                                         <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
                                     @endforeach
@@ -163,7 +163,7 @@
                                                 <th>Paquete</th>
                                                 <th>Duracion</th>
                                                 <th>Inicio</th>
-                                                <th>fin</th>
+                                                <th>Fin</th>
                                                 <th>Precio</th>
                                             </tr>
                                         </thead>

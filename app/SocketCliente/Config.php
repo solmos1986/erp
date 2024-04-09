@@ -22,7 +22,7 @@ class Config
         $this->data = new stdClass();
         $this->data->request = 'SUBSCRIBE';
         $this->data->message = '';
-        $this->data->channel = 'cliente-' . auth()->user()->obtener_usuario()->authenticacion_id;
+        $this->data->channel = 'web';
 
         $this->client = new \WebSocket\Client(env('ROUTE_SOCKET_IO') . '/devices', ['headers' => [
             'origin' => 'localhost',
@@ -53,7 +53,7 @@ class Config
         try {
             $this->data->request = 'PUBLISH';
             $this->data->message = $inscripcion;
-            $this->data->channel = 'cliente-' . auth()->user()->obtener_usuario()->authenticacion_id;
+            $this->data->channel = 'web'; // auth()->user()->obtener_usuario()->authenticacion_id
             $this->client->text(json_encode((array) $this->data));
             Log::info('Config/set_message() set_message enviando mensaje canal:' . $this->data->channel . ' socket => ' . json_encode($this->data, JSON_PRETTY_PRINT));
             $this->client->close();
