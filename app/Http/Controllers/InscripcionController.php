@@ -6,6 +6,7 @@ use App\Http\Controllers\InscripcionController;
 
 //hace referencia a nuestro request
 
+use App\Http\Controllers\Utils;
 use App\SocketCliente\Usuario;
 use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
@@ -22,7 +23,6 @@ class InscripcionController extends Controller
         $this->middleware('auth');
     }
     public function index(Request $request) //recibe como parametro un objeto tipo request
-
     {
         Log::info("inciando inscripcion");
 //dd($request, "ESTO ESTA LLEGANDO");
@@ -130,6 +130,7 @@ class InscripcionController extends Controller
     }
     public function store(Request $request)
     {
+        Log::info("InscripcionController/store " . Utils::jsonLog($request->all()));
         $rules = array(
             'idCliente' => 'required',
             'idTipoPago' => 'required',
@@ -148,10 +149,11 @@ class InscripcionController extends Controller
             ]);
         }
         //set fechas
-        $fechaInicio = date('Y-m-d', strtotime($request->fechaInicio)) . ' 00:00:00';
-        $fechaFin = date('Y-m-d', strtotime($request->fechaFin)) . ' 23:59:59';
+        $fechaInicio = date('Y-m-d', strtotime(str_replace('/', '-', $request->fechaInicio))) . ' 00:00:00';
+        $fechaFin = date('Y-m-d', strtotime(str_replace('/', '-', $request->fechaFin))) . ' 23:59:59';
 
-        $estado = $this->estado_inscripcion($request->fechaInicio);
+        $estado = $this->estado_inscripcion($fechaInicio);
+        Log::info("InscripcionController/store estado_inscripcion => " . $estado);
         $insertInscripcion = DB::table('inscripcion')
             ->insertGetId([
                 'idCliente' => $request->idCliente,
@@ -170,7 +172,9 @@ class InscripcionController extends Controller
             'fechaFin' => $fechaFin,
             'costoPaquete' => $request->costoPaquete,
         ]);
+
         if ($estado == 'vig') {
+            Log::info("InscripcionController/store activando socket por el estado => " . $estado);
             $this->insertWebSocket($request->idCliente, $insertInscripcion, $fechaInicio, $fechaFin);
         }
 
@@ -183,8 +187,9 @@ class InscripcionController extends Controller
 
     public function estado_inscripcion($fechaInicio)
     {
-        $fechaActual = strtotime(date('Y-m-d'));
+        $fechaActual = date('Y-m-d');
         $fechaInicio = date('Y-m-d', strtotime($fechaInicio));
+        Log::info("InscripcionController/estado_inscripcion comprar => fecha inicio " . $fechaInicio . ' y fecha actual  ' . $fechaActual);
         if ($fechaInicio > $fechaActual) {
             return 'ant';
         } else {
@@ -203,6 +208,8 @@ class InscripcionController extends Controller
             'docCliente' => $cliente->docCliente,
             'fechaInicio' => $fechaInicio,
             'fechaFin' => $fechaFin,
+            'nomCliente' => $cliente->nomCliente,
+            'fotoCliente' => $cliente->fotoCliente,
         ]);
     }
 

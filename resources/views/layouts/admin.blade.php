@@ -68,7 +68,8 @@
     <script type="text/javascript">
         var base_url = "{{ url('/') }}";
         var socket_url = "{{ env('ROUTE_SOCKET_IO') }}"
-        var channel ="cliente-{{ auth()->user()->obtener_usuario()->authenticacion_id }}"
+        var channel = "web"
+        var client = {{ auth()->user()->obtener_usuario()->authenticacion_id }}
     </script>
 
     <!-- Vendor js -->

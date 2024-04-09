@@ -56,21 +56,25 @@ $(document).on('click', '.imprimir', function () {
 //STORE
 $(document).on('click', '.procesar', function () {
     ajax(`${base_url}/comercial/inscripcion`, 'POST', $('#form_inscripcion').serialize()).then((response) => {
-        Swal.fire({
-            title: 'Desea imprimir?',
-            text: "Esta proceso es irreversible",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, imprimir!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                verPDF(response.data)
-            } else {
-                window.location = "index";
-            }
-        })
+        if (response.status == 1) {
+            Swal.fire({
+                title: 'Desea imprimir?',
+                text: "Esta proceso es irreversible",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, imprimir!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    verPDF(response.data)
+                } else {
+                    window.location = "index";
+                }
+            })
+        } else {
+            SwallErrorValidate(response);
+        }
     })
 });
 

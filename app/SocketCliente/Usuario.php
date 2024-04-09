@@ -25,6 +25,7 @@ class Usuario
         $message->req = [];
         $message->res = [];
         $message->data = $data;
+        $message->auth = auth()->user()->obtener_usuario()->authenticacion_id;
         $this->socket->set_message($message);
     }
     public function eliminar_clientes_automatico($data)
@@ -33,6 +34,7 @@ class Usuario
         $message->event = 'deleteAutomatico:init';
         $message->req = [];
         $message->res = [];
+        $message->auth = auth()->user()->obtener_usuario()->authenticacion_id;
         $message->data = $data;
         $this->socket->set_message($message);
     }
@@ -43,6 +45,7 @@ class Usuario
         $message->req = [];
         $message->res = [];
         $message->data = $data;
+        $message->auth = auth()->user()->obtener_usuario()->authenticacion_id;
         $this->socket->set_mesage_interno($message);
     }
 }
