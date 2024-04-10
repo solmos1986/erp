@@ -175,93 +175,66 @@
 
     <!-- Init js -->
     <script src="{{ asset('/js/pages/add-product.init.js') }}"></script> --}}
+    <script src="{{ asset('/js/components/datatables.js') }}"></script>
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
-        $(document).ready(function() {
-
-            const table = $('.dtInscripciones').DataTable({
-
-                processing: true,
-                serverSide: true,
-                searchin: true,
-                ajax: {
-                    url: "{{ route('index.inscripcion') }}",
-                    data: function(d) {
-
-                        d.startDate = $('#IngresoDesdeIns').val() + 'T00:00:00',
-                            d.endDate = $('#IngresoHastaIns').val() + 'T23:59:59',
-                            d.idCliente = $('#idClienteIns').val(),
-                            d.idTipoPago = $('#idTipoPagoIns').val(),
-                            d.idTipoComprobante = $('#idTipoComprobanteIns').val(),
-                            d.idUsuario = $('#idUsuarioIns').val()
-                    },
-                },
-                dataType: 'json',
-                type: "post",
-                columns: [{
-                        data: 'idInscripcion',
-                        name: 'idInscripcion'
-                    },
-                    {
-                        data: 'fechaInscripcion',
-                        name: 'fechaInscripcion'
-                    },
-                    {
-                        data: 'nomCliente',
-                        name: 'nomCliente'
-                    },
-                    {
-                        data: 'nomTipoComprobante',
-                        name: 'nomTipoComprobante',
-                        render: function(data, type, row, meta) {
-                            // esto es lo que se va a renderizar como html
-                            return `<b>${row.nomTipoComprobante}</b> ${row.idInscripcion}`;
-                        }
-                    },
-                    {
-                        data: 'impuestoInscripcion',
-                        name: 'impuestoInscripcion'
-                    },
-                    {
-                        data: 'nomTipoPago',
-                        name: 'nomTipoPago'
-                    },
-                    {
-                        data: 'costoPaquete',
-                        name: 'costoPaquete'
-                    },
-                    {
-                        data: 'nomUsuario',
-                        name: 'nomUsuario'
-                    },
-                    {
-                        data: 'estadoInscripcion',
-                        name: 'estadoInscripcion'
-                    },
-                    {
-                        data: 'idInscripcion',
-                        name: 'idInscripcion',
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row, meta) {
-                            console.log("LLEGO FILA", row)
-                            return `<a href="{{ url('almacen/producto/${row.idInscripcion}') }}"  data-id="${row.idInscripcion}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idInscripcion}" class="delete fas fa-trash-alt text-danger"></a>`;
-                        }
-                    },
-                ],
-                language: {
-                    paginate: {
-                        previous: "<i class='mdi mdi-chevron-left'>",
-                        next: "<i class='mdi mdi-chevron-right'>"
-                    }
-                },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        const columns = [{
+                data: 'idInscripcion',
+                name: 'idInscripcion'
+            },
+            {
+                data: 'fechaInscripcion',
+                name: 'fechaInscripcion'
+            },
+            {
+                data: 'nomCliente',
+                name: 'nomCliente'
+            },
+            {
+                data: 'nomTipoComprobante',
+                name: 'nomTipoComprobante',
+                render: function(data, type, row, meta) {
+                    // esto es lo que se va a renderizar como html
+                    return `<b>${row.nomTipoComprobante}</b> ${row.idInscripcion}`;
                 }
-            });
-            $(document).on('keyup change', '.filtrar', function() {
-                table.draw()
-            });
+            },
+            {
+                data: 'impuestoInscripcion',
+                name: 'impuestoInscripcion'
+            },
+            {
+                data: 'nomTipoPago',
+                name: 'nomTipoPago'
+            },
+            {
+                data: 'costoPaquete',
+                name: 'costoPaquete'
+            },
+            {
+                data: 'nomUsuario',
+                name: 'nomUsuario'
+            },
+            {
+                data: 'estadoInscripcion',
+                name: 'estadoInscripcion'
+            },
+            {
+                data: 'idInscripcion',
+                name: 'idInscripcion',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    console.log("LLEGO FILA", row)
+                    return `<a href="${base_url}/almacen/producto/${row.idInscripcion}" data-id="${row.idInscripcion}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idInscripcion}" class="delete fas fa-trash-alt text-danger"></a>`;
+                }
+            },
+        ];
+        const table = dataTable($('.dtInscripciones'),
+            `${base_url}/comercial/inscripcion?startDate=${$('#IngresoDesdeIns').val() + 'T00:00:00'}&endDate=${$('#IngresoHastaIns').val() + 'T23:59:59'}&idCliente=${$('#idClienteIns').val()}&idTipoPago=${$('#idTipoPagoIns').val()}&idTipoPago`,
+            columns)
+
+        $(document).on('keyup change', '.filtrar', function() {
+            table.draw()
         });
     </script>
     <script>
