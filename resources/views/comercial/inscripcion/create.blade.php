@@ -120,13 +120,14 @@
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="row mb-1">
-                            <label for="idTipoComprobante" class="form-label col-12 col-xl-3">Comprobante</label>
+                            <label for="idTipoComprobante" class="form-label col-12 col-xl-3">Comprobantesss</label>
                             <div class="col-12 col-xl-9">
                                 <div class="col-12 col-xl-12">
                                     <select class="form-control form-control-sm" id="idTipoComprobante"
                                         name="idTipoComprobante">
                                         @foreach ($tipo_comprobante as $tp)
-                                            <option value="{{ $tp->idTipoComprobante }}">
+                                            <option data-value="{{ $tp->impuestoComprobante }}"
+                                                value="{{ $tp->idTipoComprobante }}">
                                                 {{ $tp->nomTipoComprobante }}
                                             </option>
                                         @endforeach

@@ -126,7 +126,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('/', function () {
-    return redirect()->route('index.compra');
+    return redirect()->route('dashboard');
 });
 
 Route::prefix('roles')->group(function () {

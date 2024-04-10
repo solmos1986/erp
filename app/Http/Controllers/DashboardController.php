@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware('auth');
     }
     public function obtener_ventas(Request $request) //recibe como parametro un objeto tipo request
     {
