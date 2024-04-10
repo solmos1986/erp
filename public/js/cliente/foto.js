@@ -4,14 +4,15 @@ const canvasElement = document.getElementById('canvas');
 const snapSoundElement = document.getElementById('snapSound');
 const webcam = new Webcam(webcamElement, 'user', canvasElement /* , snapSoundElement */);
 
-$(document).on("click", "#capturar", function () {
+$(document).on("click", "#capturar", async function () {
     var base64Imagen = webcam.snap();
-    console.log(base64Imagen, "BASE &$");
     $('#foto_tomada').prop('src', base64Imagen)
     $('#webcam').hide()
     $('#foto_tomada').show();
     $('#image').val(base64Imagen);
-    //resizeBase64Image(base64Imagen);
+    console.log('antes de la reduccion', base64Imagen)
+    const base64 = await resizeBase64Image(base64Imagen);
+    console.log('despues de la reduccion', base64)
 });
 
 $(document).on("click", "#cancelar", function () {
@@ -79,8 +80,7 @@ function resizeBase64Image(base64Imagen) {
             let quality = 0.8;
             let dataURL = canvas.toDataURL('image/jpeg', quality);
             var base64rz = dataURL;
-            $('#base64').val(base64rz),
-                resolve(dataURL);
+            resolve(dataURL);
         }
     })
 }
@@ -96,10 +96,14 @@ $(document).on("change", "#file", async function () {
     const [file] = $(this).prop('files')
     if (file) {
         const base64 = await getBase64(file)
-        $('#foto_tomada').prop('src', base64)
+        console.log('antes de la reduccion', base64)
+        const base64Imagen = await resizeBase64Image(base64);
+        console.log('despues de la reduccion', base64Imagen)
+
+        $('#foto_tomada').prop('src', base64Imagen)
         $('#webcam').hide()
         $('#foto_tomada').show();
-        $('#image').val(base64);
+        $('#image').val(base64Imagen);
     }
 });
 

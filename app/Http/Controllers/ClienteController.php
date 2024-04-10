@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\ClienteController;
-use App\Http\Requests\ClienteRequest; //agrega la ruta del modelo
-use App\Models\Cliente; //para hacer algunas redirecciones
-use DataTables; //hace referencia a nuestro request
+use App\Http\Controllers\Utils; //agrega la ruta del modelo
+use App\Http\Requests\ClienteRequest; //para hacer algunas redirecciones
+use App\Models\Cliente; //hace referencia a nuestro request
+use DataTables;
 use DB;
 use File;
 use Illuminate\Http\Request;
@@ -127,7 +128,7 @@ class ClienteController extends Controller
     public function edit($id)
     {
         $cliente = Cliente::findOrFail($id);
-        $base64 = $this->FileToBase64($cliente->fotoCliente);
+        $base64 = Utils::FileToBase64($cliente->fotoCliente);
 
         $cliente->fotoCliente = $base64;
         return response()->json([
@@ -168,7 +169,7 @@ class ClienteController extends Controller
         $imageName = "image" . uniqid() . time() . ".jpg";
         //delete
         //File::delete($filename);
-        File::put(public_path() . '/imagenes/clientes/' . $imageName, file_get_contents($image));
+        $file = Utils::Base64toFile($image, $imageName, public_path() . '/imagenes/clientes/');
 
         $update = DB::table('cliente')
             ->where('idCliente', $request->idCliente)
@@ -202,29 +203,6 @@ class ClienteController extends Controller
         ]);
     }
 
-    public function FileToBase64($nameFile)
-    {
-        try {
-            $path = public_path() . '/imagenes/clientes/' . $nameFile . '';
-            $extencion = pathinfo($path, PATHINFO_EXTENSION);
-            $image = base64_encode(file_get_contents($path));
-            return "data:image/$extencion;base64, $image";
-        } catch (\Throwable $th) {
-            return "";
-        }
-    }
-    public function Base64toFile(Request $request)
-    {
-        $image = $request->get('imagen'); // your base64 encoded
-        //dd($image, "IMAGENNN");
-        $image = str_replace('data:image/jpeg;base64,', '', $image);
-        $image = str_replace(' ', '+', $image);
-        $imageName = "image" . uniqid() . time() . ".jpg";
-        \File::put(public_path() . '/imagenes/clientes/' . $imageName, base64_decode($image));
-        return response()->json([
-            "data" => $imageName,
-        ]);
-    }
     public function obtener_clientes(Request $request)
     {
         if (empty($request->searchTerm)) {
