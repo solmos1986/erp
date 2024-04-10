@@ -32,7 +32,7 @@
 
                 <div class="col-6">
                     <div class="input-group input-group-sm">
-                        <input type="text" class="filtrar form-control border" id="dash-daterange">
+                        <input type="text" class="filtrar form-control border" id="rango_fecha">
                         <span class="input-group-text bg-blue border-blue text-white">
                             <i class="mdi mdi-calendar-range"></i>
                         </span>
@@ -586,20 +586,28 @@
         var ventas = [];
         var compras = [];
         var inscripciones = [];
-        let fecha = $("#dash-daterange").val() + " to " + $("#dash-daterange").val();
-        $("#dash-daterange").val(fecha);
+
+        $("#rango_fecha").flatpickr({
+            mode: "range",
+            dateFormat: "Y-m-d",
+            defaultDate: [moment().startOf('month').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'), ]
+        });
+        let fecha = $("#rango_fecha").val();
+
+
         $(document).ready(function() {
             console.log(ventas, "VENTAS NICIO");
             console.log(compras, "COMPRAS INICIO");
             console.log(inscripciones, "INSCRIPCIONES INICIO");
-            console.log($("#dash-daterange").val(), "RANGO FECHA INICIAL")
+            console.log(fecha, "RANGO GFECHAAA")
+            console.log($("#rango_fecha").val(), "RANGO FECHA INICIAL")
             ConsultaDB();
             graficarMes();
 
         });
 
         function ConsultaDB() {
-            let date = $("#dash-daterange").val();
+            let date = $("#rango_fecha").val();
             let idx = date.length / 2;
             let startDate = date.substr(0, idx - 2);
             let endDate = date.substr(idx + 2);

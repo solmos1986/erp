@@ -32,9 +32,9 @@ class AuthController extends Controller
         if ($usuario) {
             if (Auth::loginUsingId($usuario->usuario_id)) {
                 // Authentication passed...
-                return redirect(route('index.compra'));
+                return redirect(route('dashboard'));
             } else {
-                return redirect(route('index.compra'));
+                return redirect(route('dashboard'));
             }
         } else {
             return redirect(route('auth.login'))->with('flash', 'This data is incorrect');

@@ -56,19 +56,19 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-2">
+                        <div class="row ">
+                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label class="form-label">Desde</label>
                                 <input class="filtrar form-control" id="IngresoDesdeIns" type="date" name="date"
                                     value="<?php echo date('Y-m-d'); ?>">
                             </div>
-                            <div class="col-2">
+                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label class="form-label">Hasta</label>
                                 <input class="filtrar form-control" id="IngresoHastaIns" type="date" name="date"
                                     value="<?php echo date('Y-m-d'); ?>">
 
                             </div>
-                            <div class="col-2">
+                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label for="example-select" class="form-label">Cliente</label>
                                 <select class="filtrar form-select" id="idClienteIns">
                                     <option value="">Filtrar cliente</option>
@@ -78,7 +78,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-2">
+                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label for="example-select" class="form-label">Comprobante</label>
                                 <select class="filtrar form-select" id="idTipoComprobanteIns">
                                     <option value="">Filtrar comprobante</option>
@@ -88,7 +88,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-2">
+                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label for="example-select" class="form-label">Forma de Pago</label>
                                 <select class="filtrar form-select" id="idTipoPagoIns">
                                     <option value="">Filtrar pago</option>
@@ -98,7 +98,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-2">
+                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label for="example-select" class="form-label">Usuario</label>
                                 <select class="filtrar form-select" id="idUsuarioIns">
                                     <option value="">Filtrar cajero</option>
