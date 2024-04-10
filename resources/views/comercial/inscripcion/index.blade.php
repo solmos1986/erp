@@ -60,12 +60,12 @@
                             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label class="form-label">Desde</label>
                                 <input class="filtrar form-control" id="IngresoDesdeIns" type="date" name="date"
-                                    value="<?php echo date('Y-m-d'); ?>">
+                                    value="{{ date('Y-m-d') }}">
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
                                 <label class="form-label">Hasta</label>
                                 <input class="filtrar form-control" id="IngresoHastaIns" type="date" name="date"
-                                    value="<?php echo date('Y-m-d'); ?>">
+                                    value="{{ date('Y-m-d') }}">
 
                             </div>
                             <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
@@ -169,13 +169,12 @@
 
     <!-- Quill js -->
     <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
-
+    <script src="{{ asset('/js/components/datatables.js') }}"></script>
     <!-- Init js-->
     {{--   <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
 
     <!-- Init js -->
     <script src="{{ asset('/js/pages/add-product.init.js') }}"></script> --}}
-    <script src="{{ asset('/js/components/datatables.js') }}"></script>
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
         const columns = [{
@@ -230,11 +229,12 @@
             },
         ];
         const table = dataTable($('.dtInscripciones'),
-            `${base_url}/comercial/inscripcion?startDate=${$('#IngresoDesdeIns').val() + 'T00:00:00'}&endDate=${$('#IngresoHastaIns').val() + 'T23:59:59'}&idCliente=${$('#idClienteIns').val()}&idTipoPago=${$('#idTipoPagoIns').val()}&idTipoPago`,
+            `${base_url}/comercial/inscripcion?startDate=${$('#IngresoDesdeIns').val() + 'T00:00:00'}&endDate=${$('#IngresoHastaIns').val() + 'T23:59:59'}&idCliente=${$('#idClienteIns').val()}&idTipoPago=${$('#idTipoPagoIns').val()}&idTipoComprobante=${$('#idTipoComprobanteIns').val()}&idUsuario=${$('#idUsuarioIns').val()}`,
             columns)
-
         $(document).on('keyup change', '.filtrar', function() {
-            table.draw()
+            table.ajax.url(
+                `${base_url}/comercial/inscripcion?startDate=${$('#IngresoDesdeIns').val() + 'T00:00:00'}&endDate=${$('#IngresoHastaIns').val() + 'T23:59:59'}&idCliente=${$('#idClienteIns').val()}&idTipoPago=${$('#idTipoPagoIns').val()}&idTipoComprobante=${$('#idTipoComprobanteIns').val()}&idUsuario=${$('#idUsuarioIns').val()}`,
+            ).load();
         });
     </script>
     <script>
