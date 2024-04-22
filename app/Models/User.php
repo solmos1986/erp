@@ -90,6 +90,7 @@ class User extends Authenticatable
             ->join('sub_modulo', 'sub_modulo.sub_modulo_id', 'rol_sub_modulo.sub_modulo_id')
             ->where('authenticacion.authenticacion_id', auth()->user()->authenticacion_id)
             ->groupBy('sub_modulo.sub_modulo_id')
+            ->orderBy('super_modulo.orden','ASC')
             ->get();
         //estructurar agrupacion manual
 

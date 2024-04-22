@@ -4,44 +4,40 @@ const canvasElement = document.getElementById('canvas');
 const snapSoundElement = document.getElementById('snapSound');
 const webcam = new Webcam(webcamElement, 'user', canvasElement /* , snapSoundElement */);
 
-$(document).on("click", "#capturar", async function () {
+$(document).ready(function () {
+    $('#camara').hide();
+});
+
+$(document).on("click", "#tomar_foto", async function () {
+    $(this).prop('disabled', true);
+    $('#activar_camara').prop('disabled', false);
     var base64Imagen = webcam.snap();
-    $('#foto_tomada').prop('src', base64Imagen)
-    $('#webcam').hide()
-    $('#foto_tomada').show();
-    $('#image').val(base64Imagen);
-    console.log('antes de la reduccion', base64Imagen)
+    $('#camara').hide()
+    $('#preview').show()
     const base64 = await resizeBase64Image(base64Imagen);
-    console.log('despues de la reduccion', base64)
+    $('#image').val(base64Imagen);
+    resetPreview('imagenCliente', base64, 'foto.jpg');
+    webcam.stop();
 });
 
 $(document).on("click", "#cancelar", function () {
-    $('#webcam').show();
-    $('#foto_tomada').hide();
+    $(".dropify-clear").trigger("click");
+    $('#camara').hide()
+    $('#preview').show()
+    webcam.stop();
     $('#image').val('');
+    $('#tomar_foto').prop('disabled', true);
+    $('#activar_camara').prop('disabled', false);
 });
 
-$('#formCliente').on('hidden.bs.modal', function () {
-    webcam.stop();
-})
-
-$(document).on("click", ".subir_foto", function () {
-    //subir archivo
-    SubirFoto(true)
-    SubirTomarFoto(false)
-    webcam.stop();
-    $('#webcam').hide();
-    $('#foto_tomada').show();
-});
-
-$(document).on("click", ".usar_camara", function () {
+$(document).on("click", "#activar_camara", function () {
     //usar camara
-    SubirFoto(false)
-    SubirTomarFoto(true)
     webcam.start()
         .then(result => {
-            console.log("webcam started");
-            $('#webcam').show();
+            $(this).prop('disabled', true);
+            $('#tomar_foto').prop('disabled', false);
+            $('#camara').show();
+            $('#preview').hide();
         })
         .catch(err => {
             console.log(err);
@@ -50,15 +46,6 @@ $(document).on("click", ".usar_camara", function () {
     $('#foto_tomada').hide()
 });
 
-function SubirFoto(estado) {
-    $('#iniciar').prop('disabled', estado);
-    $('#capturar').prop('disabled', estado);
-    $('#cancelar').prop('disabled', estado);
-}
-function SubirTomarFoto(estado) {
-    $('#subir_foto').prop('disabled', estado);
-    $('#cancelar_subir_foto').prop('disabled', estado);
-}
 
 function resizeBase64Image(base64Imagen) {
     return new Promise((resolve, reject) => {
@@ -85,32 +72,6 @@ function resizeBase64Image(base64Imagen) {
     })
 }
 
-//preview file
-
-$(document).on("click", "#subir_foto", function () {
-    console.log('subir_foto')
-    $("#file").trigger("click");
-});
-
-$(document).on("change", "#file", async function () {
-    const [file] = $(this).prop('files')
-    if (file) {
-        const base64 = await getBase64(file)
-        console.log('antes de la reduccion', base64)
-        const base64Imagen = await resizeBase64Image(base64);
-        console.log('despues de la reduccion', base64Imagen)
-
-        $('#foto_tomada').prop('src', base64Imagen)
-        $('#webcam').hide()
-        $('#foto_tomada').show();
-        $('#image').val(base64Imagen);
-    }
-});
-
-$(document).on("click", "#cancelar_subir_foto", function () {
-    $('#foto_tomada').prop('src', `${base_url}/assets/perfil/peril.webp`);
-    $('#image').val('');
-});
 
 function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -119,4 +80,31 @@ function getBase64(file) {
         reader.onload = () => resolve(reader.result);
         reader.onerror = error => reject(error);
     });
+}
+
+$('#imagenCliente').dropify({
+    messages: {
+        default: "Arrastre y suelte un archivo aquí o haga clic",
+        replace: " Arrastra y suelta o haz clic para reemplazar",
+        remove: "Eliminar",
+        error: "Vaya, se ha añadido algo mal.",
+    },
+    error: {
+        fileSize: "El tamaño del archivo es demasiado grande (1 M como máximo)."
+    },
+});
+
+function resetPreview(name, src, fname = '') {
+    let input = $('input[name="' + name + '"]');
+    let wrapper = input.closest('.dropify-wrapper');
+    let preview = wrapper.find('.dropify-preview');
+    let filename = wrapper.find('.dropify-filename-inner');
+    let render = wrapper.find('.dropify-render').html('');
+
+    input.val('').attr('title', fname);
+    wrapper.removeClass('has-error').addClass('has-preview');
+    filename.html(fname);
+
+    render.append($('<img />').attr('src', src).css('max-height', input.data('height') || ''));
+    preview.fadeIn();
 }

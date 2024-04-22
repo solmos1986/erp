@@ -21,45 +21,25 @@
                         <li class="breadcrumb-item active">Productos</li>
                     </ol>
                 </div>
-                <h4 class="page-title">PRODUCTOS</h4>
+                <h4 class="page-title">Productos</h4>
             </div>
         </div>
     </div>
     <!-- end page title -->
     <div class="row">
-        <div class="col-lg-3">
-            <div class="input-group">
-                <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto" required>
-            </div>
-        </div>
-        <div class="col-lg-5">
+        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
 
         </div>
-        <div class="col-lg-4">
-            <div class="text-lg-end">
-                <a href="{{ url('almacen/producto/create') }}"><button type="button" id="serchbtn"
-                        class="nuevo btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
-                        Nuevo Producto </button></a>
-            </div>
+        <div class="col-xl-5 col-lg-5 col-md-12 col-sm-12">
+
+        </div>
+        <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
+            <a href="{{ url('almacen/producto/create') }}"><button type="button" id="serchbtn"
+                    class="nuevo btn btn-sm btn-success waves-effect waves-light mb-2 me-2 w-100"><i
+                        class="mdi mdi-plus me-1"></i>
+                    Nuevo Producto </button></a>
         </div>
     </div>
-    {{-- <div class="row">
-        <div class="col-md-3 mb-2">
-            <div class="input-group">
-                <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto" required>
-            </div>
-        </div>
-        <div class="col-md-6 mb-2">
-        </div>
-        <div class="col-md-3 col-md-push mb-2">
-
-            <div class="input-group">
-                <a href="{{ url('almacen/producto/create') }}"><button type="button" id="serchbtn"
-                        class="btn rounded-pill btn-success">NUEVO</button></a>
-
-            </div>
-        </div>
-    </div> --}}
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -85,16 +65,10 @@
                         </tbody>
                     </table>
 
-                </div> <!-- end card body-->
-                {{--  <div>
-                    {{ $categorias->render() }}
-                </div> --}}
-            </div> <!-- end card -->
-        </div><!-- end col-->
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- MODAL  -->
-
     <!-- DELETE Modal -->
     <div id="formDeleteProducto" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -123,156 +97,8 @@
     <script src="{{ asset('/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-    <!-- Select2 js-->
     <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
-    <!-- Dropzone file uploads-->
     <script src="{{ asset('/libs/dropzone/min/dropzone.min.js') }}"></script>
-
-    <!-- Quill js -->
-    <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
-
-    <!-- Init js-->
-    <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
-
-    <!-- Init js -->
-    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script>
-    <style>
-        .texto {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            /* margin: 1rem; */
-        }
-    </style>
-
-    <script type="text/javascript">
-        /* <!--AJAX CARGA DATA TABLE Function--> */
-        $(function() {
-
-            var table = $('.dtProducto').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('index.producto') }}",
-
-                columns: [{
-                        data: 'imagenProducto',
-                        name: 'imagenProducto',
-                        type: 'upload',
-                        render: function(data, type, row, mneta) {
-                            return `<img src="${base_url}/imagenes/productos/${row.imagenProducto}" style="height:50px;width:50px;" />`;
-                        }
-                    },
-                    {
-                        data: 'codProducto',
-                        name: 'codProducto'
-                    },
-                    {
-                        data: 'nomProducto',
-                        name: 'nomProducto'
-                    },
-                    {
-                        data: 'unidadMedida',
-                        name: 'unidadMedida'
-                    },
-                    {
-                        data: 'nomCategoria',
-                        name: 'nomCategoria'
-                    },
-                    {
-                        data: 'stockMinimo',
-                        name: 'stockMinimo'
-                    },
-                    {
-                        data: 'stockMinimo',
-                        name: 'stockMinimo'
-                    },
-                    {
-                        data: 'precioVentaProducto',
-                        name: 'precioVentaProducto'
-                    },
-                    {
-                        data: 'stock',
-                        name: 'stock'
-                    },
-                    {
-                        data: 'idProducto',
-                        name: 'idProducto',
-                        orderable: false,
-                        searchable: false,
-                        render: function(data, type, row, meta) {
-                            console.log("LLEGO FILA", row)
-                            return `<a href="{{ url('almacen/producto/${row.idProducto}') }}"  data-id="${row.idProducto}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idProducto}" class="delete far fa-trash-alt text-danger"></a>`;
-                        }
-                    },
-                ],
-                language: {
-                    paginate: {
-                        previous: "<i class='mdi mdi-chevron-left'>",
-                        next: "<i class='mdi mdi-chevron-right'>"
-                    }
-                },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
-                }
-            });
-        });
-        /*<!-- AJAX GUARDAR Producto -->*/
-
-
-
-        /*<!-- AJAX DELETE Modal -->*/
-        $(document).on("click", ".delete", function() {
-            const id = $(this).data('id');
-            console.log(id, "HOLA recibi info DELETE")
-            $('#idProductoDelete').val(id)
-            $('#formDeleteProducto').modal('show');
-            $(".btnDelete").click(function() {
-                $.ajax({
-                    type: "delete",
-                    url: `${base_url}/almacen/producto/${id}`,
-                    dataType: 'json',
-
-                    success: function(response) {
-                        console.log(response, "LLEGO DATA?")
-                        $('#formDeleteProducto').modal('hide');
-                        $('.dtProducto').DataTable().ajax.reload();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        //error_status(jqXHR)
-                        console.log(response, "ERROR?")
-                    },
-                    fail: function() {
-                        //fail()
-                    }
-                })
-            })
-        });
-
-
-        $(document).ready(function() {
-            $("#basic-datatable").DataTable({
-                language: {
-                    paginate: {
-                        previous: "<i class='mdi mdi-chevron-left'>",
-                        next: "<i class='mdi mdi-chevron-right'>"
-                    }
-                },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
-                }
-            });
-            $("#basic-datatable").DataTable({
-                language: {
-                    paginate: {
-                        previous: "<i class='mdi mdi-chevron-left'>",
-                        next: "<i class='mdi mdi-chevron-right'>"
-                    }
-                },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
-                }
-            });
-        });
-    </script>
+    
+    <script src="{{ asset('/js/producto/index.js') }}"></script>
 @endpush

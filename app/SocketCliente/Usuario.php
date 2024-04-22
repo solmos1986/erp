@@ -45,7 +45,7 @@ class Usuario
         $message->req = [];
         $message->res = [];
         $message->data = $data;
-        $message->auth = auth()->user()->obtener_usuario()->authenticacion_id;
+        $message->auth = 'server';
         $this->socket->set_mesage_interno($message);
     }
 }

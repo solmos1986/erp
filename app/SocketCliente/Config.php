@@ -68,7 +68,7 @@ class Config
         try {
             $this->data->request = 'PUBLISH';
             $this->data->message = $inscripcion;
-            $this->data->channel = 'server';
+            $this->data->channel = 'web';
             $this->client->text(json_encode((array) $this->data));
             Log::info('Config/set_mesage_interno() enviando mensaje canal:' . $this->data->channel . ' socket  => ' . json_encode($this->data, JSON_PRETTY_PRINT));
             $this->client->close();

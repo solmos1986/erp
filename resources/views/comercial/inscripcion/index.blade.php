@@ -10,14 +10,12 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 @endpush
 
 @section('contenido')
-    <br>
-    <div class="content">
-
-        <!-- Start Content-->
-        <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
@@ -33,127 +31,110 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3">
-                    {{-- <div class="input-group">
-                        <input type="text" class="form-control" id="validationCustom15" placeholder="Buscar producto"
-                            required>
-                    </div> --}}
+                <div class="col-xl-4 col-lg-3 col-md-12 col-sm-12">
                 </div>
-                <div class="col-lg-4">
+                <div class="col-xl-4 col-lg-3 col-md-12 col-sm-12">
                 </div>
-                <div class="col-lg-5">
-                    <div class="d-flex justify-content-end">
+                <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
+                    <div class="d-flex justify-content-end mb-2">
                         <button type="button" id="limpiar_equipos"
-                            class="btn btn-danger waves-effect waves-light mb-2 me-2">
+                            class="btn btn-danger waves-effect waves-light w-100">
                             Limpiar dispositivos </button>
-                        <a href="{{ url('comercial/inscripcion/create') }}"><button type="button" id="serchbtn"
-                                class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                        
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
+                    <div class="d-flex justify-content-end mb-2">
+                        <a class="w-100" href="{{ url('comercial/inscripcion/create') }}"><button type="button" id="serchbtn"
+                                class="btn btn-success waves-effect waves-light w-100"><i class="mdi mdi-plus me-1"></i>
                                 Nueva Inscripcion </button></a>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
+                            <label class="form-label">Desde</label>
+                            <input class="filtrar form-control form-control-sm" id="IngresoDesdeIns" type="date"
+                                name="date" value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
+                            <label class="form-label">Hasta</label>
+                            <input class="filtrar form-control form-control-sm" id="IngresoHastaIns" type="date"
+                                name="date" value="{{ date('Y-m-d') }}">
 
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row ">
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
-                                <label class="form-label">Desde</label>
-                                <input class="filtrar form-control" id="IngresoDesdeIns" type="date" name="date"
-                                    value="{{ date('Y-m-d') }}">
-                            </div>
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
-                                <label class="form-label">Hasta</label>
-                                <input class="filtrar form-control" id="IngresoHastaIns" type="date" name="date"
-                                    value="{{ date('Y-m-d') }}">
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
+                            <label for="example-select" class="form-label">Cliente</label>
+                            <select class="filtrar form-control form-control-sm" id="idClienteIns">
 
-                            </div>
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
-                                <label for="example-select" class="form-label">Cliente</label>
-                                <select class="filtrar form-select" id="idClienteIns">
-                                    <option value="">Filtrar cliente</option>
-                                    @foreach ($cliente as $cli)
-                                        <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
-                                <label for="example-select" class="form-label">Comprobante</label>
-                                <select class="filtrar form-select" id="idTipoComprobanteIns">
-                                    <option value="">Filtrar comprobante</option>
-                                    @foreach ($tipo_comprobante as $tcp)
-                                        <option value="{{ $tcp->idTipoComprobante }}">{{ $tcp->nomTipoComprobante }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
-                                <label for="example-select" class="form-label">Forma de Pago</label>
-                                <select class="filtrar form-select" id="idTipoPagoIns">
-                                    <option value="">Filtrar pago</option>
-                                    @foreach ($tipopago as $tp)
-                                        <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
-                                <label for="example-select" class="form-label">Usuario</label>
-                                <select class="filtrar form-select" id="idUsuarioIns">
-                                    <option value="">Filtrar cajero</option>
-                                    @foreach ($usuario as $user)
-                                        <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            </select>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
+                            <label for="example-select" class="form-label">Comprobante</label>
+                            <select class="filtrar form-control form-control-sm" id="idTipoComprobanteIns">
+                                <option value="">Filtrar comprobante</option>
+                                @foreach ($tipo_comprobante as $tcp)
+                                    <option value="{{ $tcp->idTipoComprobante }}">{{ $tcp->nomTipoComprobante }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
+                            <label for="example-select" class="form-label">Forma de Pago</label>
+                            <select class="filtrar form-control form-control-sm" id="idTipoPagoIns">
+                                <option value="">Filtrar pago</option>
+                                @foreach ($tipopago as $tp)
+                                    <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 col-md-6 col-sm-12 mb-1">
+                            <label for="example-select" class="form-label">Usuario</label>
+                            <select class="filtrar form-control form-control-sm" id="idUsuarioIns">
+                                <option value="">Filtrar cajero</option>
+                                @foreach ($usuario as $user)
+                                    <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                </div> <!-- end card -->
-
+                </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <table id="dtInscripciones" class="dtInscripciones table dt-responsive nowrap w-100">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Fecha</th>
-                                        <th>Cliente</th>
-                                        <th>Comprobante</th>
-                                        <th>Impuestos</th>
-                                        <th>Metodo Pago</th>
-                                        <th>Total</th>
-                                        <th>Usuario</th>
-                                        <th>Estado</th>
-                                        <th>Accion</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-
-                                </tbody>
-                            </table>
-
-                        </div> <!-- end card body-->
-                        {{--  <div>
-                    {{ $categorias->render() }}
-                </div> --}}
-                    </div> <!-- end card -->
-                </div><!-- end col-->
+            <div class="card">
+                <div class="card-body">
+                    <table id="dtInscripciones" class="dtInscripciones table dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Comprobante</th>
+                                <th>Impuestos</th>
+                                <th>Metodo Pago</th>
+                                <th>Total</th>
+                                <th>Usuario</th>
+                                <th>Fecha inicio/fin</th>
+                                <th>Estado</th>
+                                <th>Accion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            <!-- end row-->
-        </div>
-    </div>
+    <x-components.modal size="modal-xl" id="modalImprimir" nameBtnSave="Imprimir" nameBtnClose="Cancelar"
+        idBtnSave="btn_save">
+        @include('commom.pdf-imprimir')
+    </x-components.modal>
 @endsection
 
 @push('javascript')
     <script src="{{ asset('/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
-    <script src="{{ asset('/js/pages/form-advanced.init.js') }}"></script>
     <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
 
     <!-- Init js -->
@@ -162,19 +143,9 @@
     <script src="{{ asset('/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-    <!-- Select2 js-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
-    <!-- Dropzone file uploads-->
-    <script src="{{ asset('/libs/dropzone/min/dropzone.min.js') }}"></script>
 
-    <!-- Quill js -->
-    <script src="{{ asset('/libs/quill/quill.min.js') }}"></script>
-    <script src="{{ asset('/js/components/datatables.js') }}"></script>
-    <!-- Init js-->
-    {{--   <script src="{{ asset('/js/pages/form-fileuploads.init.js') }}"></script>
-
-    <!-- Init js -->
-    <script src="{{ asset('/js/pages/add-product.init.js') }}"></script> --}}
     <script>
         /* <!--AJAX CARGA DATA TABLE Function--> */
         const columns = [{
@@ -193,7 +164,6 @@
                 data: 'nomTipoComprobante',
                 name: 'nomTipoComprobante',
                 render: function(data, type, row, meta) {
-                    // esto es lo que se va a renderizar como html
                     return `<b>${row.nomTipoComprobante}</b> ${row.idInscripcion}`;
                 }
             },
@@ -214,8 +184,20 @@
                 name: 'nomUsuario'
             },
             {
-                data: 'estadoInscripcion',
-                name: 'estadoInscripcion'
+                data: 'fechaInicio',
+                name: 'fechaInicio',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row, meta) {
+                    return `${moment(row.fechaInicio).format('YYYY-MM-DD')} <br> ${moment(row.fechaFin).format('YYYY-MM-DD')} `;
+                }
+            },
+            {
+                data: 'estado',
+                name: 'estado',
+                render: function(data, type, row, meta) {
+                    return estadoInscripcion(row.estado);
+                }
             },
             {
                 data: 'idInscripcion',
@@ -223,19 +205,26 @@
                 orderable: false,
                 searchable: false,
                 render: function(data, type, row, meta) {
-                    console.log("LLEGO FILA", row)
-                    return `<a href="${base_url}/almacen/producto/${row.idInscripcion}" data-id="${row.idInscripcion}" class="edit fas fa-pencil-alt text-info"></a> &nbsp;&nbsp;&nbsp;<a href="javascript:void(0)"  data-id="${row.idInscripcion}" class="delete fas fa-trash-alt text-danger"></a>`;
+                    return `<i data-id="${row.idInscripcion}" class="ver_pdf fas fa-eye text-info m-1 cursor-pointer" title="Ver pdf"></i>`;
                 }
             },
         ];
         const table = dataTable($('.dtInscripciones'),
             `${base_url}/comercial/inscripcion?startDate=${$('#IngresoDesdeIns').val() + 'T00:00:00'}&endDate=${$('#IngresoHastaIns').val() + 'T23:59:59'}&idCliente=${$('#idClienteIns').val()}&idTipoPago=${$('#idTipoPagoIns').val()}&idTipoComprobante=${$('#idTipoComprobanteIns').val()}&idUsuario=${$('#idUsuarioIns').val()}`,
             columns)
+
         $(document).on('keyup change', '.filtrar', function() {
             table.ajax.url(
                 `${base_url}/comercial/inscripcion?startDate=${$('#IngresoDesdeIns').val() + 'T00:00:00'}&endDate=${$('#IngresoHastaIns').val() + 'T23:59:59'}&idCliente=${$('#idClienteIns').val()}&idTipoPago=${$('#idTipoPagoIns').val()}&idTipoComprobante=${$('#idTipoComprobanteIns').val()}&idUsuario=${$('#idUsuarioIns').val()}`,
             ).load();
         });
+
+        select2(
+            "#idClienteIns",
+            `${base_url}/clientes/buscar-nombre`,
+            "GET",
+            () => {}
+        );
     </script>
     <script>
         $(document).on('click', '#limpiar_equipos', function() {
@@ -247,6 +236,41 @@
                 }
             )
         });
+
+        $(document).on('click', '.ver_pdf', function() {
+            const id = $(this).data('id')
+            console.log('open modal')
+            verPDF(id)
+        });
+
+        function verPDF(id) {
+            var frame = $("#iframePDF");
+            var ahref = $("#cancelPDF");
+            //LOADER
+            ajax(`${base_url}/comercial/inscripcion-pdf/${id}`, "GET").then(
+                (response) => {
+                    var src = `data:application/pdf;base64,${response.data}`;
+                    $("#modalImprimir .modal-title").text("RECIBO DE INSCRIPCION");
+                    ahref.attr("href", `${base_url}/comercial/inscripcion/index`);
+                    frame.attr("src", `data:application/pdf;base64,${response.data}`);
+                    $("#modalImprimir").modal("show");
+                    $("#iframePDF").data("url", response.data);
+                }
+            );
+        }
+
+        function estadoInscripcion(estado) {
+            switch (estado) {
+                case 'ven':
+                    return `<div class="badge bg-secondary text-light mb-0 m-1">VENCIDO</div>`;
+                    break;
+                case 'vig':
+                    return `<div class="badge bg-secondary text-light mb-0 m-1">VIGENTE</div>`;
+                    break;
+                case 'ant':
+                    return `<div class="badge bg-secondary text-light mb-0 m-1">ANTICIPADO</div>`;
+                    break;
+            }
+        }
     </script>
-    <!-- Bootstrap Tables js -->
 @endpush

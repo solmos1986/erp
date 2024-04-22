@@ -8,6 +8,7 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('/libs/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .imagen-container {
             top: 0%;
@@ -41,8 +42,8 @@
         </div>
         <div class="col-lg-4">
             <div class="text-lg-end">
-                <button type="button" class="nuevo btn btn-success waves-effect waves-light mb-2 me-2"><i
-                    class="mdi mdi-plus-circle me-1"></i> Agregar Cliente</button>
+                <button type="button" class="nuevo btn btn-sm btn-primary waves-effect waves-light mb-2 me-2"><i
+                        class="mdi mdi-plus-circle me-1"></i> Agregar Cliente</button>
             </div>
         </div>
     </div>
@@ -71,7 +72,7 @@
     </div>
     <x-components.modal size="modal-xl" id="modal_cliente" nameBtnSave="Guardar" nameBtnClose="Cancelar"
         idBtnSave="btn_save">
-        @include('commom.ModalCrear_Cliente')
+        @include('comercial.cliente.components.form-cliente-inscripcion')
     </x-components.modal>
 @endsection
 
@@ -82,6 +83,7 @@
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/webcam-easy/webcam-easy.min.js') }}"></script>
+    <script src="{{ asset('/libs/dropify/js/dropify.min.js') }}"></script>
     <script src="{{ asset('/js/components/datatables.js') }}"></script>
     <script src="{{ asset('/js/cliente/modal.js') }}"></script>
     <script src="{{ asset('/js/cliente/foto.js') }}"></script>

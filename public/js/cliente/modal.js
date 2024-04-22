@@ -28,7 +28,7 @@ const columns = [{
     orderable: false,
     searchable: false,
     render: function (data, type, row, meta) {
-        return `<i data-id="${row.idCliente}" class="edit fas fa-pencil-alt text-info m-1 cursor-pointer" title="Editar"></i>
+        return `<i data-id="${row.idCliente}" class="edit fas fa-pencil-alt text-primary m-1 cursor-pointer" title="Editar"></i>
         <i data-id="${row.idCliente}" class="delete far fa-trash-alt text-danger m-1 cursor-pointer" title="Eliminar"></i>`;
     }
 },
@@ -40,16 +40,23 @@ $(document).on("click", ".nuevo", function () {
     $("#form_client").trigger("reset");
     $('#modal_cliente').modal('show');
     //preview
-    $('#foto_tomada').prop('src', `${base_url}/assets/perfil/peril.webp`);
     $(".subir_foto").trigger("click");
     $('#modal_cliente .modal-title').text('Nuevo cliente');
-
+    $(".dropify-clear").trigger("click");
     BtnAddSave($('#btn_save'), 'store', 'update')
 });
 
-$(document).on("click", ".store", function () {
+$(document).on("click", ".store", async function () {
     const btn = $(this);
     btn.prop('disabled', true);
+
+    const [file] = $('#imagenCliente').prop('files')
+    if (file) {
+        const base64 = await getBase64(file)
+        const base64Imagen = await resizeBase64Image(base64);
+        $('#image').val(base64Imagen);
+    }
+
     ajax(`${base_url}/comercial/cliente`, 'POST', $('#form_client').serialize()).then((response) => {
         if (response.status == '1') {
             $('#modal_cliente').modal('hide');
@@ -72,7 +79,6 @@ $(document).on("click", ".edit", function () {
     ajax(`${base_url}/comercial/cliente/${idCliente}`, 'GET').then((response) => {
         if (response.status == '1') {
             //preview
-            $('#foto_tomada').prop('src', response.data.fotoCliente)
             $('#image').val(response.data.fotoCliente)
             $(".subir_foto").trigger("click");
             //set data
@@ -84,7 +90,9 @@ $(document).on("click", ".edit", function () {
             $('#form_client #mailCliente').val(response.data.mailCliente);
             $('#form_client #dirCliente').val(response.data.dirCliente);
             $('#form_client #image').val(response.data.fotoCliente);
-
+            if (response.data.fotoCliente != '') {
+                resetPreview('imagenCliente', response.data.fotoCliente, 'foto.jpg');
+            }
             $('#modal_cliente').modal('show');
         } else {
 
@@ -92,9 +100,17 @@ $(document).on("click", ".edit", function () {
     })
 });
 
-$(document).on("click", ".update", function () {
+$(document).on("click", ".update", async function () {
     const btn = $(this);
     btn.prop('disabled', true);
+
+    const [file] = $('#imagenCliente').prop('files')
+    if (file) {
+        const base64 = await getBase64(file)
+        const base64Imagen = await resizeBase64Image(base64);
+        $('#image').val(base64Imagen);
+    }
+
     ajax(`${base_url}/comercial/cliente/${$('#idCliente').val()}`, 'PUT', $('#form_client').serialize()).then((response) => {
         if (response.status == '1') {
             $('#modal_cliente').modal('hide');
@@ -132,4 +148,5 @@ function eliminar(id) {
     }).catch(() => {
 
     });
-} 
+}
+

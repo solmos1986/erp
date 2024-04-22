@@ -48,12 +48,12 @@ class ClienteController extends Controller
         $rules = array(
             'nomCliente' => 'required',
             'docCliente' => 'required',
-            'image' => 'required',
+            //'image' => 'required',
         );
         $messages = [
             'nomCliente.required' => "Nombre y Apellido son requeridos",
             'docCliente.required' => "Numero documento",
-            'image.required' => "Foto es requerida",
+            //'image.required' => "Foto es requerida",
         ];
         $error = Validator::make($request->all(), $rules, $messages);
 
@@ -82,9 +82,15 @@ class ClienteController extends Controller
         $clientes->CondicionCliente = '1';
         $docCli = $request->get('docCliente');
         $image = $request->get('image'); // your base64 encoded
-        $imageName = "image" . uniqid() . time() . ".jpg";
-        File::put(public_path() . '/imagenes/clientes/' . $imageName, file_get_contents($image));
-        $clientes->fotoCliente = $imageName;
+
+        if ($image != '') {
+            $imageName = "image" . uniqid() . time() . ".jpg";
+            File::put(public_path() . '/imagenes/clientes/' . $imageName, file_get_contents($image));
+            $clientes->fotoCliente = $imageName;
+        } else {
+            $clientes->fotoCliente = '';
+        }
+
         $clientes->save();
         return response()->json([
             "status" => 1,
@@ -142,12 +148,12 @@ class ClienteController extends Controller
         $rules = array(
             'nomCliente' => 'required',
             'docCliente' => 'required',
-            'image' => 'required',
+            //'image' => 'required',
         );
         $messages = [
             'nomCliente.required' => "Nombre y Apellido son requeridos",
             'docCliente.required' => "Numero documento",
-            'image.required' => "Foto es requerida",
+            //'image.required' => "Foto es requerida",
         ];
         $error = Validator::make($request->all(), $rules, $messages);
 
@@ -166,10 +172,13 @@ class ClienteController extends Controller
         }
 
         $image = $request->image; // your base64 encoded
-        $imageName = "image" . uniqid() . time() . ".jpg";
-        //delete
-        //File::delete($filename);
-        $file = Utils::Base64toFile($image, $imageName, public_path() . '/imagenes/clientes/');
+
+        if ($image != '') {
+            $imageName = "image" . uniqid() . time() . ".jpg";
+            $file = Utils::Base64toFile($image, $imageName, public_path() . '/imagenes/clientes/');
+        } else {
+            $imageName = '';
+        }
 
         $update = DB::table('cliente')
             ->where('idCliente', $request->idCliente)
@@ -235,5 +244,4 @@ class ClienteController extends Controller
         }
         return response()->json($resultados);
     }
-
 }

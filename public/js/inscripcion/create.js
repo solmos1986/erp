@@ -1,10 +1,15 @@
+const onChangeFecha = (selectedDates, dateStr, instance) => {
+    setFecha(dateStr);
+}
+flatpickr($("#fechaInicio"), moment().format("YYYY-MM-DD"), onChangeFecha)
+
 // autoseleccion paquete por default
 $(document).ready(function () {
     $("#duracionPaquete").val(
         $("#idPaquete").find(":selected").data("duracion")
     );
     $("#costoPaquete").val($("#idPaquete").find(":selected").data("costo"));
-    setFecha(moment().format("DD/MM/YYYY"));
+    setFecha(moment().format("YYYY-MM-DD"));
 });
 
 $(document).on("change", "#idPaquete", function () {
@@ -22,25 +27,15 @@ $(document).on("change", "#idTipoComprobante", function () {
 });
 function calcularImpuesto() {
     var impuesto = $("#idTipoComprobante").find(":selected").data("value");
-    console.log(impuesto, "MPUESTOOOOOO");
     var costoIns = $("#costoPaquete").val();
     var tImpuesto = impuesto * costoIns;
     $("#impuestoInscripcion").val(tImpuesto);
 }
 
-$("#fechaInicio").flatpickr({
-    enableTime: false,
-    dateFormat: "d/m/Y",
-    defaultDate: moment().format("DD/MM/YYYY"), //defaul fecha actual
-    onChange: function (selectedDates, dateStr, instance) {
-        setFecha(dateStr);
-    },
-});
-
 function setFecha(fechaInicio) {
-    var nueva_fecha = moment(fechaInicio, "DD/MM/YYYY")
+    var nueva_fecha = moment(fechaInicio, "YYYY-MM-DD")
         .add($("#duracionPaquete").val(), "months")
-        .format("DD/MM/YYYY");
+        .format("YYYY-MM-DD");
     $("#fechaFin").val(nueva_fecha);
 }
 
@@ -135,3 +130,7 @@ select2(
     "GET",
     onChangeSelect2DocCliente
 );
+
+$('#modalImprimir').on('hidden.bs.modal', function () {
+    window.location = "index";
+});
