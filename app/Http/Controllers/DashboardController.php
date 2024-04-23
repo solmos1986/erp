@@ -155,7 +155,7 @@ class DashboardController extends Controller
             ->get()->toArray();
 
         $data3 = DB::table('inscripcion as in')
-            ->select('in.fechaInscripcion', 'di.costoPaquete')
+            ->select('in.fechaInscripcion', DB::raw('sum(di.costoPaquete) as total'))
             ->join('detalle_inscripcion as di', 'in.idInscripcion', '=', 'di.idInscripcion')
             ->whereBetween('in.fechaInscripcion', [$request->get('startDate'), $request->get('endDate')])
 
