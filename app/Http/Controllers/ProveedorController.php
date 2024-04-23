@@ -13,9 +13,9 @@ class ProveedorController extends Controller
 {
     public function __construct()
     {
-
+        $this->middleware('auth');
     }
-    public function index(Request $request) //recibe como parametro un objeto tipo request
+    public function index(Request $request)
     {
         if ($request->ajax()) {
             $data = DB::table('proveedor')
@@ -48,6 +48,8 @@ class ProveedorController extends Controller
         //$proveedor = DB::table('proveedor')->where('condicionProveedor', '=', '1')->get();
 
         return response()->json([
+            "status" => 1,
+            "message" => 'Registrado correctamente',
             "data" => $proveedores,
         ]);
 
@@ -64,6 +66,8 @@ class ProveedorController extends Controller
         $proveedores = Proveedor::findOrFail($id);
         //return view("almacen.categoria.edit",["categoria"=>Categoria::findOrFail($id)]);
         return response()->json([
+            "status" => 1,
+            "message" => 'Mostrar proveedor',
             "data" => $proveedores,
         ]);
     }
@@ -79,9 +83,10 @@ class ProveedorController extends Controller
         $proveedores->condicionProveedor = '1';
         $proveedores->update();
         return response()->json([
+            "status" => 1,
+            "message" => 'Modificado correctamente',
             "data" => $proveedores,
         ]);
-
     }
     public function destroy($id)
     {
@@ -89,8 +94,24 @@ class ProveedorController extends Controller
         $proveedores->condicionProveedor = '0';
         $proveedores->update();
         return response()->json([
+            "status" => 1,
+            "message" => 'Eliminado correctamente',
             "data" => $proveedores,
         ]);
     }
-
+    public function select2(Request $request)
+    {
+        if (empty($request->searchTerm)) {
+            return response()->json([]);
+        }
+        $proveedores = Proveedor::where('nomProveedor', 'LIKE', '%' . $request->searchTerm . '%')->get();
+        $resultados = [];
+        foreach ($proveedores as $proveedor) {
+            $resultados[] = [
+                'text' => $proveedor->nomProveedor,
+                'id' => $proveedor->idProveedor,
+            ];
+        }
+        return response()->json($resultados);
+    }
 }

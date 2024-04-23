@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="{{ asset('/images/favicon.ico') }}">
     <!-- Plugins css -->
     <link href="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
     @stack('css')
@@ -22,7 +23,6 @@
     <!-- App css -->
     <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- Icons css -->
-
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     @stack('css')
 </head>
@@ -90,17 +90,23 @@
         });
     </script>
 
+
+    <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
+    <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
+    <script src="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
+    <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="{{ asset('/js/components/errors_ajax.js') }}"></script>
     <script src="{{ asset('/js/components/ajax.js') }}"></script>
     <script src="{{ asset('/js/components/swall-alerts.js') }}"></script>
     <script src="{{ asset('/js/components/buttons.js') }}"></script>
-    <script src="{{ asset('/libs/jquery-mockjax/jquery.mockjax.min.js') }}"></script>
-    <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
-    <script src="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
+    <script src="{{ asset('/js/components/datatables.js') }}"></script>
+    <script src="{{ asset('/js/components/select2.js') }}"></script>
+    <script src="{{ asset('/js/components/flatpickr.js') }}"></script>
     @stack('javascript')
-    <script src="{{ asset('/js/socket/socket.js') }}"></script>
+    {{--  <script src="{{ asset('/js/socket/socket.js') }}"></script>
     <script src="{{ asset('/js/socket/insert-inscripcion.js') }}"></script>
-    <script src="{{ asset('/js/socket/limpiar-dispositivo.js') }}"></script>
+    <script src="{{ asset('/js/socket/limpiar-dispositivo.js') }}"></script> --}}
 </body>
 
 </html>

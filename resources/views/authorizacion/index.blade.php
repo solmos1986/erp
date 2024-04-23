@@ -117,7 +117,5 @@
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <!-- Select2 js-->
     <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
-
-    <script src="{{ asset('/js/components/datatables.js') }}"></script>
     <script src="{{ asset('/js/authorizacion/authorizacion.js') }}"></script>
 @endpush
