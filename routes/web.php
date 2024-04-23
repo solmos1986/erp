@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AsientosController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorizacionController;
 use App\Http\Controllers\CategoriaController;
@@ -8,11 +9,14 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EgresoController;
 use App\Http\Controllers\EstadoPedidosController;
 use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\IngresosController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\LectoresController;
 use App\Http\Controllers\MarcasController;
 use App\Http\Controllers\ModuloController;
+use App\Http\Controllers\MovCajasController;
+use App\Http\Controllers\MovimientosController;
 use App\Http\Controllers\PaquetesGymController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProveedorController;
@@ -194,7 +198,7 @@ Route::get('comercial/eliminar-cliente-automatico', [InscripcionController::clas
 //
 //
 Route::get('comercial/inscripcion', [InscripcionController::class, 'index'])->name('index.inscripcion');
-Route::post('comercial/inscripcion', [InscripcionController::class, 'store']);
+Route::post('comercial/inscripcion', [MovimientosController::class, 'store']);
 Route::get('comercial/inscripcion/index', [InscripcionController::class, 'index']);
 Route::get('comercial/inscripcion-pdf/{id}', [InscripcionController::class, 'pdf'])->name('pdf.inscripcion');
 
@@ -239,3 +243,10 @@ Route::prefix('clientes')->group(function () {
 
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
+Route::get('contabilidad/cajas', [MovCajasController::class, 'index'])->name('index.cajas');
+
+Route::get('contabilidad/ingresos/{id}', [IngresosController::class, 'index']);
+Route::get('contabilidad/ingresos', [IngresosController::class, 'obtener_ingresos'])->name('index.ingresos');
+Route::get('contabilidad/ingresos/create/{id}', [IngresosController::class, 'create'])->name('create.ingresos');
+Route::post('contabilidad/ingresos/store', [IngresosController::class, 'store'])->name('store.ingresos');
+Route::get('contabilidad/asientos', [AsientosController::class, 'index']);

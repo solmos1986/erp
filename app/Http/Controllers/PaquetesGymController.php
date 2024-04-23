@@ -13,6 +13,7 @@ class PaquetesGymController extends Controller
 {
     public function index(Request $request) //recibe como parametro un objeto tipo request
     {
+        // dump($request, "request paquetes");
         if ($request->ajax()) {
             $data = DB::table('paquetesgym')
                 ->get();

@@ -596,13 +596,8 @@
 
 
         $(document).ready(function() {
-            console.log(ventas, "VENTAS NICIO");
-            console.log(compras, "COMPRAS INICIO");
-            console.log(inscripciones, "INSCRIPCIONES INICIO");
-            console.log(fecha, "RANGO GFECHAAA")
-            console.log($("#rango_fecha").val(), "RANGO FECHA INICIAL")
             ConsultaDB();
-            graficarMes();
+
 
         });
 
@@ -624,17 +619,14 @@
                     idUsuario: $("#idUsuario").val(),
                 },
                 success: function(response) {
-                    console.log(response, "VOLVIO DE OBTENER DASHBOARD")
                     ventas = response.data;
                     compras = response.data2;
                     inscripciones = response.data3;
-                    console.log(ventas, "nuevo valor VENTAS");
-                    console.log(compras, "nuevo valor COMPRAS");
-                    console.log(inscripciones, "nuevo valor INSCRIPCIONES")
                     SumaVentas();
                     SumCompras();
                     SumImpuestos();
                     SumInscripciones();
+                    graficarMes();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log('error de programacion');
@@ -659,7 +651,6 @@
                 (accumulatorV, currentValueV) => accumulatorV + currentValueV,
                 initialValueV,
             );
-            console.log(sumTotalV, "Total Ventas");
             $("#TotalVentas").text('Bs. ' + sumTotalV);
         }
 
@@ -673,7 +664,6 @@
                 (accumulator, currentValue) => accumulator + currentValue,
                 initialValue,
             );
-            console.log(sumTotal, "Total Compras");
             $("#TotalCompras").text('Bs. ' + sumTotal);
         }
 
@@ -687,7 +677,6 @@
                 (accumulator, currentValue) => accumulator + currentValue,
                 initialValue,
             );
-            console.log(sumTotal, "Total Impuestos");
             $("#TotalImpuestos").text('Bs. ' + sumTotal);
         }
 
@@ -701,7 +690,6 @@
                 (accumulator, currentValue) => accumulator + currentValue,
                 initialValue,
             );
-            console.log(sumTotal, "Total Inscripciones");
             $("#TotalInscripciones").text('Bs. ' + sumTotal);
         }
         $(document).on('keyup change', '.filtrar', function() {
@@ -766,9 +754,6 @@
                     ventas = response.data;
                     compras = response.data2;
                     inscripciones = response.data3;
-                    console.log(ventas, "nuevo valor VENTAS");
-                    console.log(compras, "nuevo valor COMPRAS");
-                    console.log(inscripciones, "nuevo valor INSCRIPCIONES");
                     mapeando(ventas, compras, inscripciones, rango);
 
                 },
@@ -821,7 +806,6 @@
                     DataInscripciones.push(0)
                 }
             })
-
             grafico(range, DataVentas, DataCompras, DataInscripciones);
         }
 
@@ -860,11 +844,19 @@
                 dataLabels: {
                     formatter: (val) => {
                         return val / 1
+                    },
+                    style: {
+                        fontSize: '8px',
+                        /* fontWeight: 900 */
+                    },
+                    total: {
+                        enabled: true,
+
                     }
                 },
                 plotOptions: {
                     bar: {
-                        horizontal: false
+                        horizontal: false,
                     }
                 },
                 xaxis: {

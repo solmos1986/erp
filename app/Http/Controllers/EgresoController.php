@@ -26,6 +26,7 @@ class EgresoController extends Controller
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+        // dump($request, "PASE POR CONTROLLER egreso");
 
         if ($request->ajax()) {
             $query = trim($request->get('searchText'));
