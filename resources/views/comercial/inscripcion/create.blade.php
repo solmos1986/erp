@@ -1,19 +1,8 @@
 @extends('layouts.admin')
 @push('css')
-    <!-- third party css -->
-
-    <link href="{{ asset('/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/mohithg-switchery/switchery.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/multiselect/css/multi-select.css') }}" rel="stylesheet" type="text/css" />
-
-    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
-
     <link href="{{ asset('/libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('/libs/quill/quill.core.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/quill/quill.snow.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+    <link href="{{ asset('/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
@@ -22,7 +11,6 @@
         type="text/css" />
     <link href="{{ asset('/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
@@ -66,11 +54,9 @@
                         <div class="row mb-1">
                             <label for="idVendedor" class="form-label col-12 col-xl-3">Vendedor</label>
                             <div class="col-12 col-xl-9">
-                                <select class="form-control form-control-sm" id="idVendedor" name="idVendedor">
-                                    @foreach ($usuario as $user)
-                                        <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" id="Fecha" name="Fecha" class="form-control form-control-sm"
+                                    placeholder="Date and Time" value="{{ auth()->user()->obtener_usuario()->nomUsuario }}"
+                                    disabled>
                             </div>
                         </div>
                     </div>
@@ -190,7 +176,7 @@
                                                         name="duracionPaquete" value="" readonly>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="fechaInicio" name="fechaInicio"
+                                                    <input type="date" id="fechaInicio" name="fechaInicio"
                                                         class="form-control form-control-sm" placeholder="Fecha inicio">
                                                 </td>
                                                 <td>
@@ -242,9 +228,12 @@
     </form>
     <x-components.modal size="modal-xl" id="modal_cliente" nameBtnSave="Guardar" nameBtnClose="Cancelar"
         idBtnSave="btn_save">
-        @include('commom.ModalCrear_Cliente')
+        @include('comercial.cliente.components.form-cliente-inscripcion')
     </x-components.modal>
-    @include('commom.ModalImprimir_VentaCompra')
+    <x-components.modal size="modal-xl" id="modalImprimir" nameBtnSave="Imprimir" nameBtnClose="Cancelar"
+        idBtnSave="ImprimirPDF">
+        @include('commom.pdf-imprimir')
+    </x-components.modal>
 @endsection
 
 @push('javascript')
@@ -268,13 +257,9 @@
     <script src="{{ asset('/libs/mohithg-switchery/switchery.min.js') }}"></script>
     <script src="{{ asset('/libs/multiselect/js/jquery.multi-select.js') }}"></script>
     <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
     <script src="{{ asset('/libs/printjs/print.min.js') }}"></script>
     <script src="{{ asset('/libs/webcam-easy/webcam-easy.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-
-    <script src="{{ asset('/js/components/datatables.js') }}"></script>
-    <script src="{{ asset('/js/components/select2.js') }}"></script>
     <script src="{{ asset('/js/cliente/modal.js') }}"></script>
     <script src="{{ asset('/js/cliente/foto.js') }}"></script>
     <script src="{{ asset('/js/inscripcion/create.js') }}"></script>

@@ -22,10 +22,9 @@ class InscripcionController extends Controller
     {
         $this->middleware('auth');
     }
-    public function index(Request $request) //recibe como parametro un objeto tipo request
+    public function index(Request $request)
     {
-        Log::info("inciando inscripcion");
-//dd($request, "ESTO ESTA LLEGANDO");
+        Log::info("Inscripcion/index " . Utils::jsonLog($request->all()));
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
@@ -35,7 +34,18 @@ class InscripcionController extends Controller
         if ($request->ajax()) {
             $query = trim($request->get('searchText'));
             $data = DB::table('inscripcion as in')
-                ->select('in.idInscripcion', 'in.fechaInscripcion', 'c.nomCliente', 'tc.nomTipoComprobante', 'in.impuestoInscripcion', 'tp.nomTipoPago', 'di.costoPaquete', 'u.nomUsuario', 'in.estadoInscripcion')
+                ->select(
+                    'in.idInscripcion',
+                    'in.fechaInscripcion',
+                    'c.nomCliente',
+                    'tc.nomTipoComprobante',
+                    'in.impuestoInscripcion',
+                    'tp.nomTipoPago',
+                    'di.costoPaquete',
+                    'u.nomUsuario',
+                    'in.estado',
+                    'di.*'
+                )
                 ->join('cliente as c', 'in.idCliente', '=', 'c.idCliente')
                 ->join('detalle_inscripcion as di', 'in.idInscripcion', '=', 'di.idInscripcion')
                 ->join('tipo_comprobante as tc', 'in.idTipoComprobante', '=', 'tc.idTipoComprobante')
@@ -45,9 +55,8 @@ class InscripcionController extends Controller
                     $query->where('in.fechaInscripcion', '>=', $request->get('startDate'))
                         ->where('in.fechaInscripcion', '<=', $request->get('endDate'));
                 })
-                ->when(($request->get('idCliente') != ''), function ($query) use ($request) {
+                ->when(($request->get('idCliente') != 'null' && $request->get('idCliente') != ''), function ($query) use ($request) {
                     $query->where('in.idCliente', '=', $request->get('idCliente'));
-
                 })
                 ->when(($request->get('idTipoComprobante') != ''), function ($query) use ($request) {
                     $query->where('in.idTipoComprobante', '=', $request->get('idTipoComprobante'));
@@ -75,7 +84,6 @@ class InscripcionController extends Controller
                 ->make(true);
         }
         return view('comercial/inscripcion/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario]);
-
     }
     public function pdf(Request $request, $id)
     {

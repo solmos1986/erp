@@ -29,9 +29,5 @@ function select2(idComponent, url, method, onSelect) {
                 return "Buscando..";
             }
         }
-    }).on("select2:select", function (e) {
-        var newOption = new Option(e.params.data.docCliente, e.params.data.id, false, false);
-        $('#docCliente').append(newOption).trigger('change');
-        $('#docCliente').val(e.params.data.id).trigger('change');
-    });
+    }).on("select2:select", onSelect);
 }

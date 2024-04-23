@@ -5,8 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorizacionController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CuentaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EgresoController;
+use App\Http\Controllers\EntradaPorductoAlmacen;
 use App\Http\Controllers\EstadoPedidosController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\IngresosController;
@@ -82,13 +84,16 @@ Route::delete('almacen/marcas/borrar/{id}', [MarcasController::class, 'destroy']
 
 //
 //
+Route::post('almacen/producto/buscar-serie', [ProductoController::class, 'buscarSerie']);
 Route::get('almacen/producto', [ProductoController::class, 'index'])->name('index.producto');
+Route::get('almacen/producto/data-table', [ProductoController::class, 'dataTable'])->name('dataTable.producto');
 Route::get('almacen/producto/index', [ProductoController::class, 'index']);
 Route::post('almacen/producto', [ProductoController::class, 'store'])->name('store.producto');
 Route::get('almacen/producto/create', [ProductoController::class, 'create'])->name('create.producto');
 Route::post('almacen/producto/update', [ProductoController::class, 'update'])->name('update.producto');
 Route::get('almacen/producto/{id}', [ProductoController::class, 'edit'])->name('edita.producto');
 Route::delete('almacen/producto/{id}', [ProductoController::class, 'destroy']);
+
 //
 Route::get('comercial/cliente', [ClienteController::class, 'index'])->name('index.cliente');
 Route::get('comercial/cliente/data-table', [ClienteController::class, 'dataTable'])->name('index.dataTable');
@@ -99,6 +104,7 @@ Route::get('comercial/cliente/{id}', [ClienteController::class, 'edit'])->name('
 Route::delete('comercial/cliente/{id}', [ClienteController::class, 'destroy']);
 //dd("route ok");
 //
+Route::get('almacen/proveedor/buscar', [ProveedorController::class, 'select2'])->name('proveedor.select2');
 Route::get('almacen/proveedor', [ProveedorController::class, 'index'])->name('index.proveedor');
 Route::post('almacen/proveedor', [ProveedorController::class, 'store'])->name('store.proveedor');
 Route::put('almacen/proveedor/{id}', [ProveedorController::class, 'update']);
@@ -114,6 +120,7 @@ Route::delete('rrhh/usuario/{id}', [UsuarioController::class, 'destroy']);
 //
 //
 Route::get('comercial/compra', [EgresoController::class, 'index'])->name('index.compra');
+Route::get('comercial/compra/data-table', [EgresoController::class, 'dataTable'])->name('index.dataTable');
 Route::get('comercial/compra-pdf/{id}', [EgresoController::class, 'pdf'])->name('pdf.compra');
 Route::post('comercial/compra', [EgresoController::class, 'store']);
 Route::get('comercial/compra/index', [EgresoController::class, 'index']);
@@ -182,6 +189,7 @@ Route::prefix('sub-modulo')->group(function () {
 });
 //
 //
+Route::get('comercial/venta/data-table', [IngresoController::class, 'dataTable'])->name('index.dataTable');
 Route::get('comercial/venta', [IngresoController::class, 'index'])->name('index.venta');
 Route::post('comercial/venta', [IngresoController::class, 'store']);
 Route::get('comercial/venta/index', [IngresoController::class, 'index']);
@@ -210,10 +218,10 @@ Route::delete('comercial/inscripcion/{id}', [InscripcionController::class, 'dest
 //
 
 Route::get('configuracion/lectores', [LectoresController::class, 'index'])->name('index.lector');
-Route::post('configuracion/lectores', [LectoresController::class, 'store']);
-Route::put('configuracion/lectores/{id}', [LectoresController::class, 'update']);
-Route::get('configuracion/lectores/{id}', [LectoresController::class, 'edit'])->name('edita.lector');
-Route::delete('configuracion/lectores/{id}', [LectoresController::class, 'destroy']);
+Route::post('configuracion/lector', [LectoresController::class, 'store']);
+Route::put('configuracion/lector/{id}', [LectoresController::class, 'update']);
+Route::get('configuracion/lector/{id}', [LectoresController::class, 'edit'])->name('edita.lector');
+Route::delete('configuracion/lector/{id}', [LectoresController::class, 'destroy']);
 //
 //
 Route::get('almacen/paquetes', [PaquetesGymController::class, 'index'])->name('index.paquete');
@@ -240,9 +248,17 @@ Route::prefix('dashboard')->group(function () {
 Route::prefix('clientes')->group(function () {
     Route::get('/buscar-nombre', [ClienteController::class, 'obtener_clientes']);
     Route::get('/buscar-ci', [ClienteController::class, 'obtener_documento']);
-
     //Route::get('store', [ProductoController::class, 'obtener_producto']);
 });
+
+Route::prefix('entrada-almacen')->group(function () {
+    Route::get('/producto-data-table/{id}', [EntradaPorductoAlmacen::class, 'dataTable']);
+    Route::get('create/{id}', [EntradaPorductoAlmacen::class, 'create']);
+    Route::post('store/{id}', [EntradaPorductoAlmacen::class, 'store']);
+    //Route::get('/buscar-ci', [EntradaPorductoAlmacen::class, 'obtener_documento']);
+    //Route::get('store', [ProductoController::class, 'obtener_producto']);
+});
+
 Route::get('contabilidad/cajas', [MovCajasController::class, 'index'])->name('index.cajas');
 
 Route::get('contabilidad/ingresos/{id}', [IngresosController::class, 'index']);
@@ -250,3 +266,9 @@ Route::get('contabilidad/ingresos', [IngresosController::class, 'obtener_ingreso
 Route::get('contabilidad/ingresos/create/{id}', [IngresosController::class, 'create'])->name('create.ingresos');
 Route::post('contabilidad/ingresos/store', [IngresosController::class, 'store'])->name('store.ingresos');
 Route::get('contabilidad/asientos', [AsientosController::class, 'index']);
+
+Route::prefix('cuenta')->group(function () {
+    Route::get('/', [CuentaController::class, 'index']);
+    Route::get('/data-table', [CuentaController::class, 'dataTable']);
+});
+

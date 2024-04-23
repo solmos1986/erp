@@ -2,23 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LectoresRequest; // sar la base de datos.
+use App\Http\Requests\LectoresRequest;
 use App\Models\Lectores;
-use DB;
+use DB; // sar la base de datos.
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Validator;
 use Yajra\DataTables\DataTables;
 
 class LectoresController extends Controller
 {
-    public function index(Request $request) //recibe como parametro un objeto tipo request
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    public function index(Request $request)
     {
 
         if ($request->ajax()) {
             $data = DB::table('lectores')
                 ->where('condicionLector', '=', '1')
                 ->get();
-            /* dd($data, "llegue controller"); */
-
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->rawColumns([])
@@ -31,16 +35,32 @@ class LectoresController extends Controller
     }
     public function store(Request $request)
     {
-        // dd($request, "llegue controller LECTOREs");
-
-        $lector = new Lectores;
-        $lector->nomLector = $request->get('nomLector');
-        $lector->ipLector = $request->get('ipLector');
-        $lector->portLector = $request->get('portLector');
-        $lector->userLector = $request->get('userLector');
-        $lector->passLector = $request->get('passLector');
-        $lector->condicionLector = '1';
-        $lector->save();
+        Log::info("LectoresController/store " . Utils::jsonLog($request->all()));
+        $rules = array(
+            'nomLector' => 'required',
+            'ipLector' => 'required',
+            'userLector' => 'required',
+            'passLector' => 'required',
+        );
+        $messages = [
+            'nomLector.required' => "Nombre es requerido",
+            'ipLector.required' => "Ip es requerido",
+            'userLector.required' => "Usuario es requerido",
+            'passLector.required' => "Contraseña es requerido",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+        $lector = DB::table('lectores')->insertGetId([
+            "nomLector" => $request->get('nomLector'),
+            "ipLector" => $request->get('ipLector'),
+            "userLector" => $request->get('userLector'),
+            "passLector" => $request->get('passLector'),
+        ]);
         return response()->json([
             "status" => 1,
             "message" => "Guardado correctamnte",
@@ -48,10 +68,9 @@ class LectoresController extends Controller
         ]);
 
     }
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //dd($id, "llegue edit");
-
+        Log::info("LectoresController/edit " . Utils::jsonLog($request->all()));
         $lector = DB::table('lectores')
             ->where('idLector', $id)
             ->first();
@@ -63,26 +82,43 @@ class LectoresController extends Controller
         ]);
 
     }
-    public function update(LectoresRequest $request)
+    public function update(Request $request, $id)
     {
-        //dd("Llegue UPDATE Lector");
-
-        $id = $request->get('idLector');
-        $lector = Lectores::findOrFail($id);
-        $lector->nomlector = $request->get('nomLector');
-        $lector->ipLector = $request->get('ipLector');
-        $lector->portLector = $request->get('portLector');
-        $lector->userLector = $request->get('userLector');
-        $lector->passLector = $request->get('passLector');
-        $lector->condicionLector = '1';
-        $lector->update();
-        //dd('PdfController / store()', $categoria);
+        Log::info("LectoresController/update " . Utils::jsonLog($request->all()));
+        $rules = array(
+            'nomLector' => 'required',
+            'ipLector' => 'required',
+            'userLector' => 'required',
+            'passLector' => 'required',
+        );
+        $messages = [
+            'nomLector.required' => "Nombre es requerido",
+            'ipLector.required' => "Ip es requerido",
+            'userLector.required' => "Usuario es requerido",
+            'passLector.required' => "Contraseña es requerido",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+            ]);
+        }
+        $lector = DB::table('lectores')
+            ->where('lectores.idLector', $id)
+            ->update([
+                "nomLector" => $request->get('nomLector'),
+                "ipLector" => $request->get('ipLector'),
+                "userLector" => $request->get('userLector'),
+                "passLector" => $request->get('passLector'),
+            ]);
         return response()->json([
             "status" => 1,
-            "message" => "Actualizado correctamnte",
+            "message" => "Modificado correctamnte",
             "data" => $lector,
         ]);
     }
+
     public function destroy(LectoresRequest $request, $id)
     {
         // dd($request, "LLEGUE STATUS METHOD");
