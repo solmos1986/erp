@@ -1,152 +1,28 @@
-
-// autoseleccion paquete por default
-var detalleCuentas = [];
-$(document).ready(function () {
-    /* $("#duracionPaquete").val(
-        $("#idPaquete").find(":selected").data("duracion")
-    );
-    $("#costoPaquete").val($("#idPaquete").find(":selected").data("costo"));
-    setFecha(moment().format("DD/MM/YYYY")); */
-});
-
-/* $(document).on("change", "#idPaquete", function () {
-    $("#costoPaquete").val($("#idPaquete").find(":selected").data("costo"));
-    $("#duracionPaquete").val(
-        $("#idPaquete").find(":selected").data("duracion")
-    );
-    setFecha($("#fechaInicio").val());
-    calcularImpuesto();
-}); */
-
-/* $(document).on("change", "#idTipoComprobante", function () {
-    console.log("OnChangeeee");
-    calcularImpuesto();
-}); */
-/* function calcularImpuesto() {
-    var impuesto = $("#idTipoComprobante").find(":selected").data("value");
-    console.log(impuesto, "MPUESTOOOOOO");
-    var costoIns = $("#costoPaquete").val();
-    var tImpuesto = impuesto * costoIns;
-    $("#impuestoInscripcion").val(tImpuesto);
-} */
-
-/* $("#fechaInicio").flatpickr({
-    enableTime: false,
-    dateFormat: "d/m/Y",
-    defaultDate: moment().format("DD/MM/YYYY"), //defaul fecha actual
-    onChange: function (selectedDates, dateStr, instance) {
-        setFecha(dateStr);
-    },
-}); */
-
-/* function setFecha(fechaInicio) {
-    var nueva_fecha = moment(fechaInicio, "DD/MM/YYYY")
-        .add($("#duracionPaquete").val(), "months")
-        .format("DD/MM/YYYY");
-    $("#fechaFin").val(nueva_fecha);
-} */
-
-//PDF
-function verPDF(id) {
-    var frame = $("#iframePDF");
-    var ahref = $("#cancelPDF");
-    //LOADER
-    ajax(`${base_url}/comercial/inscripcion-pdf/${id}`, "GET").then(
-        (response) => {
-            var src = `data:application/pdf;base64,${response.data}`;
-            $("#modalImprimir .modal-title").text("RECIBO DE INSCRIPCION");
-            ahref.attr("href", `${base_url}/comercial/inscripcion/index`);
-            frame.attr("src", `data:application/pdf;base64,${response.data}`);
-            $("#modalImprimir").modal("show");
-            $("#iframePDF").data("url", response.data);
-        }
-    );
-}
-$(document).on("click", ".imprimir", function () {
-    const base64 = $("#iframePDF").data("url");
-    printJS({
-        printable: base64,
-        type: "pdf",
-        base64: true,
-        onPrintDialogClose: () => {
-            $("#modalImprimir").modal("hide");
-            window.location = "index";
-        },
-    });
-});
-
-//STORE
-$(document).on("click", ".procesar", function () {
-    var dato = {
-        idTipoIngreso: 3,
-        idCliente: $("#idCliente").val(),
-        idTipoPago: $("#idTipoPago").val(),
-        idTipoComprobante: $("#idTipoComprobante").val(),
-        numeroComprobante: $("#numComprobante").val(),
-        descripcion: $("#descripcion").val(),
-        totalIngreso: $("#totalIngreso").val(),
-        fechaIngreso: $("#fechaIngreso").val(),
-        estado: 1,
-        idUsuario: $("#idUsuario").val(),
-    };
-    $.ajax({
-        type: "post",
-        url: `${base_url}/contabilidad/ingresos/store`,
-        dataType: "json",
-        data: $("#form_inscripcion").serialize(),
-        success: function (response) {
-            // window.location = "index";
-            Swal.fire({
-                title: "Desea imprimir?",
-                text: "Esta proceso es irreversible",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Si, imprimir!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location = "index";
-                    /* verPDF(response.data); */
-                } else {
-                    window.location = "index";
-                }
-            });
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            SwallErrorValidate(response);
-        },
-        fail: function () {},
-    });
-});
-
 var productos = [];
 var stock = 0;
 var detalleVenta = [];
 
 $(document).ready(function () {
-    $('#paginate_producto').hide()
-    CargarProducto()
+    $("#paginate_producto").hide();
+    CargarProducto();
 });
 function CargarProducto() {
-    $('#loader_producto').show()
-    $('#paginate_producto').hide()
-    ajax(`${base_url}/producto`, 'GET').then((response) => {
-        if (response.status == '1') {
-            $('#loader_producto').hide()
-            $('#paginate_producto').show()
+    $("#loader_producto").show();
+    $("#paginate_producto").hide();
+    ajax(`${base_url}/producto`, "GET").then((response) => {
+        if (response.status == "1") {
+            $("#loader_producto").hide();
+            $("#paginate_producto").show();
             productos = response.data;
             stock = response.stock;
             renderCard();
-        }
-        else {
+        } else {
             SwallErrorValidate(response);
         }
     });
-
 }
 function renderCard() {
-    $('#list_cards').html('')
+    $("#list_cards").html("");
     let cards = ``;
     productos.map((item, i) => {
         cards += `
@@ -156,7 +32,7 @@ function renderCard() {
                             <div class="row">
                                 <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0" >
                                     <div class="bg-image hover-zoom ripple rounded ripple-surface" >
-                                    <img src="${base_url}/imagenes/productos/${item.imagenProducto}" 
+                                    <img src="${base_url}/imagenes/productos/${item.imagenProducto}"
                                         class="w-100" />
                                     <a href="#!">
                                         <div class="hover-overlay">
@@ -169,7 +45,7 @@ function renderCard() {
                                     <div>
                                         <h5 class="text-truncate">${item.nomProducto}</h5>
                                     </div>
-                                    
+
                                     <div class="mt-1 mb-0 text-muted small">
                                         <span>Caract.1</span>
                                         <span class="text-primary"> • </span>
@@ -205,42 +81,43 @@ function renderCard() {
                                 </div>
                             </div>
                         </div>
-                        
-                    </div>
-                </div> 
-                `;
-    })
-    $('#list_cards').append(cards)
 
+                    </div>
+                </div>
+                `;
+    });
+    $("#list_cards").append(cards);
 }
-$(document).on('click', '.add_product', function () {
-    let posicion = $(this).data('id');
+$(document).on("click", ".add_product", function () {
+    let posicion = $(this).data("id");
     let producto = productos[posicion];
-    const validador = detalleVenta.find(((item) => item.idProducto == producto.idProducto));
+    const validador = detalleVenta.find(
+        (item) => item.idProducto == producto.idProducto
+    );
 
     if (validador == undefined) {
         detalleVenta.push({
             ...producto,
             cantidad: 1,
             precio: producto.precio_venta,
-            precioTotal: parseFloat((producto.precio_venta * 1))
+            precioTotal: parseFloat(producto.precio_venta * 1),
         });
     } else {
-        detalleVenta.map(item => {
+        detalleVenta.map((item) => {
             if (item.idProducto == producto.idProducto) {
                 item.cantidad = item.cantidad + 1;
-                item.precioTotal = parseFloat((item.precio * item.cantidad));
+                item.precioTotal = parseFloat(item.precio * item.cantidad);
             }
         });
     }
-    console.log('detalleVentaAddCard', detalleVenta)
+    console.log("detalleVentaAddCard", detalleVenta);
     SumaTotales();
     renderDetalleVenta();
 });
 
 function renderDetalleVenta() {
-    console.log('detalleVentaAddCard', detalleVenta)
-    $('#dtVE').html('')
+    console.log("detalleVentaAddCard", detalleVenta);
+    $("#dtVE").html("");
     let html = ``;
     detalleVenta.forEach((item, i) => {
         html += `
@@ -260,55 +137,53 @@ function renderDetalleVenta() {
             </tr>
             `;
     });
-    $('#dtVE').append(html)
+    $("#dtVE").append(html);
 }
-$(document).on('keyup change', '.precio', function () {
-
+$(document).on("keyup change", ".precio", function () {
     let precio = $(this).val();
-    let posicion = $(this).data('id');
+    let posicion = $(this).data("id");
     /* let td = '#pro' + posicion
     let colum = $(this).data('td');*/
-    console.log(precio, posicion, "PROBANDO")
+    console.log(precio, posicion, "PROBANDO");
     let total = 0;
     detalleVenta.map((item, i) => {
         if (i == posicion) {
             item.precioTotal = parseFloat(precio * item.cantidad);
             item.precio_venta = parseFloat(precio);
-            $(`.total${posicion}`).text(item
-                .precioTotal); //restringir cantidad decimales
+            $(`.total${posicion}`).text(item.precioTotal); //restringir cantidad decimales
         }
-        total += item.precioTotal
-    })
+        total += item.precioTotal;
+    });
 
-    console.log(detalleVenta, "Mapeando Precio")
+    console.log(detalleVenta, "Mapeando Precio");
     SumaTotales();
 });
-$(document).on('keyup change', '.cantidad', function () {
+$(document).on("keyup change", ".cantidad", function () {
     let cantidad = $(this).val();
-    let posicion = $(this).data('id');
-    console.log(cantidad, posicion)
+    let posicion = $(this).data("id");
+    console.log(cantidad, posicion);
     detalleVenta.map((item, i) => {
         if (i == posicion) {
             item.precioTotal = parseFloat(item.precio * cantidad);
             item.cantidad = parseFloat(cantidad);
             $(`.total${posicion}`).text(item.precioTotal);
         }
-    })
-    console.log(detalleVenta, "Mapeando cantidad")
+    });
+    console.log(detalleVenta, "Mapeando cantidad");
     SumaTotales();
 });
 
 var comprobante = document.getElementById("idTipoComprobante");
 comprobante.addEventListener("change", function () {
-    console.log("Comprobante cambio", comprobante.value)
+    console.log("Comprobante cambio", comprobante.value);
     calcularImpuesto();
 });
 
 function calcularImpuesto() {
     var impuesto = comprobante.value;
-    var costoIns = $('#TotalCart').val();
+    var costoIns = $("#TotalCart").val();
     var tImpuesto = impuesto * costoIns;
-    $('#impuestoIngreso').val(tImpuesto);
+    $("#impuestoIngreso").val(tImpuesto);
     console.log(tImpuesto, "Valor Comprobante");
 }
 
@@ -322,124 +197,123 @@ function SumaTotales() {
     $("#TotalCart").html(total);
     calcularImpuesto();
 }
-$(document).on('click', '.deleteItem', function () {
-    let posicion = $(this).data('id');
-    let tr = document.querySelector('#fila' + posicion)
+$(document).on("click", ".deleteItem", function () {
+    let posicion = $(this).data("id");
+    let tr = document.querySelector("#fila" + posicion);
     tr.remove();
-    console.log('eliminando elemento', posicion)
+    console.log("eliminando elemento", posicion);
     detalleVenta.splice(posicion, 1);
-    console.log('resultado', detalleVenta)
+    console.log("resultado", detalleVenta);
     SumaTotales();
     //renderDetalleVenta()
-})
+});
 
-$(document).on('click', '.procesar', function () {
+$(document).on("click", ".procesar", function () {
     const btn = $(this);
 
-    if ($('#impuestoIngreso').val() == 0) {
+    if ($("#impuestoIngreso").val() == 0) {
         var idTC = 1;
     } else {
         var idTC = 2;
     }
     var dato = {
         detalleVenta: detalleVenta,
-        idCliente: $('#idCliente').val(),
-        idTipoPago: $('#idTipoPago').val(),
+        idCliente: $("#idCliente").val(),
+        idTipoPago: $("#idTipoPago").val(),
         idTipoComprobante: idTC,
-        fechaIngreso: $('#fechaVenta').val(),
-        impuestoIngreso: $('#impuestoIngreso').val(),
+        fechaIngreso: $("#fechaVenta").val(),
+        impuestoIngreso: $("#impuestoIngreso").val(),
         estadoIngreso: 1,
-        idUsuario: $('#idVendedor').val(),
+        idUsuario: $("#idVendedor").val(),
     };
 
     $.ajax({
         type: "post",
         url: `${base_url}/comercial/venta`,
-        dataType: 'json',
+        dataType: "json",
         data: dato,
         success: function (response) {
-            btn.prop('disabled', true)
+            btn.prop("disabled", true);
             Swal.fire({
-                title: 'Desea imprimir?',
+                title: "Desea imprimir?",
                 text: "Esta proceso es irreversible",
-                icon: 'warning',
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, imprimir!'
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, imprimir!",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    verPDF(response.data)
-
+                    verPDF(response.data);
                 } else {
                     window.location = "index";
                 }
-            })
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log('error de programacion');
+            console.log("error de programacion");
             Swal.fire({
-                type: 'error',
-                title: 'Oops...',
-                text: 'ejemplos!',
+                type: "error",
+                title: "Oops...",
+                text: "ejemplos!",
             });
         },
         fail: function () {
-            console.log('error servidor')
-        }
-    })
+            console.log("error servidor");
+        },
+    });
 });
 
 function verPDF(id) {
-    var frame = $('#iframePDF');
-    var ahref = $('#cancelPDF');
+    var frame = $("#iframePDF");
+    var ahref = $("#cancelPDF");
     //LOADER
     $.ajax({
         type: "GET",
         url: `${base_url}/comercial/venta-pdf/${id}`,
-        dataType: 'json',
+        dataType: "json",
         success: function (response) {
             var src = `data:application/pdf;base64,${response.data}`;
-            $('#modalImprimir .modal-title').text('RECIBO DE VENTA');
-            ahref.attr('href', "{{ url('comercial/venta/index') }}");
-            frame.attr('src', `data:application/pdf;base64,${response.data}`);
-            $('#modalImprimir').modal('show');
-            $('#iframePDF').data('url', response.data)
+            $("#modalImprimir .modal-title").text("RECIBO DE VENTA");
+            ahref.attr("href", "{{ url('comercial/venta/index') }}");
+            frame.attr("src", `data:application/pdf;base64,${response.data}`);
+            $("#modalImprimir").modal("show");
+            $("#iframePDF").data("url", response.data);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log('error de programacion');
+            console.log("error de programacion");
             Swal.fire({
-                type: 'error',
-                title: 'Oops...',
-                text: 'ejemplo!',
+                type: "error",
+                title: "Oops...",
+                text: "ejemplo!",
             });
         },
-        fail: function () { }
+        fail: function () {},
     });
-};
+}
 
 $(document).on("click", ".nuevoCli", function () {
-    $('#formCliente').modal('show');
+    $("#formCliente").modal("show");
 });
 
 $(document).on("click", ".guardar", function () {
     $.ajax({
         type: "post",
         url: "{{ route('store.cliente') }}",
-        dataType: 'json',
+        dataType: "json",
         data: {
-            nomCliente: $('#nomCliente').val(),
-            docCliente: $('#docCliente').val(),
-            tel1Cliente: $('#tel1Cliente').val(),
-            tel2Cliente: $('#tel2Cliente').val(),
-            dirCliente: $('#dirCliente').val(),
-            mailCliente: $('#mailCliente').val(),
-            imagen: $('#base64').val(),
+            nomCliente: $("#nomCliente").val(),
+            docCliente: $("#docCliente").val(),
+            tel1Cliente: $("#tel1Cliente").val(),
+            tel2Cliente: $("#tel2Cliente").val(),
+            dirCliente: $("#dirCliente").val(),
+            mailCliente: $("#mailCliente").val(),
+            imagen: $("#base64").val(),
         },
         success: function (response) {
-            console.log(response.img, "LLEGO NAMEEEEE?")
-            console.log(response.data, "LLEGO NAMEEEEE?")
-            $('#formCliente').modal('hide');
+            console.log(response.img, "LLEGO NAMEEEEE?");
+            console.log(response.data, "LLEGO NAMEEEEE?");
+            $("#formCliente").modal("hide");
             /*  $('.dtCliente').DataTable().ajax.reload(); */
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -448,59 +322,61 @@ $(document).on("click", ".guardar", function () {
         },
         fail: function () {
             //fail()
-        }
-    })
-
+        },
+    });
 });
-$(document).on('click', '.imprimir', function () {
-    const base64 = $('#iframePDF').data('url')
+$(document).on("click", ".imprimir", function () {
+    const base64 = $("#iframePDF").data("url");
     printJS({
         printable: base64,
-        type: 'pdf',
+        type: "pdf",
         base64: true,
         onPrintDialogClose: () => {
-            console.log(' detecion de cierre')
-        }
+            console.log(" detecion de cierre");
+        },
     });
-})
+});
 
 //detectar code barra
-$(document).on('change', '#code_barra', function () {
+$(document).on("change", "#code_barra", function () {
     const serie = $(this);
-    ajax(`${base_url}/almacen/producto/buscar-serie`, 'POST', { serie: serie.val() }).then((response) => {
-        if (response.status == '1') {
+    ajax(`${base_url}/almacen/producto/buscar-serie`, "POST", {
+        serie: serie.val(),
+    }).then((response) => {
+        if (response.status == "1") {
             const producto = response.data;
-            const validador = detalleVenta.find(((item) => item.idProducto == producto.idProducto));
+            const validador = detalleVenta.find(
+                (item) => item.idProducto == producto.idProducto
+            );
 
             if (validador == undefined) {
                 detalleVenta.push({
                     ...producto,
                     cantidad: 1,
                     precio: producto.precio_venta,
-                    precioTotal: parseFloat((producto.precio_venta * 1))
+                    precioTotal: parseFloat(producto.precio_venta * 1),
                 });
             } else {
-                detalleVenta.map(item => {
+                detalleVenta.map((item) => {
                     if (item.idProducto == producto.idProducto) {
                         item.cantidad = item.cantidad + 1;
-                        item.precioTotal = parseFloat((item.precio * item.cantidad));
+                        item.precioTotal = parseFloat(
+                            item.precio * item.cantidad
+                        );
                     }
                 });
             }
-            console.log('detalleVentaAddCard', detalleVenta)
+            console.log("detalleVentaAddCard", detalleVenta);
             SumaTotales();
             renderDetalleVenta();
             //SwallSuccess(response.message)
-            serie.val('');
-        }
-        else {
+            serie.val("");
+        } else {
             //SwallErrorValidate(response);
-            serie.val('');
+            serie.val("");
         }
     });
 });
-
-
 
 const onChangeSelect2Cliente = function (e) {
     var newOption = new Option(
@@ -535,35 +411,3 @@ select2(
     "GET",
     onChangeSelect2DocCliente
 );
-$(document).on("click", ".add_cuenta", function () {
-    let posicion = $(this).data("id");
-    console.log(posicion, "IDDDD");
-    let producto = productos[posicion];
-    console.log(producto, "PRODUCTOOOO");
-    const validador = detalleVenta.find(
-        (item) => item.idProducto == producto.idProducto
-    );
-
-    if (validador == undefined) {
-        detalleVenta.push({
-            ...producto,
-            cantidad: 1,
-            precio: producto.precioVentaProducto,
-            precioTotal: parseFloat(producto.precioVentaProducto * 1),
-        });
-    } else {
-        detalleVenta.map((item) => {
-            if (item.idProducto == producto.idProducto) {
-                item.cantidad = item.cantidad + 1;
-                item.precioTotal = parseFloat(
-                    item.precio * item.cantidad
-                    /* .repleace(",", ".") */
-                ) /* .toFixed(2) */;
-            }
-        });
-    }
-    console.log("detalleVentaAddCard", detalleVenta);
-    SumaTotales();
-    renderDetalleVenta();
-});
-
