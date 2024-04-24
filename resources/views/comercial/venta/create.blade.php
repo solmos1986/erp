@@ -35,7 +35,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                    <div class="border p-3 mt-lg-2 rounded">
+                    {{--    <div class="border p-3 mt-lg-2 rounded">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
                                 <div class="row bg-light p-2">
@@ -95,7 +95,10 @@
                                     placeholder="% impuesto" value="">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+                    <x-components.seccion nameSeccion="Informacion de venta">
+                        @include('commom.ingreso')
+                    </x-components.modal>
                 </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div class="border p-3 mt-lg-2 rounded">
@@ -173,8 +176,7 @@
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                 <label for="docCliente1" class="form-label">Ordenar por precio</label>
-                                <input type="select" class="form-control form-control-sm"
-                                    placeholder="Ordenar por precio">
+                                <input type="select" class="form-control form-control-sm" placeholder="Ordenar por precio">
                             </div>
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12" id="loader_producto">
                                 <div class="d-flex justify-content-center p-5">

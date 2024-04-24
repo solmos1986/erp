@@ -120,7 +120,6 @@ $(document).on("click", ".procesar", function () {
     });
 });
 
-=======
 var productos = [];
 var stock = 0;
 var detalleVenta = [];
