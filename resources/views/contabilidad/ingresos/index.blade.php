@@ -45,8 +45,8 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="text-lg-end">
-                        <a href="{{ url('contabilidad/ingresos/create/3') }}"><button type="button" id="serchbtn"
-                                class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i>
+                        <a href="{{ url('contabilidad/ingresos/create/3' {{-- idTipoIngreso = /3 --> IngresosVArios --}}) }}"><button type="button" id="serchbtn" 
+                                class="btn btn-success waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> 
                                 Nuevo Ingreso </button></a>
 
                     </div>
@@ -198,7 +198,7 @@
                 ajax: {
                     url: "{{ route('index.ingresos') }}",
                     data: function(d) {
-                        d.idTipoIngreso = 3,
+                        d.idTipoIngreso = 3, //idTipoIngreso = 3 ---> ingresosVarios
                             d.startDate = $('#IngresoDesde').val() + 'T00:00:00',
                             d.endDate = $('#IngresoHasta').val() + 'T23:59:59',
                             d.idCliente = $('#idCliente').val(),

@@ -34,7 +34,7 @@
 
 @section('contenido')
     <!-- start page title -->
-    <form action="" id="form_inscripcion">
+    <form action="" id="form_ingreso_varios">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">
@@ -46,6 +46,7 @@
                         </ol>
                     </div>
                     <h4 class="page-title">Nuevo INGRESO</h4>
+
                 </div>
             </div>
         </div>
@@ -53,13 +54,17 @@
         <div class="card shadow-0 border rounded-3">
             <div class="card-body">
                 <div class="row">
+                    <input type="number" id="idTipoIngreso" name="idTipoIngreso" class="form-control form-control-sm"
+                        placeholder="Date and Time" value="3" hidden>
+                    <input type="number" id="idTipoMov" name="idTipoMov" class="form-control form-control-sm"
+                        placeholder="Date and Time" value="1">
                     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                         <div class="row mb-1">
                             <label for="fechaIngreso" class="form-label col-12 col-xl-3">Fecha</label>
                             <div class="col-12 col-xl-9">
                                 <input type="text" id="fechaIngreso" name="fechaIngreso"
                                     class="form-control form-control-sm" placeholder="Date and Time"
-                                    value="<?php echo date('Y-m-d H:i:s'); ?>" disabled>
+                                    value="<?php echo date('Y-m-d H:i:s'); ?>" readonly>
                             </div>
                         </div>
                     </div>
@@ -175,7 +180,7 @@
                             <div class="col-md-12 col-lg-12 col-xl-12">
                                 <div class="row  p-2 mt-0 mb-3">
                                     <div class="col-lg-6">
-                                        <h5 class="text-uppercase  ">DETALLE</h5>
+                                        <h5 class="text-uppercase  ">ASIENTO CONTABLE</h5>
                                     </div>
                                     <div class="col-lg-2">
 
@@ -206,121 +211,118 @@
                                         <tbody id="dtVE">
                                             <tr>
                                                 <td>
-                                                    <select class="form-control form-control-sm" id="idPaquete"
-                                                        name="idPaquete[]">
-                                                        @foreach ($paquetes as $key => $pq)
-                                                            <option data-id="{{ $pq->idPaquete }}"
-                                                                value="{{ $pq->idPaquete }}"
-                                                                data-duracion="{{ $pq->duracionPaquete }}"
-                                                                data-costo="{{ $pq->costoPaquete }}"
+                                                    <select class="form-control form-control-sm" id="cuenta_id"
+                                                        name="cuenta_id[]">
+                                                        @foreach ($cuenta as $key => $cue)
+                                                            <option data-id="{{ $cue->cuenta_id }}"
+                                                                value="{{ $cue->cuenta_id }}"
                                                                 {{ $key == 0 ? 'selected' : '' }}>
-                                                                {{ $pq->nomPaquete }}
+                                                                {{ $cue->cuenta_id }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="duracionPaquete" placeholder="duracion"
-                                                        name="duracionPaquete[]" value="" readonly>
+                                                    <select class="form-control form-control-sm" id="cod_cuenta"
+                                                        name="cod_cuenta[]">
+                                                        @foreach ($cuenta as $key => $cue)
+                                                            <option data-id="{{ $cue->cuenta_id }}"
+                                                                value="{{ $cue->cuenta_id }}"
+                                                                {{ $key == 0 ? 'selected' : '' }}>
+                                                                {{ $cue->codigo_cuenta }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="fechaInicio" name="fechaInicio[]"
-                                                        class="form-control form-control-sm" placeholder="Fecha inicio">
+                                                    <select class="form-control form-control-sm" id="nombre_cuenta"
+                                                        name="nombre_cuenta[]">
+                                                        @foreach ($cuenta as $key => $cue)
+                                                            <option data-id="{{ $cue->cuenta_id }}"
+                                                                value="{{ $cue->cuenta_id }}"
+                                                                {{ $key == 0 ? 'selected' : '' }}>
+                                                                {{ $cue->nombre_cuenta }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="fechaFin" name="fechaFin[]"
-                                                        class="form-control form-control-sm" placeholder="Fecha fin"
-                                                        readonly>
+                                                    <input type="number" id="fechaFin" name="debe[]"
+                                                        class="form-control form-control-sm" placeholder="debe"
+                                                        value="">
                                                 </td>
                                                 <td>
                                                     <input type="number" class="form-control form-control-sm"
-                                                        name="costoPaquete[]" id="costoPaquete" placeholder="costo"
-                                                        value="" readonly>
+                                                        name="haber[]" id="costoPaquete" placeholder="haber"
+                                                        value="">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <select class="form-control form-control-sm" id="idPaquete"
-                                                        name="idPaquete[]">
-                                                        @foreach ($paquetes as $key => $pq)
-                                                            <option data-id="{{ $pq->idPaquete }}"
-                                                                value="{{ $pq->idPaquete }}"
-                                                                data-duracion="{{ $pq->duracionPaquete }}"
-                                                                data-costo="{{ $pq->costoPaquete }}"
+                                                    <select class="form-control form-control-sm" id="cuenta_id"
+                                                        name="cuenta_id[]">
+                                                        @foreach ($cuenta as $key => $cue)
+                                                            <option data-id="{{ $cue->cuenta_id }}"
+                                                                value="{{ $cue->cuenta_id }}"
                                                                 {{ $key == 0 ? 'selected' : '' }}>
-                                                                {{ $pq->nomPaquete }}
+                                                                {{ $cue->cuenta_id }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="duracionPaquete" placeholder="duracion"
-                                                        name="duracionPaquete[]" value="" readonly>
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="fechaInicio" name="fechaInicio[]"
-                                                        class="form-control form-control-sm" placeholder="Fecha inicio">
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="fechaFin" name="fechaFin[]"
-                                                        class="form-control form-control-sm" placeholder="Fecha fin"
-                                                        readonly>
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control form-control-sm"
-                                                        name="costoPaquete[]" id="costoPaquete" placeholder="costo"
-                                                        value="" readonly>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <select class="form-control form-control-sm" id="idPaquete"
-                                                        name="idPaquete[]">
-                                                        @foreach ($paquetes as $key => $pq)
-                                                            <option data-id="{{ $pq->idPaquete }}"
-                                                                value="{{ $pq->idPaquete }}"
-                                                                data-duracion="{{ $pq->duracionPaquete }}"
-                                                                data-costo="{{ $pq->costoPaquete }}"
+                                                    <select class="form-control form-control-sm" id="cod_cuenta"
+                                                        name="cod_cuenta[]">
+                                                        @foreach ($cuenta as $key => $cue)
+                                                            <option data-id="{{ $cue->cuenta_id }}"
+                                                                value="{{ $cue->cuenta_id }}"
                                                                 {{ $key == 0 ? 'selected' : '' }}>
-                                                                {{ $pq->nomPaquete }}
+                                                                {{ $cue->codigo_cuenta }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="duracionPaquete" placeholder="duracion"
-                                                        name="duracionPaquete[]" value="" readonly>
+                                                    <select class="form-control form-control-sm" id="nombre_cuenta"
+                                                        name="nombre_cuenta[]">
+                                                        @foreach ($cuenta as $key => $cue)
+                                                            <option data-id="{{ $cue->cuenta_id }}"
+                                                                value="{{ $cue->cuenta_id }}"
+                                                                {{ $key == 0 ? 'selected' : '' }}>
+                                                                {{ $cue->nombre_cuenta }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="fechaInicio" name="fechaInicio[]"
-                                                        class="form-control form-control-sm" placeholder="Fecha inicio">
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="fechaFin" name="fechaFin[]"
-                                                        class="form-control form-control-sm" placeholder="Fecha fin"
-                                                        readonly>
+                                                    <input type="number" id="fechaFin" name="debe[]"
+                                                        class="form-control form-control-sm" placeholder="debe"
+                                                        value="">
                                                 </td>
                                                 <td>
                                                     <input type="number" class="form-control form-control-sm"
-                                                        name="costoPaquete[]" id="costoPaquete" placeholder="costo"
-                                                        value="" readonly>
+                                                        name="haber[]" id="costoPaquete" placeholder="haber"
+                                                        value="">
                                                 </td>
                                             </tr>
+
                                         </tbody>
-                                        <tfoot>
+                                        {{-- <tfoot>
                                             <tr>
                                                 <th></th>
                                                 <th></th>
                                                 <th></th>
-                                                <th style="text-align:right;"><b>Total Bs.</b>
+                                                <th style="text-align:right;"><b>Total Ingreso Bs.</b>
                                                 </th>
-                                                <th style="text-align:left;"><span id="TotalCart"
+                                                <th style="text-align:left;">
+                                                    <input type="number" class="form-control form-control-sm"
+                                                        name="totalIngreso[]" id="totalIngreso" placeholder="costo"
+                                                        value="" readonly style="padding-left: 15px">
+                                                </th>
+                                                <th style="text-align:left;"><span id="totalIngreso[]"
                                                         style="padding-left: 15px"></span></th>
                                             </tr>
-                                        </tfoot>
+                                        </tfoot> --}}
                                     </table>
                                 </div>
                             </div>
@@ -329,78 +331,6 @@
                 </div>
             </div>
         </div>
-
-        {{-- <div class="row justify-content-center mb-0" style="display: none">
-            <div class="col-md-12 col-xl-12">
-                <div class="card shadow-0 border rounded-3">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12 col-lg-12 col-xl-12">
-                                <h5>DETALLE</h5>
-                                <div class="table-responsive">
-                                    <table class="dtCart table  table-nowrap table-centered mb-0" id="dtCart"
-                                        style="min-block-size: ">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Paquete</th>
-                                                <th>Duracion</th>
-                                                <th>Inicio</th>
-                                                <th>Fin</th>
-                                                <th>Precio</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dtVE">
-                                            <tr>
-                                                <td>
-                                                    <select class="form-control form-control-sm" id="idPaquete"
-                                                        name="idPaquete">
-                                                        @foreach ($paquetes as $key => $pq)
-                                                            <option data-id="{{ $pq->idPaquete }}"
-                                                                value="{{ $pq->idPaquete }}"
-                                                                data-duracion="{{ $pq->duracionPaquete }}"
-                                                                data-costo="{{ $pq->costoPaquete }}"
-                                                                {{ $key == 0 ? 'selected' : '' }}>
-                                                                {{ $pq->nomPaquete }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        id="duracionPaquete" placeholder="duracion"
-                                                        name="duracionPaquete" value="" readonly>
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="fechaInicio" name="fechaInicio"
-                                                        class="form-control form-control-sm" placeholder="Fecha inicio">
-                                                </td>
-                                                <td>
-                                                    <input type="text" id="fechaFin" name="fechaFin"
-                                                        class="form-control form-control-sm" placeholder="Fecha fin"
-                                                        readonly>
-                                                </td>
-                                                <td>
-                                                    <input type="number" class="form-control form-control-sm"
-                                                        name="costoPaquete" id="costoPaquete" placeholder="costo"
-                                                        value="" readonly>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th style="text-align:right;"><b>Total Bs.</b>
-                                                </th>
-                                                <th style="text-align:left;"><span id="TotalCart"
-                                                        style="padding-left: 15px"></span></th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-                            </div>
-                        </div> --}}
         <div class="row">
             <br>
         </div>
@@ -422,9 +352,9 @@
     </form>
     <x-components.modal size="modal-xl" id="modal_cliente" nameBtnSave="Guardar" nameBtnClose="Cancelar"
         idBtnSave="btn_save">
-        @include('commom.ModalCrear_Cliente')
+        @include('comercial.cliente.components.form-cliente-inscripcion')
     </x-components.modal>
-    @include('commom.ModalImprimir_VentaCompra')
+    @include('commom.pdf-imprimir')
 @endsection
 
 @push('javascript')
@@ -453,9 +383,5 @@
     <script src="{{ asset('/libs/webcam-easy/webcam-easy.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
-    <script src="{{ asset('/js/components/datatables.js') }}"></script>
-    <script src="{{ asset('/js/components/select2.js') }}"></script>
-    <script src="{{ asset('/js/cliente/modal.js') }}"></script>
-    <script src="{{ asset('/js/cliente/foto.js') }}"></script>
-    <script src="{{ asset('/js/ingresos/create.js') }}"></script>
+    <script src="{{ asset('/js/movimientos/create.js') }}"></script>
 @endpush
