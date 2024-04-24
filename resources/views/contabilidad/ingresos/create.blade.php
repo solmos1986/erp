@@ -54,121 +54,12 @@
         <div class="card shadow-0 border rounded-3">
             <div class="card-body">
                 <div class="row">
-                    <input type="number" id="idTipoIngreso" name="idTipoIngreso" class="form-control form-control-sm"
-                        placeholder="Date and Time" value="3" hidden>
-                    <input type="number" id="idTipoMov" name="idTipoMov" class="form-control form-control-sm"
-                        placeholder="Date and Time" value="1">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="fechaIngreso" class="form-label col-12 col-xl-3">Fecha</label>
-                            <div class="col-12 col-xl-9">
-                                <input type="text" id="fechaIngreso" name="fechaIngreso"
-                                    class="form-control form-control-sm" placeholder="Date and Time"
-                                    value="<?php echo date('Y-m-d H:i:s'); ?>" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="idUsuario" class="form-label col-12 col-xl-3">Usuario</label>
-                            <div class="col-12 col-xl-9">
-                                <select class="form-control form-control-sm" id="idUsuario" name="idUsuario">
-                                    @foreach ($usuario as $user)
-                                        <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="idCliente" class="form-label col-12 col-xl-3">Cliente</label>
-                            <div class="col-12 col-xl-9">
-                                <select class="form-control form-control-sm" name="idCliente" id="idCliente">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="idCliente" class="form-label col-12 col-xl-3">&nbsp;</label>
-                            <div class="col-12 col-xl-9">
-                                <div class="col-auto">
-                                    <div class="text-lg-end">
-                                        <button type="button"
-                                            class="nuevo btn btn-sm btn-success waves-effect waves-light w-100">
-                                            <i class="mdi mdi-plus-circle me-1"></i> Agregar Cliente</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="docCliente" class="form-label col-12 col-xl-3">NIT/CI</label>
-                            <div class="col-12 col-xl-9">
-                                <select class="form-control form-control-sm" name="docCliente" id="docCliente">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="idTipoPago" class="form-label col-12 col-xl-3">Tipo Pago</label>
-                            <div class="col-12 col-xl-9">
-                                <select class="form-control form-control-sm" name="idTipoPago" id="idTipoPago">
-                                    @foreach ($tipopago as $tp)
-                                        <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="idTipoComprobante" class="form-label col-12 col-xl-3">Comprobante</label>
-                            <div class="col-12 col-xl-9">
-                                <div class="col-12 col-xl-12">
-                                    <select class="form-control form-control-sm" id="idTipoComprobante"
-                                        name="idTipoComprobante">
-                                        @foreach ($tipo_comprobante as $tp)
-                                            <option data-value="{{ $tp->impuestoComprobante }}"
-                                                value="{{ $tp->idTipoComprobante }}">
-                                                {{ $tp->nomTipoComprobante }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="numComprobante" class="form-label col-12 col-xl-3">No. Comprobante</label>
-                            <div class="col-12 col-xl-9">
-                                <input type="text" class="form-control form-control-sm" name="numComprobante"
-                                    id="numComprobante" placeholder="## Comprobante">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="descripcion" class="form-label col-12 col-xl-3">Descripcion</label>
-                            <div class="col-12 col-xl-9">
-                                <input type="text" class="form-control form-control-sm" name="descripcion"
-                                    id="descripcion" placeholder="descripcion">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                        <div class="row mb-1">
-                            <label for="descripcion" class="form-label col-12 col-xl-3">Monto Bs.</label>
-                            <div class="col-12 col-xl-9">
-                                <input type="number" class="form-control form-control-sm" name="totalIngreso"
-                                    id="totalIngreso" placeholder="" value="0">
-                            </div>
-                        </div>
-                    </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <x-components.seccion nameSeccion="Informacion de movimiento">
+                            @include('commom.movimiento-general')
+                        </x-components.modal>
+                    </div>                 
                 </div>
             </div>
         </div>
@@ -350,11 +241,6 @@
         </div>
         </div>
     </form>
-    <x-components.modal size="modal-xl" id="modal_cliente" nameBtnSave="Guardar" nameBtnClose="Cancelar"
-        idBtnSave="btn_save">
-        @include('comercial.cliente.components.form-cliente-inscripcion')
-    </x-components.modal>
-    @include('commom.pdf-imprimir')
 @endsection
 
 @push('javascript')
