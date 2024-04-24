@@ -10,7 +10,6 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redirect;
 use Luecano\NumeroALetras\NumeroALetras;
 use Validator;
 use Yajra\DataTables\DataTables;
@@ -49,7 +48,7 @@ class IngresosController extends Controller
         $tipoIngreso = $request->get('idTipoIngreso');
         //dd($tipoIngreso, "TIPO INGRESO");
         $query = trim($request->get('searchText'));
-        $data = DB::table('ingreso as in')
+        $data = DB::table('ingresos as in')
             ->select('in.idIngreso', 'in.idTipoIngreso', 'in.fechaIngreso', 'c.nomCliente', 'in.numComprobante', 'tc.nomTipoComprobante', 'tp.nomTipoPago', 'in.totalIngreso', 'u.nomUsuario', 'in.estado')
             ->join('cliente as c', 'in.idCliente', '=', 'c.idCliente')
         /* ->join('detalle_inscripcion as di', 'in.idIngreso', '=', 'di.idInscripcion') */
@@ -130,16 +129,9 @@ class IngresosController extends Controller
         $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
+        $cuenta = db::table('cuenta')->where('condicion', '=', '1')->get();
+        $ingresoTipo = DB::table('tipoingresos')->where('condicion', '=', '1')->get();
         Log::info("IngresosController/create inciando");
-        /* if ($request->ajax()) {
-        $data = DB::table('paquetes')
-        ->where('condicionPaquete', '=', '1')
-        ->get();
-        return Datatables::of($data)
-        ->addIndexColumn()
-        ->rawColumns([])
-        ->make(true);
-        } */
         switch ($tipoIngreso) {
             case '1':
                 $productos = DB::table('producto')->where('condicionProducto', '=', '1')->get();
@@ -154,24 +146,13 @@ class IngresosController extends Controller
             case '3':
                 $paquetes = DB::table('paquetesgym')->where('condicionPaquete', '=', '1')->get();
 
-                return view('contabilidad/ingresos/create', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario, 'paquetes' => $paquetes]);
+                return view('contabilidad/ingresos/create', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'usuario' => $usuario, 'cuenta' => $cuenta, 'ingresoTipo' => $ingresoTipo]);
                 break;
         }
 
     }
     public function store(Request $request)
     {
-        dump("LLEGUE STORE", $request->all());
-        dump($request->fechaInicio);
-        foreach ($request->fechaInicio as $key => $fecha) {
-            dump($fecha);
-            dump($request->idPaquete[$key]);
-            dump($request->costoPaquete[$key]);
-            //INSERT
-
-        }
-        $tipoIngreso = $request->get('idTipoIngreso');
-        //dd($request, "LLEGUE MOVMIENTOS CONTROLLER");
         Log::info("IngresosController/store " . Utils::jsonLog($request->all()));
         $rules = array(
             'idCliente' => 'required',
@@ -192,89 +173,132 @@ class IngresosController extends Controller
                 'message' => $error->errors()->all(),
             ]);
         }
-        //set fechas
-        $fechaInicio = date('Y-m-d', strtotime(str_replace('/', '-', $request->fechaInicio))) . ' 00:00:00';
-        $fechaFin = date('Y-m-d', strtotime(str_replace('/', '-', $request->fechaFin))) . ' 23:59:59';
 
-        /* $estado = $this->estado_inscripcion($fechaInicio); */
-        /*  Log::info("IngresosController/store estado_inscripcion => " . $estado); *///donde dice $tipoIngreso decia $estado para que sirve eso que me muestre STIVEN
-        $insertIngreso = DB::table('ingreso')
+        //dd("LLEGUE STORE", $request->all());
+        //dump($request->fechaInicio);
+        $insertMovimiento = DB::table('movimientos')
+            ->insertGetId([
+                'idTipoMov' => $request->idTipoMov,
+                'fechaMov' => $request->fechaIngreso,
+                'idUsuario' => auth()->user()->obtener_usuario()->idUsuario,
+                'descripcion' => $request->descripcion,
+                'totalMov' => $request->totalIngreso,
+                'idProyecto' => 1, //crear tabla Proyectos y la oficina central es 1
+            ]);
+
+        foreach ($request->cuenta_id as $key => $cuenta) {
+            $insertAsiento = DB::table('asientos')
+                ->insertGetId([
+                    'idMovimiento' => $insertMovimiento,
+                    'idCuenta' => $cuenta,
+                    'debe' => $request->debe[$key],
+                    'haber' => $request->haber[$key],
+                ]);
+        }
+//INSERT
+        $insertIngreso = DB::table('ingresos')
             ->insertGetId([
                 'idTipoIngreso' => $request->idTipoIngreso,
+                'idMovimiento' => $insertMovimiento,
                 'fechaIngreso' => $request->fechaIngreso,
                 'idUsuario' => auth()->user()->obtener_usuario()->idUsuario,
                 'idCliente' => $request->idCliente,
-                'idTipoPago' => $request->idTipoPago,
+                'idMetodoPago' => $request->idTipoPago,
                 'idTipoComprobante' => $request->idTipoComprobante,
-                'numComprobante' => $request->numeroComprobante, //aumentar input en la vista INSCRIPCION para ingresar este dato
-                'descripcion' => $request->descripcion, //aumentar input auto rellenable en vista INSCRIPCION y VENTAS
+                'numComprobante' => $request->numComprobante, //aumentar input en la vista INSCRIPCION para ingresar este dato
                 'totalIngreso' => $request->totalIngreso, // enviar el valor del input total para INSCRIPCION y VENTAS
                 'estado' => 1,
             ]);
-        //DESPUES DEL insertIngreso debe ir el STORE ASIENTOS para todos los tipos de INGRESOS o EGRESOS luego el insertDetalle y finalmente ya con los INGRESOS o EGRESOS que necesitan registrar más información en otras tablas
-
+        dd("Acabo Mov,Asiento e Ingreso", $request->all());
+        $tipoIngreso = $request->get('idTipoIngreso');
         switch ($tipoIngreso) {
             case '1':
-                $productos = DB::table('producto')->where('condicionProducto', '=', '1')->get();
-                return view('comercial/venta/index', ['cliente' => $cliente, 'tipopago' => $tipopago, 'tipo_comprobante' => $tipo_comprobante, 'productos' => $productos, 'usuario' => $usuario]);
-/* $insertDetalleIngreso = DB::table('detalle_movimiento')->insertGetId([
-'idIngreso' => $insertIngreso,
-'idProducto' => $request->idPaquete, // Los paquetes serán productos entonces cambiar idPaquete por idProducto
-'cantidad' => 1, // enviar este campo desde la vista INSCRIPION pq utilizaremos este controlador para INGRESOS y EGRESOS productos, servicios etc
-//donde no se tenga cantidad pq es un servicio o cualquier otra cosa poner un input oculto CANTIDAD con valor 1 por default
-'precioUnitario' => $request->costoPaquete, //cambiar el nombre de esta variable en INSCRIPCION por precioUnitario y que traiga el costo del paquete
-]); */
+                //Si idTipoIngreso=1 es una Venta de Productos
+                $datos = [];
+                foreach ($request->idProducto as $key => $producto) {
+                    $insertDetalleVenta = DB::table('detalle_venta')->insertGetId([
+                        'idIngreso' => $insertIngreso,
+                        'idProducto' => $producto, // Los paquetes serán productos entonces cambiar idPaquete por idProducto
+                        'cantidadVenta' => $request->cantidad[$key],
+                        'precioVenta' => $request->precio[$key],
+                    ]);
+                    for ($i = 1; $i <= $value['cantidad']; $i++) {
+                        array_push($datos, array(
+                            'serie' => 'serie',
+                            'idProducto' => $value['idProducto'],
+                            'idDetalleIngreso' => $insertDetalleVenta,
+                        ));
+                    }
+                    salida_producto_almacen::insert($datos);
 
+                }
                 break;
             case '2':
-                /* public function estado_inscripcion($fechaInicio)
-                {
-                $fechaActual = date('Y-m-d');
-                $fechaInicio = date('Y-m-d', strtotime($fechaInicio));
-                Log::info("InscripcionesController/estado_inscripcion comprar => fecha inicio " . $fechaInicio . ' y fecha actual  ' . $fechaActual);
-                if ($fechaInicio > $fechaActual) {
-                return 'ant';
-                } else {
-                return 'vig';
-                }
-                } */
-                /// AQUI AGREGAR LINEA PARA QUE SALGA DEL SWITCH Y VAYA A LA RESPUESTA JSON ----- analizar bien el tema del estado de la inscripcion
-                break;
-            case '3':
-                return response()->json([
-                    "status" => 1,
-                    "message" => "GuarDado correctamnte",
-                    "data" => $insertIngreso,
+                //Si idTipoIngreso = 2 es una INSCRIPCION
+                //set fechas
+                $fechaInicio = date('Y-m-d', strtotime(str_replace('/', '-', $request->fechaInicio))) . ' 00:00:00';
+                $fechaFin = date('Y-m-d', strtotime(str_replace('/', '-', $request->fechaFin))) . ' 23:59:59';
+
+                $estado = $this->estado_inscripcion($fechaInicio);
+                Log::info("IngresosController/store estado_inscripcion => " . $estado);
+
+                $insertDetalleInscripcion = DB::table('detalle_inscripcion')->insertGetId([
+                    'idIngreso' => $insertIngreso,
+                    'idCliente' => $request->idCliente,
+                    'idPaquete' => $request->idPaquete,
+                    'fechaInicio' => $fechaInicio,
+                    'fechaFin' => $fechaFin,
+                    'costoPaquete' => $request->costoPaquete,
+                    'estadoInscripcion' => $estado,
+                    'idUsuario' => auth()->user()->obtener_usuario()->idUsuario,
+                    'condicion' => 1,
                 ]);
 
-                return Redirect::to('contabilidad/asientos')->with(["status" => 1, "message" => "GuarDado correctamnte", "data" => $insertIngreso]);
+                if ($estado == 'vig') {
+                    Log::info("IngresosController/store activando socket por el estado => " . $estado);
+                    $this->insertWebSocket($request->idCliente, $insertDetalleInscripcion, $fechaInicio, $fechaFin);
+                }
+                break;
+            case '3':
+                //Si idTipoIngreso = 3 es un INGRESO VARIOS
 
                 break;
         }
-
         return response()->json([
             "status" => 1,
             "message" => "GuarDado correctamnte",
             "data" => $insertIngreso,
         ]);
-    }
 
-    /* public function insertWebSocket($idCliente, $insertMovimiento, $fechaInicio, $fechaFin)
+    }
+    public function estado_inscripcion($fechaInicio)
     {
-    $socket = new Usuario();
-    $cliente = DB::table('cliente')
-    ->where('idCliente', $idCliente)
-    ->first();
-    $socket->store_cliente([
-    'idInscripcion' => $insertInscripciones,
-    'idCliente' => $cliente->idCliente,
-    'docCliente' => $cliente->docCliente,
-    'fechaInicio' => $fechaInicio,
-    'fechaFin' => $fechaFin,
-    'nomCliente' => $cliente->nomCliente,
-    'fotoCliente' => $cliente->fotoCliente,
-    ]);
-    } */
+
+        $fechaActual = date('Y-m-d');
+        $fechaInicio = date('Y-m-d', strtotime($fechaInicio));
+        Log::info("InscripcionesController/estado_inscripcion comprar => fecha inicio " . $fechaInicio . ' y fecha actual  ' . $fechaActual);
+        if ($fechaInicio > $fechaActual) {
+            return 'ant';
+        } else {
+            return 'vig';
+        }
+    }
+    public function insertWebSocket($idCliente, $insertDetalleInscripcion, $fechaInicio, $fechaFin)
+    {
+        $socket = new Usuario();
+        $cliente = DB::table('cliente')
+            ->where('idCliente', $idCliente)
+            ->first();
+        $socket->store_cliente([
+            'idInscripcion' => $insertDetalleInscripcion,
+            'idCliente' => $cliente->idCliente,
+            'docCliente' => $cliente->docCliente,
+            'fechaInicio' => $fechaInicio,
+            'fechaFin' => $fechaFin,
+            'nomCliente' => $cliente->nomCliente,
+            'fotoCliente' => $cliente->fotoCliente,
+        ]);
+    }
 
     public function eliminar_clientes_dispositivo()
     {
