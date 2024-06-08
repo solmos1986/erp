@@ -10,6 +10,13 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <style>
+        .descripcion {
+            overflow: hidden;
+            white-space: wrap;
+            text-overflow: ellipsis
+        }
+    </style>
 @endpush
 
 @section('contenido')
@@ -37,7 +44,7 @@
         </div>
         <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
             <a class="w-100" href="{{ url('comercial/compra/create') }}"><button type="button" id="serchbtn"
-                    class="btn btn-sm btn-success waves-effect waves-light mb-2 me-2 w-100"><i
+                    class="btn btn-sm btn-primary waves-effect waves-light mb-2 me-2 w-100"><i
                         class="mdi mdi-plus me-1"></i>
                     Nueva Compra </button></a>
         </div>
@@ -47,18 +54,17 @@
             <div class="row">
                 <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                     <label class="form-label">Desde</label>
-                    <input class="form-control form-control-sm" id="IngresoDesdeCompra" type="date"
-                        name="IngresoDesdeCompra">
+                    <input class="form-control form-control-sm" id="startDate" type="date" name="startDate">
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                     <label class="form-label">Hasta</label>
-                    <input class="form-control form-control-sm" id="IngresoHastaCompra" type="date"
-                        name="IngresoHastaCompra">
+                    <input class="form-control form-control-sm" id="endDate" type="date" name="endDate">
 
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                     <label for="example-select" class="form-label">Proveedor</label>
-                    <select class="filtrar form-control form-control-sm" id="idProveedor" name="idProveedor">
+                    <select class="filtrar form-select-sm form-select form-control form-control-sm" id="idProveedor"
+                        name="idProveedor">
                         @foreach ($proveedores as $proveedor)
                             <option value="{{ $proveedor->idProveedor }}">{{ $proveedor->nomProveedor }}
                             </option>
@@ -67,7 +73,9 @@
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                     <label for="example-select" class="form-label">Comprobante</label>
-                    <select class="filtrar form-control form-control-sm" id="idTipoComprobante" name="idTipoComprobante">
+                    <select
+                        class="filtrar form-select-sm form-select form-select-sm form-select  form-control form-control-sm"
+                        id="idTipoComprobante" name="idTipoComprobante">
                         @foreach ($tipo_comprobante as $tcp)
                             <option value="{{ $tcp->idTipoComprobante }}">{{ $tcp->nomTipoComprobante }}
                             </option>
@@ -76,16 +84,17 @@
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                     <label for="example-select" class="form-label">Forma de Pago</label>
-                    <select class="filtrar form-control form-control-sm" id="idTipoPago">
+                    <select class="filtrar form-select-sm form-select form-control form-control-sm" id="nomMetodoPago"
+                        name="idMetodoPago">
                         @foreach ($tipopago as $tp)
-                            <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}
+                            <option value="{{ $tp->idMetodoPago }}">{{ $tp->nomMetodoPago }}
                             </option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-3 col-md-12 col-sm-12">
                     <label for="example-select" class="form-label">Usuario</label>
-                    <select class="filtrar form-control form-control-sm" id="idUsuario">
+                    <select class="filtrar form-select-sm form-select form-control form-control-sm" id="idUsuario">
                         @foreach ($usuario as $user)
                             <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
                             </option>
@@ -104,7 +113,6 @@
                         <th>Fecha</th>
                         <th>Proveedor</th>
                         <th>Comprobante</th>
-                        <th>Impuestos</th>
                         <th>Metodo Pago</th>
                         <th>Total</th>
                         <th>Usuario</th>

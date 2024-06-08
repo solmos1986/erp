@@ -48,7 +48,7 @@
             <ul style="margin:0px 0px 8px 0px; text-align: left;">
                 <li> {{ $ingreso->nomCliente }}</li>
                 <li> {{ $ingreso->idCliente }}</li>
-                <li> {{ $ingreso->fechaIngreso }}</li>
+                <li> {{ $ingreso->created_at }}</li>
             </ul>
         </td>
 

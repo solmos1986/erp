@@ -35,8 +35,8 @@
         </div>
         <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
             <a href="{{ url('almacen/producto/create') }}"><button type="button" id="serchbtn"
-                    class="nuevo btn btn-sm btn-success waves-effect waves-light mb-2 me-2 w-100"><i
-                        class="mdi mdi-plus me-1"></i>
+                    class="nuevo btn btn-sm btn-primary waves-effect waves-light mb-2 me-2 w-100"><i
+                        class="mdi mdi-plus-circle"></i>
                     Nuevo Producto </button></a>
         </div>
     </div>
@@ -44,27 +44,27 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <table id="dtProducto" class="dtProducto table dt-responsive nowrap w-100">
-                        <thead>
-                            <tr>
-                                <th>Imagen</th>
-                                <th>Codigo</th>
-                                <th>Producto</th>
-                                <th>U. Medida</th>
-                                <th>Categoria</th>
-                                <th>Stock Min.</th>
-                                <th>P. Compra</th>
-                                <th>P. Venta</th>
-                                <th>Stock Actual</th>
-                                <th>Accion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class="table-responsive">
+                        <table id="dtProducto" class="dtProducto table dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Codigo</th>
+                                    <th>Producto</th>
+                                    <th>U. Medida</th>
+                                    <th>Categoria</th>
+                                    <th>Stock Min.</th>
+                                    <th>P. Venta</th>
+                                    <th>Stock Actual</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
 
-                        </tbody>
-                    </table>
-
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,6 +99,5 @@
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('/libs/dropzone/min/dropzone.min.js') }}"></script>
-    
     <script src="{{ asset('/js/producto/index.js') }}"></script>
 @endpush

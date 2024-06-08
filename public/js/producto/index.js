@@ -12,11 +12,14 @@ const columnsProducto = [{
 },
 {
     data: 'nomProducto',
-    name: 'nomProducto'
+    name: 'nomProducto',
+    render: function (data, type, row, mneta) {
+        return `<p class="descripcion">${row.nomProducto}</p>`;
+    }
 },
 {
-    data: 'unidadMedida',
-    name: 'unidadMedida'
+    data: 'nomUnidadMedida',
+    name: 'nomUnidadMedida'
 },
 {
     data: 'nomCategoria',
@@ -27,12 +30,8 @@ const columnsProducto = [{
     name: 'stockMinimo'
 },
 {
-    data: 'promedio',
-    name: 'promedio'
-},
-{
-    data: 'precio_venta',
-    name: 'precio_venta'
+    data: 'precioVenta',
+    name: 'precioVenta'
 },
 {
     data: 'stock',
@@ -44,8 +43,8 @@ const columnsProducto = [{
     orderable: false,
     searchable: false,
     render: function (data, type, row, meta) {
-        return ` <i data-id="${row.idProducto}" class="edit fas fa-pencil-alt text-primary m-1 cursor-pointer" title="Recibir Orden"></i>
-        <i data-id="${row.idProducto}" class="delete far fa-trash-alt text-danger m-1 cursor-pointer" title="Ver pdf"></i>`;
+        return `<a href="${base_url}/almacen/producto/edit/${row.idProducto}"><i data-id="${row.idProducto}" class="edit fas fa-pencil-alt text-primary m-1 cursor-pointer" title="Editar"></i></a>
+        <i data-id="${row.idProducto}" class="delete far fa-trash-alt text-danger m-1 cursor-pointer" title="Eliminar"></i>`;
     }
 }];
 
@@ -55,7 +54,7 @@ const tableCompras = dataTable($('.dtProducto'),
 
 $(document).on("click", ".delete", function () {
     const id = $(this).data('id');
-    
+
     $('#idProductoDelete').val(id)
     $('#formDeleteProducto').modal('show');
     $(".btnDelete").click(function () {

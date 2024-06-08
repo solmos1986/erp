@@ -64,12 +64,12 @@ $(document).on("click", ".edit", function () {
     BtnAddUpdate($('#btn_save'), 'store', 'update')
     ajax(`${base_url}/almacen/proveedor/${id}`, 'GET').then((response) => {
         if (response.status == '1') {
-            $('#idProveedor').val(response.data.idProveedor)
-            $('#nomProveedor').val(response.data.nomProveedor)
-            $('#tel1Proveedor').val(response.data.tel1Proveedor)
-            $('#tel2Proveedor').val(response.data.tel2Proveedor)
-            $('#dirProveedor').val(response.data.dirProveedor)
-            $('#mailProveedor').val(response.data.mailProveedor)
+            $('#form_proveedor #idProveedor').val(response.data.idProveedor)
+            $('#form_proveedor #nomProveedor').val(response.data.nomProveedor)
+            $('#form_proveedor #tel1Proveedor').val(response.data.tel1Proveedor)
+            $('#form_proveedor #tel2Proveedor').val(response.data.tel2Proveedor)
+            $('#form_proveedor #dirProveedor').val(response.data.dirProveedor)
+            $('#form_proveedor #mailProveedor').val(response.data.mailProveedor)
             $('#modal_proveedor').modal('show');
         } else {
             SwallErrorValidate(response);

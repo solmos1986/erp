@@ -48,7 +48,7 @@
             <ul style="margin:0px 0px 8px 0px; text-align: left;">
                 <li> {{ $egreso->nomProveedor }}</li>
                 <li> {{ $egreso->idProveedor }}</li>
-                <li> {{ $egreso->fechaEgreso }}</li>
+                <li> {{ date('d-m-Y H:m:s', strtotime($egreso->created_at)) }}</li>
             </ul>
         </td>
 
@@ -93,7 +93,7 @@
                 </td>
                 <td style="min-width:1cm; padding: 0px; text-align: center;">
                     <ul style="margin:1px 0px 8px 0px; text-align: center; ">
-                        <li> {{ $det->precioCompraEgreso }}</li>
+                        <li> {{ $det->precioCompra }}</li>
                     </ul>
                 </td>
                 <td style="min-width:2cm; padding: 0px; text-align: center;">

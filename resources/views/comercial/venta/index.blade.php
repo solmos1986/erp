@@ -12,6 +12,8 @@
         type="text/css" />
     <link href="{{ asset('/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
         type="text/css" />
+    <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
     <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css" />
 @endpush
 
@@ -59,16 +61,18 @@
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
                     <label for="idCliente" class="form-label">Cliente</label>
-                    <select class="filtrar form-control form-control-sm" id="idCliente" name="idCliente">
-                        @foreach ($cliente as $cli)
+                    <select class="filtrar form-select form-select-sm form-control form-control-sm" id="idCliente"
+                        name="idCliente">
+                        {{--  @foreach ($cliente as $cli)
                             <option value="{{ $cli->idCliente }}">{{ $cli->nomCliente }}
                             </option>
-                        @endforeach
+                        @endforeach --}}
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
                     <label for="idTipoComprobante" class="form-label">Comprobante</label>
-                    <select class="filtrar form-control form-control-sm" id="idTipoComprobante" name="idTipoComprobante">
+                    <select class="filtrar form-select form-select-sm form-control form-control-sm" id="idTipoComprobante"
+                        name="idTipoComprobante">
                         @foreach ($tipo_comprobante as $tcp)
                             <option value="{{ $tcp->idTipoComprobante }}">{{ $tcp->nomTipoComprobante }}
                             </option>
@@ -76,17 +80,19 @@
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
-                    <label for="idTipoPago" class="form-label">Forma de Pago</label>
-                    <select class="filtrar form-control form-control-sm" id="idTipoPago" name="idTipoPago">
-                        @foreach ($tipopago as $tp)
-                            <option value="{{ $tp->idTipoPago }}">{{ $tp->nomTipoPago }}
+                    <label for="idMetodoPago" class="form-label">Forma de Pago</label>
+                    <select class="filtrar form-select form-select-sm form-control form-control-sm" id="idMetodoPago"
+                        name="idMetodoPago">
+                        @foreach ($metodo_pago as $tp)
+                            <option value="{{ $tp->idMetodoPago }}">{{ $tp->nomMetodoPago }}
                             </option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12">
                     <label for="idUsuario" class="form-label">Usuario</label>
-                    <select class="filtrar form-control form-control-sm" id="idUsuario" name="idUsuario">
+                    <select class="filtrar form-select form-select-sm form-control form-control-sm" id="idUsuario"
+                        name="idUsuario">
                         @foreach ($usuario as $user)
                             <option value="{{ $user->idUsuario }}">{{ $user->nomUsuario }}
                             </option>
@@ -105,7 +111,6 @@
                         <th>Fecha</th>
                         <th>Cliente</th>
                         <th>Comprobante</th>
-                        <th>Impuestos</th>
                         <th>Metodo Pago</th>
                         <th>Total</th>
                         <th>Usuario</th>
@@ -137,6 +142,7 @@
     <script src="{{ asset('/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net/plug-ins/1.10.20/api/sum().js') }}"></script>
     <script src="{{ asset('/libs/printjs/print.min.js') }}"></script>
+    <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
 
     <script src="{{ asset('/js/ingresos/index.js') }}"></script>
     <script src="{{ asset('/js/ingresos/modal-imprimir.js') }}"></script>

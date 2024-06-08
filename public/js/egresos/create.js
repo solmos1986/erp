@@ -6,15 +6,18 @@ const columnsProducto = [{
 },
 {
     data: 'nomProducto',
-    name: 'nomProducto'
+    name: 'nomProducto',
+    render: function (data, type, row, meta) {
+        return `<p class='descripcion'>${row.nomProducto}</p>`;
+    }
 },
 {
     data: 'stock',
     name: 'stock'
 },
 {
-    data: 'unidadMedida',
-    name: 'unidadMedida'
+    data: 'nomUnidadMedida',
+    name: 'nomUnidadMedida'
 },
 {
     data: 'idProducto',
@@ -73,18 +76,12 @@ function renderDetalleVenta() {
 $(document).on('click', '.procesar', function () {
     const btn = $(this);
     btn.prop('disabled', true)
+    const form_compra = $('#form_compra').serializeJSON();
     var dato = {
+        ...form_compra,
         detallecompra: detallecompra,
-        idProveedor: $('#idProveedorCreate').val(),
-        idTipoPago: $('#idTipoPagoCreate').val(),
-        idTipoComprobante: $('#idTipoComprobanteCreate').val(),
-        numeroComprobante: $('#numeroComprobanteCreate').val(),
-        //fechaEgreso: $('#fechaOC').val(),
-        impuestoEgreso: $('#impuestoEgresoCreate').val(),
-        estadoEgreso: $('#impuestoEgresoCreate').val(),
-        idUsuario: $('#nomUsuario').val(),
     };
-
+    console.log(dato)
     ajax(
         `${base_url}/comercial/compra`,
         "POST",
@@ -108,6 +105,7 @@ $(document).on('click', '.procesar', function () {
             })
         } else {
             SwallErrorValidate(response);
+            btn.prop('disabled', false)
         }
     })
 });
@@ -142,7 +140,7 @@ $(document).on('keyup change', '.cantidad', function () {
 });
 
 $(document).on('change', '#idTipoComprobanteCreate', function () {
-    calcularImpuesto();
+    //calcularImpuesto();
 });
 
 function calcularImpuesto() {
@@ -150,19 +148,17 @@ function calcularImpuesto() {
     var impuesto = $("#idTipoComprobanteCreate").find(":selected").data("impuesto");
     var costoIns = $("#TotalCart").val();
     var tImpuesto = impuesto * costoIns;
-    console.log('impuesto', impuesto, 'costoIns', costoIns, 'resultado', tImpuesto)
     $('#impuestoEgresoCreate').val(tImpuesto);
 }
 
 function SumaTotales() {
-    let tabla = document.getElementById("dtOC");
     let total = 0;
     detallecompra.map((item, i) => {
         total += parseFloat(item.precioTotal);
-        $("#TotalCart").val(total);
+        //$("#TotalCart").text(total);
     });
-    $("#TotalCart").html(total);
-    calcularImpuesto();
+    $("#TotalCart").text(total);
+    //calcularImpuesto();
 }
 
 $(document).on('click', '.deleteItem', function () {
@@ -177,14 +173,11 @@ $(document).on('click', '.deleteItem', function () {
 const onChangeSelect2Proveedor = function (e) {
 }
 select2(
-    "#idProveedorCreate",
+    "#idProveedor",
     `${base_url}/almacen/proveedor/buscar`,
     "GET",
     onChangeSelect2Proveedor
 );
-
-
-
 
 //producto
 $(document).on('click', '.creaProducto', function () {
@@ -207,4 +200,6 @@ $(document).on('click', '.store_producto', function () {
             btn.prop('disabled', false);
         }
     })
-})
+});
+
+

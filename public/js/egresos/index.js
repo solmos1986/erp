@@ -1,20 +1,20 @@
 const onChangeDesde = (selectedDates, dateStr, instance) => {
-    tableCompras.ajax.url(`${base_url}/comercial/compra/data-table?startDate=${$('#IngresoDesdeCompra').val()}&endDate=${$('#IngresoHastaCompra').val()}&idProveedor=${$('#idProveedor').val()}&idTipoComprobante=${$('#idTipoComprobante').val()}&idTipoPago=${$('#idTipoPago').val()}&idUsuario=${$('#idUsuario').val()}`).load();
+    tableCompras.ajax.url(`${base_url}/comercial/compra/data-table?startDate=${$('#startDate').val()}&endDate=${$('#endDate').val()}&idProveedor=${$('#idProveedor').val()}&idTipoComprobante=${$('#idTipoComprobante').val()}&idTipoPago=${$('#idTipoPago').val()}&idUsuario=${$('#idUsuario').val()}`,).load();
 }
 const onChangeFin = (selectedDates, dateStr, instance) => {
-    tableCompras.ajax.url(`${base_url}/comercial/compra/data-table?startDate=${$('#IngresoDesdeCompra').val()}&endDate=${$('#IngresoHastaCompra').val()}&idProveedor=${$('#idProveedor').val()}&idTipoComprobante=${$('#idTipoComprobante').val()}&idTipoPago=${$('#idTipoPago').val()}&idUsuario=${$('#idUsuario').val()}`).load();
+    tableCompras.ajax.url(`${base_url}/comercial/compra/data-table?startDate=${$('#startDate').val()}&endDate=${$('#endDate').val()}&idProveedor=${$('#idProveedor').val()}&idTipoComprobante=${$('#idTipoComprobante').val()}&idTipoPago=${$('#idTipoPago').val()}&idUsuario=${$('#idUsuario').val()}`,).load();
 }
 
-flatpickr($("#IngresoDesdeCompra"), moment().format("DD-MM-YYYY"), onChangeDesde)
-flatpickr($("#IngresoHastaCompra"), moment().format("DD-MM-YYYY"), onChangeFin)
+flatpickr($("#startDate"), moment().format("DD-MM-YYYY"), onChangeDesde)
+flatpickr($("#endDate"), moment().format("DD-MM-YYYY"), onChangeFin)
 
 const columns = [{
     data: 'idEgreso',
     name: 'idEgreso'
 },
 {
-    data: 'fechaEgreso',
-    name: 'fechaEgreso'
+    data: 'created_at',
+    name: 'created_at'
 },
 {
     data: 'nomProveedor',
@@ -24,16 +24,12 @@ const columns = [{
     data: 'nomTipoComprobante',
     name: 'nomTipoComprobante',
     render: function (data, type, row, meta) {
-        return `<b>${row.nomTipoComprobante}</b> ${row.numeroComprobante}`;
+        return `<b>${row.nomTipoComprobante}</b> ${row.numComprobante}`;
     }
 },
 {
-    data: 'impuestoEgreso',
-    name: 'impuestoEgreso'
-},
-{
-    data: 'nomTipoPago',
-    name: 'nomTipoPago'
+    data: 'nomMetodoPago',
+    name: 'nomMetodoPago'
 },
 {
     data: 'total',
@@ -57,24 +53,24 @@ const columns = [{
     searchable: false,
     render: function (data, type, row, meta) {
         return `
-        <i data-id="${row.idEgreso}" data-estado="${row.estadoEgreso}"class="recibir fas fa-shopping-basket text-primary m-1 cursor-pointer" title="Recibir Orden"></i>
+        <i data-id="${row.idEgreso}" data-estado="${row.estadoEgreso}" class="recibir fas fa-shopping-basket text-primary m-1 cursor-pointer" title="Recibir Orden"></i>
         <i data-id="${row.idEgreso}" class="ver_pdf fas fa-eye text-primary m-1 cursor-pointer" title="Ver pdf"></i>
         `;
     }
 }];
 
 const tableCompras = dataTable($('.dtEgresos'),
-    `${base_url}/comercial/compra/data-table?startDate=${$('#IngresoDesdeCompra').val()}&endDate=${$('#IngresoHastaCompra').val()}&idProveedor=${$('#idProveedor').val()}&idTipoComprobante=${$('#idTipoComprobante').val()}&idTipoPago=${$('#idTipoPago').val()}&idUsuario=${$('#idUsuario').val()}`,
+    `${base_url}/comercial/compra/data-table?startDate=${$('#startDate').val()}&endDate=${$('#endDate').val()}&idProveedor=${$('#idProveedor').val()}&idTipoComprobante=${$('#idTipoComprobante').val()}&idTipoPago=${$('#idTipoPago').val()}&idUsuario=${$('#idUsuario').val()}`,
     columns)
 
 $(document).on('change', '.filtrar', function () {
     tableCompras.ajax.url(`${base_url}/comercial/compra/data-table?startDate=${$('#IngresoDesdeCompra').val()}&endDate=${$('#IngresoHastaCompra').val()}&idProveedor=${$('#idProveedor').val()}&idTipoComprobante=${$('#idTipoComprobante').val()}&idTipoPago=${$('#idTipoPago').val()}&idUsuario=${$('#idUsuario').val()}`).load();
 });
 
-
 $(document).on('click', '.recibir', function () {
-    if ($(this).data('estado') == 1) {
-        window.location = `${base_url}/entrada-almacen/create/${$(this).data('id') }`;
+    window.location = `${base_url}/entrada-almacen/create/${$(this).data('id') }`;
+    /* if ($(this).data('estado') == 1) {
+        
     }
     else {
         Swal.fire({
@@ -90,5 +86,5 @@ $(document).on('click', '.recibir', function () {
                 //
             }
         })
-    }
+    } */
 });

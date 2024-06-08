@@ -18,10 +18,10 @@
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="#">Contabilidad</a></li>
                         <li class="breadcrumb-item"><a href="#">Cuenta</a></li>
-                        <li class="breadcrumb-item active">Estado cuenta</li>
+                        <li class="breadcrumb-item active">Plan cuentas</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Estado cuenta</h4>
+                <h4 class="page-title">Plan cuentas</h4>
             </div>
         </div>
     </div>
@@ -29,9 +29,6 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-
-                </div>
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div class="table-responsive">
                         <table id="datatable_cuenta" class="table dt-responsive nowrap w-100">
@@ -54,6 +51,10 @@
             </div>
         </div>
     </div>
+    <x-components.modal size="modal-md" id="modal_cuenta" nameBtnSave="Guardar" nameBtnClose="Cancelar"
+        idBtnSave="btn_save">
+        @include('cuenta.components.form-cuenta')
+    </x-components.modal>
 @endsection
 
 @push('javascript')
@@ -63,4 +64,5 @@
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
 
     <script src="{{ asset('/js/cuenta/index.js') }}"></script>
+    <script src="{{ asset('/js/cuenta/modal.js') }}"></script>
 @endpush

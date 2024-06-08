@@ -214,9 +214,6 @@ class ClienteController extends Controller
 
     public function obtener_clientes(Request $request)
     {
-        if (empty($request->searchTerm)) {
-            return response()->json([]);
-        }
         $clientes = Cliente::where('nomCliente', 'LIKE', '%' . $request->searchTerm . '%')->get();
         $resultados = [];
         foreach ($clientes as $cliente) {
@@ -230,9 +227,6 @@ class ClienteController extends Controller
     }
     public function obtener_documento(Request $request)
     {
-        if (empty($request->searchTerm)) {
-            return response()->json([]);
-        }
         $clientes = Cliente::where('docCliente', 'LIKE', '%' . $request->searchTerm . '%')->get();
         $resultados = [];
         foreach ($clientes as $cliente) {

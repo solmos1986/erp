@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         //dd($request, "LLEGUE DASHBOARD");
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
-        $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
+        $tipopago = DB::table('metodo_pago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
         $query = trim($request->get('searchText'));
@@ -26,7 +26,7 @@ class DashboardController extends Controller
                 ->join('cliente as c', 'i.idCliente', '=', 'c.idCliente')
                 ->join('detalle_ingreso as di', 'i.idIngreso', '=', 'di.idIngreso')
                 ->join('tipo_comprobante as tc', 'i.idTipoComprobante', '=', 'tc.idTipoComprobante')
-                ->join('tipopago as tp', 'i.idTipoPago', '=', 'tp.idTipoPago')
+                ->join('metodo_pago as tp', 'i.idMetodoPago', '=', 'tp.idMetodoPago')
                 ->join('usuario as u', 'i.idUsuario', '=', 'u.idUsuario')
                 ->when(($request->get('startDate') != '' && $request->get('endDate') != ''), function ($query) use ($request) {
                     $query->where('i.fechaIngreso', '>=', $request->get('startDate'))
@@ -40,8 +40,8 @@ class DashboardController extends Controller
                     $query->where('i.idTipoComprobante', '=', $request->get('idTipoComprobante'));
 
                 })
-                ->when(($request->get('idTipoPago') != ''), function ($query) use ($request) {
-                    $query->where('i.idTipoPago', '=', $request->get('idTipoPago'));
+                ->when(($request->get('idMetodoPago') != ''), function ($query) use ($request) {
+                    $query->where('i.idMetodoPago', '=', $request->get('idMetodoPago'));
 
                 })
                 ->when(($request->get('idUsuario') != ''), function ($query) use ($request) {
@@ -58,7 +58,7 @@ class DashboardController extends Controller
                 ->join('proveedor as p', 'e.idProveedor', '=', 'p.idProveedor')
                 ->join('detalle_egreso as de', 'e.idEgreso', '=', 'de.idEgreso')
                 ->join('tipo_comprobante as tc', 'e.idTipoComprobante', '=', 'tc.idTipoComprobante')
-                ->join('tipopago as tp', 'e.idTipoPago', '=', 'tp.idTipoPago')
+                ->join('metodo_pago as tp', 'e.idMetodoPago', '=', 'tp.idMetodoPago')
                 ->join('usuario as u', 'e.idUsuario', '=', 'u.idUsuario')
                 ->when(($request->get('startDate') != '' && $request->get('endDate') != ''), function ($query) use ($request) {
                     $query->where('e.fechaEgreso', '>=', $request->get('startDate'))
@@ -72,8 +72,8 @@ class DashboardController extends Controller
                     $query->where('e.idTipoComprobante', '=', $request->get('idTipoComprobante'));
 
                 })
-                ->when(($request->get('idTipoPago') != ''), function ($query) use ($request) {
-                    $query->where('e.idTipoPago', '=', $request->get('idTipoPago'));
+                ->when(($request->get('idMetodoPago') != ''), function ($query) use ($request) {
+                    $query->where('e.idMetodoPago', '=', $request->get('idMetodoPago'));
 
                 })
                 ->when(($request->get('idUsuario') != ''), function ($query) use ($request) {
@@ -90,7 +90,7 @@ class DashboardController extends Controller
                 ->join('cliente as c', 'in.idCliente', '=', 'c.idCliente')
                 ->join('detalle_inscripcion as di', 'in.idInscripcion', '=', 'di.idInscripcion')
                 ->join('tipo_comprobante as tc', 'in.idTipoComprobante', '=', 'tc.idTipoComprobante')
-                ->join('tipopago as tp', 'in.idTipoPago', '=', 'tp.idTipoPago')
+                ->join('metodo_pago as tp', 'in.idMetodoPago', '=', 'tp.idMetodoPago')
                 ->join('usuario as u', 'in.idUsuario', '=', 'u.idUsuario')
                 ->when(($request->get('startDate') != '' && $request->get('endDate') != ''), function ($query) use ($request) {
                     $query->where('in.fechaInscripcion', '>=', $request->get('startDate'))
@@ -104,8 +104,8 @@ class DashboardController extends Controller
                     $query->where('in.idTipoComprobante', '=', $request->get('idTipoComprobante'));
 
                 })
-                ->when(($request->get('idTipoPago') != ''), function ($query) use ($request) {
-                    $query->where('in.idTipoPago', '=', $request->get('idTipoPago'));
+                ->when(($request->get('idMetodoPago') != ''), function ($query) use ($request) {
+                    $query->where('in.idMetodoPago', '=', $request->get('idMetodoPago'));
 
                 })
                 ->when(($request->get('idUsuario') != ''), function ($query) use ($request) {

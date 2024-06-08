@@ -32,7 +32,7 @@
     <hr style="margin:0px 0px 8px 0x; padding-top:0; border-height:0.3px;">
     <ul style="margin:0px 40px 8px 45px; text-align: center; ">
         <li>COMPROBANTE INSCRIPCION</li>
-        <li>No. {{ $inscripcion->idInscripcion }}</li>
+        <li>No. {{ $inscripcion->idIngreso }}</li>
     </ul>
     <hr style="margin:0px 0px 8px 0px; padding-top:0; border-height:0.3px;">
     <table style="padding:0px;">
@@ -48,7 +48,7 @@
             <ul style="margin:0px 0px 8px 0px; text-align: left;">
                 <li> {{ $inscripcion->nomCliente }}</li>
                 <li> {{ $inscripcion->idCliente }}</li>
-                <li> {{ $inscripcion->fechaInscripcion }}</li>
+                <li> {{ $inscripcion->created_at }}</li>
             </ul>
         </td>
 

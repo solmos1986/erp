@@ -6,6 +6,7 @@ use App\Http\Requests\ProductoFormRequest; //agrega la ruta del modelo
 use App\Models\Producto; //para hacer algunas redirecciones
 use DB; //hace referencia a nuestro request
 use Illuminate\Http\Request; // sar la base de datos
+use stdClass;
 use Validator;
 use Yajra\DataTables\DataTables;
 
@@ -19,27 +20,19 @@ class ProductoController extends Controller
     {
         $productos = DB::table('producto as pro')
             ->select(
-                'pro.idProducto',
-                'pro.codProducto',
-                'pro.nomProducto',
+                'pro.*',
+                'u.*',
                 'cat.nomCategoria',
-                'pro.imagenProducto',
-                'pro.unidadMedida',
-                'sp.stock',
-                DB::raw('((sp.promedio)+(sp.promedio*(pro.porcentaje_ganancia/100))) as precio_venta'),
+                DB::raw('(sum(sp.cantidad_compra)-sum(sp.cantidad_venta)) as stock'),
             )
-            ->join('producto_stock as sp', 'sp.idProducto', '=', 'pro.idProducto')
             ->join('categoria as cat', 'cat.idCategoria', '=', 'pro.idCategoria')
-            ->where('condicionProducto', '=', 1)
+            ->join('unidad_medida as u', 'u.idUnidadMedida', '=', 'pro.idUnidadMedida')
+            ->join('producto_precio_compra as sp', 'sp.idProducto', '=', 'pro.idProducto')
+            ->where('condicionProducto', '=', '1')
+            ->groupBy('pro.idProducto')
             ->get();
-        $clientes = DB::table('cliente')->where('condicionCliente', '=', 1)->get();
-        $usuario = DB::table('usuario')->where('condicionUsuario', '=', 1)->get();
-        $tipoPago = DB::table('tipopago')->where('condicionTipoPago', '=', 1)->get();
-        $stock = DB::select('SELECT * FROM stock_producto');
-        //dd($productos, "productos");
         return response()->json([
             "data" => $productos,
-            "stock" => $stock,
             "status" => 1,
             "message" => '',
         ]);
@@ -53,14 +46,15 @@ class ProductoController extends Controller
         $data = DB::table('producto as pro')
             ->select(
                 'pro.*',
+                'u.*',
                 'cat.nomCategoria',
-                'sp.promedio',
-                'sp.stock',
-                DB::raw('((sp.promedio)+(sp.promedio*(pro.porcentaje_ganancia/100))) as precio_venta'),
+                DB::raw('(sum(sp.cantidad_compra)-sum(sp.cantidad_venta)) as stock'),
             )
             ->join('categoria as cat', 'cat.idCategoria', '=', 'pro.idCategoria')
-            ->join('producto_stock as sp', 'sp.idProducto', '=', 'pro.idProducto')
+            ->join('unidad_medida as u', 'u.idUnidadMedida', '=', 'pro.idUnidadMedida')
+            ->join('producto_precio_compra as sp', 'sp.idProducto', '=', 'pro.idProducto')
             ->where('condicionProducto', '=', '1')
+            ->groupBy('pro.idProducto')
             ->get();
         return Datatables::of($data)
             ->addIndexColumn()
@@ -69,10 +63,14 @@ class ProductoController extends Controller
     }
     public function create(Request $request)
     {
-        $categoria = DB::table('categoria')->where('condicionCategoria', '=', '1')->get();
-        return view('almacen.producto.create', compact('categoria'));
+        $categoria = DB::table('categoria')
+            ->where('categoria.condicionCategoria', '=', '1')
+            ->orderBy('categoria.idCategoriaPadre', 'ASC')
+            ->get();
+        $unidad_medida = DB::table('unidad_medida')->get();
+        return view('almacen.producto.create', compact('categoria', 'unidad_medida'));
     }
-    public function store(ProductoFormRequest $request)
+    public function store(Request $request)
     {
         $rules = array(
             'codProducto' => 'required',
@@ -80,7 +78,6 @@ class ProductoController extends Controller
             'imagenProducto' => 'required',
             'unidadMedida' => 'required',
             'idCategoria' => 'required',
-            'porcentaje_ganancia' => 'required',
             'stockMinimo' => 'required',
         );
         $messages = [
@@ -89,7 +86,6 @@ class ProductoController extends Controller
             'imagenProducto.required' => "Imagen es requerida",
             'unidadMedida.required' => "Seleccione una unidad de medida",
             'idCategoria.required' => "Seleccione una categoria",
-            'porcentaje_ganancia.required' => "Porcentaje gannacia es requerido",
             'stockMinimo.required' => "Stock minimo es requerido",
         ];
         $error = Validator::make($request->all(), $rules, $messages);
@@ -115,9 +111,9 @@ class ProductoController extends Controller
                 'imagenProducto' => $imagenProducto,
                 'unidadMedida' => $request->unidadMedida,
                 'idCategoria' => $request->idCategoria,
-                'porcentaje_ganancia' => $request->porcentaje_ganancia,
                 'stockMinimo' => $request->stockMinimo,
                 'descripcion' => $request->descripcion,
+                'precioVenta' => $request->precioVenta,
             ]);
 
         return response()->json([
@@ -129,59 +125,76 @@ class ProductoController extends Controller
     public function show($id)
     {
         $producto = Producto::findOrFail($id);
-        //dd($productos);
         return view("almacen.producto.show", compact('producto'));
     }
     public function edit($id)
     {
-        //dd('aki estamos',$id);
-
-        $producto = Producto::findOrFail($id);
-        $categoria = DB::table('categoria')->where('condicionCategoria', '=', '1')->get();
-        //dd($producto);
-        return view('almacen.producto.update', compact('producto', 'categoria'));
-
-        /* return  response()->json([
-    "data"=> $producto,
-    "cate"=>$categoria
-    ]); */
+        $producto = DB::table('producto')
+            ->where('producto.idProducto', $id)
+            ->first();
+        $categoria = DB::table('categoria')
+            ->where('categoria.condicionCategoria', '=', '1')
+            ->orderBy('categoria.idCategoriaPadre', 'ASC')
+            ->get();
+        $unidad_medida = DB::table('unidad_medida')->get();
+        $promedio = $this->promedio_precio($producto->idProducto);
+        //dd($promedio);
+        return view('almacen.producto.edit', compact('producto', 'categoria', 'unidad_medida', 'promedio'));
     }
-    public function update(ProductoFormRequest $request)
+    public function update(Request $request, $id)
     {
-        //dd($request, "llegue controler");
+        //dd($request->idProducto);
+        $rules = array(
+            'idProducto' => 'required',
+            'codProducto' => 'required',
+            'nomProducto' => 'required',
+            'imagenProducto' => 'required',
+            'unidadMedida' => 'required',
+            'idCategoria' => 'required',
+            'stockMinimo' => 'required',
+        );
+        $messages = [
+            'codProducto.required' => "Codigo es requerido",
+            'nomProducto.required' => "Nombre es requerido",
+            'imagenProducto.required' => "Imagen es requerida",
+            'unidadMedida.required' => "Seleccione una unidad de medida",
+            'idCategoria.required' => "Seleccione una categoria",
+            'stockMinimo.required' => "Stock minimo es requerido",
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
 
-        $id = $request->get('idProducto');
-
-        $producto = Producto::findOrFail($id);
-        $producto->codProducto = $request->get('codProducto');
-        $producto->nomProducto = $request->get('nomProducto');
-        $producto->stockMinimo = $request->get('stockMinimo');
-        $producto->unidadMedida = $request->get('unidadMedida');
-        $producto->idCategoria = $request->get('idCategoria');
-        $producto->precioVentaProducto = $request->get('precioVentaProducto');
-        //$producto->CondicionProducto='1';
-        //$producto->ImagenProducto=$request->get('ImagenProductoEdit');
-        //dd($producto);
-        if ($request->hasFile('imagenProducto')) {
-            $file = $request->file('imagenProducto');
-            //dd($file);
-            $file->move(public_path() . '/imagenes/productos/', $file->getClientOriginalName());
-            $producto->imagenProducto = $file->getClientOriginalName();
-            $producto->update();
-
-            /* return Redirect::to('almacen/producto'); */
+        if ($error->errors()->all()) {
             return response()->json([
-                "data" => $producto,
-            ]);
-        } else {
-
-            $producto->update();
-            /*  return Redirect::to('almacen/producto'); */
-            return response()->json([
-                "data" => $producto,
+                'status' => 0,
+                'message' => $error->errors()->all(),
             ]);
         }
 
+        if ($request->hasFile('imagenProducto')) {
+            $file = $request->file('imagenProducto');
+            $file->move(public_path() . '/imagenes/productos/', $file->getClientOriginalName());
+            $imagenProducto = $file->getClientOriginalName();
+        } else {
+            $imagenProducto = '';
+        }
+        $insert = DB::table('producto')
+            ->where('producto.idProducto', $request->idProducto)
+            ->update([
+                'codProducto' => $request->codProducto,
+                'nomProducto' => $request->nomProducto,
+                'imagenProducto' => $imagenProducto,
+                'unidadMedida' => $request->unidadMedida,
+                'idCategoria' => $request->idCategoria,
+                'stockMinimo' => $request->stockMinimo,
+                'descripcion' => $request->descripcion,
+                'precioVenta' => $request->precioVenta,
+            ]);
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Modificado correctamente',
+            'data' => null,
+        ]);
     }
     public function destroy($id)
     {
@@ -197,14 +210,9 @@ class ProductoController extends Controller
     {
         $producto = DB::table('entrada_producto_almacen')
             ->select(
-                'producto.idProducto',
-                'producto.codProducto',
-                'producto.nomProducto',
+                'producto.*',
                 'categoria.nomCategoria',
-                'producto.imagenProducto',
-                'producto.unidadMedida',
-                'producto_stock.stock',
-                DB::raw('((producto_stock.promedio)+(producto_stock.promedio*(producto.porcentaje_ganancia/100))) as precio_venta'),
+                'entrada_producto_almacen.*'
             )
             ->join('producto', 'producto.idProducto', '=', 'entrada_producto_almacen.idProducto')
             ->join('producto_stock', 'producto_stock.idProducto', '=', 'producto.idProducto')
@@ -215,7 +223,7 @@ class ProductoController extends Controller
         if ($producto) {
             return response()->json([
                 "status" => 1,
-                "message" => "Añadido correctamnte",
+                "message" => "Añadido correctamente",
                 "data" => $producto,
             ]);
         } else {
@@ -225,6 +233,38 @@ class ProductoController extends Controller
                 "data" => null,
             ]);
         }
-
+    }
+    public function promedio_precio($idProducto)
+    {
+        $compras = DB::table('producto_precio_compra')
+            ->where('producto_precio_compra.idProducto', $idProducto)
+            ->get();
+        $total = 0;
+        $totalCompra = 0;
+        $totalVenta = 0;
+        foreach ($compras as $key => $compra) {
+            $totalCompra += $compra->cantidad_compra;
+            $totalVenta += $compra->cantidad_venta;
+            $total += $compra->promedio;
+        }
+        try {
+            $promedio = round(($total / ($totalCompra - $totalVenta)), 2);
+        } catch (\Throwable $th) {
+            $promedio = 0;
+        }
+        
+        $resultado = new stdClass;
+        $resultado->compras = $compras;
+        $resultado->promedio = $promedio;
+        return $resultado;
+    }
+    public function table_compras(Request $request, $id)
+    {
+        $promedio = $this->promedio_precio($id);
+        return response()->json([
+            "status" => 1,
+            "message" => "mostras lista de compras",
+            "data" => $promedio,
+        ]);
     }
 }

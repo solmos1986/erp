@@ -1,7 +1,7 @@
 const onChangeFecha = (selectedDates, dateStr, instance) => {
     setFecha(dateStr);
 }
-flatpickr($("#fechaInicio"), moment().format("YYYY-MM-DD"), onChangeFecha)
+flatpickr($("#fechaInicio"), moment().format("DD-MM-YYYY"), onChangeFecha)
 
 // autoseleccion paquete por default
 $(document).ready(function () {
@@ -9,7 +9,7 @@ $(document).ready(function () {
         $("#idPaquete").find(":selected").data("duracion")
     );
     $("#costoPaquete").val($("#idPaquete").find(":selected").data("costo"));
-    setFecha(moment().format("YYYY-MM-DD"));
+    setFecha(moment().format("DD-MM-YYYY"));
 });
 
 $(document).on("change", "#idPaquete", function () {
@@ -33,9 +33,9 @@ function calcularImpuesto() {
 }
 
 function setFecha(fechaInicio) {
-    var nueva_fecha = moment(fechaInicio, "YYYY-MM-DD")
+    var nueva_fecha = moment(fechaInicio, "DD-MM-YYYY")
         .add($("#duracionPaquete").val(), "months")
-        .format("YYYY-MM-DD");
+        .format("DD-MM-YYYY");
     $("#fechaFin").val(nueva_fecha);
 }
 
@@ -70,6 +70,8 @@ $(document).on("click", ".imprimir", function () {
 
 //STORE
 $(document).on("click", ".procesar", function () {
+    const btn = $(this)
+    btn.prop('disabled', true)
     ajax(
         `${base_url}/comercial/inscripcion`,
         "POST",
@@ -93,6 +95,7 @@ $(document).on("click", ".procesar", function () {
             });
         } else {
             SwallErrorValidate(response);
+            btn.prop('disabled', false)
         }
     });
 });

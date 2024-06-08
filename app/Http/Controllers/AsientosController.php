@@ -10,7 +10,7 @@ class AsientosController extends Controller
     public function index(Request $request)
     {
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
-        $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
+        $tipopago = DB::table('metodo_pago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
 

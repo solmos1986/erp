@@ -14,6 +14,7 @@
     <link href="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
     @stack('css')
     <!-- Theme Config Js -->
@@ -25,6 +26,13 @@
     <!-- Icons css -->
     <link href="{{ asset('/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
     @stack('css')
+    <style>
+        .descripcion {
+            overflow: hidden;
+            white-space: wrap;
+            text-overflow: ellipsis
+        }
+    </style>
 </head>
 
 <body>
@@ -82,6 +90,8 @@
     <script src="{{ asset('/libs/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('/libs/selectize/js/standalone/selectize.min.js') }}"></script>
     <script src="{{ asset('/libs/swatalert/swatalert.min.js') }}"></script>
+    <script src="{{ asset('/libs/jquery-serializeJSON/jquery-serializeJSON.js') }}"></script>
+
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -95,7 +105,9 @@
     <script src="{{ asset('/libs/socket.io.min.js') }}"></script>
     <script src="{{ asset('/libs/jquery-toast-plugin/jquery.toast.min.js') }}"></script>
     <script src="{{ asset('/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('/libs/dropify/js/dropify.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="{{ asset('/js/components/utils.js') }}"></script>
     <script src="{{ asset('/js/components/errors_ajax.js') }}"></script>
     <script src="{{ asset('/js/components/ajax.js') }}"></script>
     <script src="{{ asset('/js/components/swall-alerts.js') }}"></script>

@@ -45,9 +45,37 @@ class CuentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $cuenta_padre = DB::table('cuenta')
+            ->where('cuenta.cuenta_id', $id)
+            ->first();
+
+        $cuenta_padre->nuevo_codigo = $this->generar_codigo_cuenta($cuenta_padre);
+        return response()->json([
+            "status" => 1,
+            "message" => "Mostrar cuenta",
+            "data" => $cuenta_padre,
+        ]);
+    }
+    public function generar_codigo_cuenta($cuenta_padre)
+    {
+        $ultima_cuenta = DB::table('cuenta')
+            ->where('cuenta.padre_cuenta_id', $cuenta_padre->cuenta_id)
+            ->orderBy('cuenta.codigo_cuenta', 'DESC')
+            ->first();
+        if ($ultima_cuenta) {
+            $ultimo_numero = substr($ultima_cuenta->codigo_cuenta, -1, 1);
+        } else {
+            $ultimo_numero = 0;
+        }
+
+        if ($cuenta_padre->orden_cuenta_id >= 4) {
+            $codigo = (intval($cuenta_padre->codigo_cuenta) * 1000) + (intval($ultimo_numero) + 1);
+        } else {
+            $codigo = (intval($cuenta_padre->codigo_cuenta) * 100) + (intval($ultimo_numero) + 1);
+        }
+        return $codigo;
     }
 
     /**
@@ -58,7 +86,22 @@ class CuentaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cuenta_padre = DB::table('cuenta')
+            ->where('cuenta.cuenta_id', $request->cuenta_id)
+            ->first();
+
+        $nuevo_codigo = $this->generar_codigo_cuenta($cuenta_padre);
+        $cuenta = DB::table('cuenta')->insert([
+            'padre_cuenta_id' => $request->cuenta_id,
+            'nombre_cuenta' => $request->nombre_cuenta,
+            'codigo_cuenta' => $nuevo_codigo,
+            'orden_cuenta_id' => (intval($cuenta_padre->orden_cuenta_id) + 1),
+        ]);
+        return response()->json([
+            "status" => 1,
+            "message" => "Registrado correctamnte",
+            "data" => $cuenta,
+        ]);
     }
 
     /**
@@ -80,7 +123,14 @@ class CuentaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cuenta = DB::table('cuenta')
+            ->where('cuenta.cuenta_id', $id)
+            ->first();
+        return response()->json([
+            "status" => 1,
+            "message" => "Mostrar cuenta",
+            "data" => $cuenta,
+        ]);
     }
 
     /**
@@ -92,7 +142,19 @@ class CuentaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $cuenta = DB::table('cuenta')
+            ->where('cuenta.cuenta_id', $id)
+            ->update([
+                'cuenta_id' => $request->cuenta_id,
+                'nombre_cuenta' => $request->nombre_cuenta,
+                'codigo_cuenta' => $request->codigo_cuenta,
+                'orden_cuenta_id' => $request->orden_cuenta_id,
+            ]);
+        return response()->json([
+            "status" => 1,
+            "message" => "Registrado correctamnte",
+            "data" => $cuenta,
+        ]);
     }
 
     /**

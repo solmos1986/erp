@@ -10,7 +10,6 @@
     <link href="{{ asset('/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('/libs/printjs/print.min.css') }}" rel="stylesheet" type="text/css">
-    {{-- <link href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> --}}
 @endpush
 
 @section('contenido')
@@ -41,11 +40,11 @@
                             </div>
                             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12 mb-2">
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Comprobante :</h4>
-                                <p class="mb-3">{{ $egreso->numeroComprobante }}</p>
+                                <p class="mb-3">{{-- {{ $egreso->numeroComprobante }} --}}</p>
                             </div>
                             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12 mb-2">
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Fecha registro :</h4>
-                                <p class="mb-3">{{ $egreso->create_at }}</p>
+                                <p class="mb-3">{{ $egreso->created_at }}</p>
                             </div>
                             <div class="col-xl-2 col-lg-4 col-md-4 col-sm-12 mb-2">
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Proveedor :</h4>
@@ -61,9 +60,8 @@
                             </div>
                         </div>
                     </div>
-                    <br>
                 </div>
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-2">
                     <div class="border p-3 mt-lg-2 rounded">
                         <div class="row">
                             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-12 mb-2">
@@ -72,13 +70,11 @@
                             </div>
                         </div>
                     </div>
-                    <br>
                 </div>
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-2">
                     <div class="border p-3 mt-lg-2 rounded">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                <div></div>
                                 <table id="data_table_entrada" class="table dt-responsive nowrap w-100">
                                     <thead>
                                         <tr>

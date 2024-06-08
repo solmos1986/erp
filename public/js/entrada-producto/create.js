@@ -20,7 +20,7 @@ const onChangeFechaVencimiento = (selectedDates, dateStr, instance) => {
         }
     });
 }
-console.log(idEgreso)
+
 $(document).ready(function () {
 
     ajax(`${base_url}/entrada-almacen/producto-data-table/${idEgreso}`, 'GET').then((response) => {
@@ -28,7 +28,7 @@ $(document).ready(function () {
         if (response.status == '1') {
             const columns = [
                 {
-                    width: '30%',
+                    width: '20%',
                     data: 'serie',
                     name: 'serie',
                     orderable: false,
@@ -38,11 +38,14 @@ $(document).ready(function () {
                     }
                 },
                 {
-                    width: '30%',
-                    data: 'nomProducto'
+                    width: '45%',
+                    data: 'nomProducto',
+                    render: function (data, type, row, meta) {
+                        return `<p class='descripcion'>${row.nomProducto}</p>`;
+                    }
                 },
                 {
-                    width: '20%',
+                    width: '15%',
                     data: 'fecha_vencimiento',
                     name: 'fecha_vencimiento',
                     orderable: false,
@@ -63,7 +66,7 @@ $(document).ready(function () {
                             options += `<option value="${almacen.idAlmacen}">${almacen.nomAlmacen}</option>`
                         });
                         return `
-                        <select class="form-control form-control-sm" data-id="${row.idEntradaAlmacen}">
+                        <select class="form-control form-select-sm form-select form-control-sm" data-id="${row.idEntradaAlmacen}">
                             ${options}
                         </select>
                         `;

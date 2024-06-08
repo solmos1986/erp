@@ -24,7 +24,7 @@ class IngresosController extends Controller
     {
         Log::info("inciando ingreso");
         $cliente = DB::table('cliente')->where('condicionCliente', '=', '1')->get();
-        $tipopago = DB::table('tipopago')->where('condicionTipoPago', '=', '1')->get();
+        $tipopago = DB::table('metodo_pago')->where('condicionTipoPago', '=', '1')->get();
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
 
@@ -49,11 +49,11 @@ class IngresosController extends Controller
         //dd($tipoIngreso, "TIPO INGRESO");
         $query = trim($request->get('searchText'));
         $data = DB::table('ingresos as in')
-            ->select('in.idIngreso', 'in.idTipoIngreso', 'in.fechaIngreso', 'c.nomCliente', 'in.numComprobante', 'tc.nomTipoComprobante', 'tp.nomTipoPago', 'in.totalIngreso', 'u.nomUsuario', 'in.estado')
+            ->select('in.idIngreso', 'in.idTipoIngreso', 'in.fechaIngreso', 'c.nomCliente', 'in.numComprobante', 'tc.nomTipoComprobante', 'mp.nomTipoPago', 'in.totalIngreso', 'u.nomUsuario', 'in.estado')
             ->join('cliente as c', 'in.idCliente', '=', 'c.idCliente')
         /* ->join('detalle_inscripcion as di', 'in.idIngreso', '=', 'di.idInscripcion') */
             ->join('tipo_comprobante as tc', 'in.idTipoComprobante', '=', 'tc.idTipoComprobante')
-            ->join('tipopago as tp', 'in.idTipoPago', '=', 'tp.idTipoPago')
+            ->join('metodo_pago as mp', 'in.idTipoPago', '=', 'mp.idTipoPago')
             ->join('usuario as u', 'in.idUsuario', '=', 'u.idUsuario')
             ->when(($request->get('startDate') != '' && $request->get('endDate') != ''), function ($query) use ($request) {
                 $query->where('in.fechaIngreso', '>=', $request->get('startDate'))
@@ -130,7 +130,7 @@ class IngresosController extends Controller
         $tipo_comprobante = DB::table('tipo_comprobante')->where('condicionTipo_Comprobante', '=', '1')->get();
         $usuario = DB::table('usuario')->where('condicionUsuario', '=', '1')->get();
         $cuenta = db::table('cuenta')->where('condicion', '=', '1')->get();
-        $ingresoTipo = DB::table('tipoingresos')->where('condicion', '=', '1')->get();
+        $ingresoTipo = DB::table('tipo_ingresos')->where('condicion', '=', '1')->get();
         Log::info("IngresosController/create inciando");
         switch ($tipoIngreso) {
             case '1':

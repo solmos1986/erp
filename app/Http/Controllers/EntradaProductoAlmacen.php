@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 //para hacer algunas redirecciones
 
-class EntradaPorductoAlmacen extends Controller
+class EntradaProductoAlmacen extends Controller
 {
     public function __construct()
     {
@@ -38,13 +38,14 @@ class EntradaPorductoAlmacen extends Controller
                 'egresos.*',
                 'proveedor.*',
                 'usuario.*',
-                DB::raw('DATE_FORMAT(egresos.create_at, "%d-%m-%Y %H:%i:%s") as create_at'),
-                DB::raw('SUM(detalle_egreso.precioCompraEgreso*cantidadCompra) as monto_total')
+                DB::raw('DATE_FORMAT(egresos.created_at, "%d-%m-%Y %H:%i:%s") as created_at'),
+                DB::raw('SUM(detalle_compra.precioCompra*detalle_compra.cantidadCompra) as monto_total')
             )
-            ->join('detalle_egreso', 'detalle_egreso.idEgreso', 'egresos.idEgreso')
+            ->join('detalle_compra', 'detalle_compra.idEgreso', 'egresos.idEgreso')
+            ->join('movimientos', 'movimientos.idMovimiento', 'egresos.idMovimiento')
             ->join('proveedor', 'proveedor.idProveedor', 'egresos.idProveedor')
-            ->join('usuario', 'usuario.idUsuario', 'egresos.idUsuario')
-            ->where('detalle_egreso.idEgreso', $id)
+            ->join('usuario', 'usuario.idUsuario', 'movimientos.idUsuario')
+            ->where('detalle_compra.idEgreso', $id)
             ->first();
 
         return view('entrada-producto.create', compact('egreso'));
@@ -61,17 +62,17 @@ class EntradaPorductoAlmacen extends Controller
         $entradas = [];
         foreach ($request->entradas as $key => $entrada) {
             $entradas[] = [
-                'serie' => $entrada['serie'],
+                'serie' => $entrada['serie'] == null ? '' : $entrada['serie'],
                 'idProducto' => $entrada['idProducto'],
-                'idDetalleEgreso' => $entrada['idDetalleEgreso'],
+                'detalle_compra_id' => $entrada['detalle_compra_id'],
                 'idAlmacen' => $entrada['idAlmacen'],
-                'fecha_vencimiento' => date('Y-m-d', strtotime($entrada['fecha_vencimiento'])),
+                'fecha_vencimiento' => strtotime($entrada['fecha_vencimiento']) == null ? '' : date('Y-m-d', strtotime($entrada['fecha_vencimiento'])),
             ];
         }
         $update_egreso = DB::table('egresos')
             ->where('egresos.idEgreso', $id)
             ->update([
-                'estadoEgreso' => 2,
+                'idEstadoEgreso' => 2,
             ]);
         entrada_producto_almacen::insert($entradas);
         return response()->json([
@@ -93,9 +94,9 @@ class EntradaPorductoAlmacen extends Controller
     }
     public function dataTable($id)
     {
-        $detalle_egresos = DB::table('detalle_egreso')
-            ->join('producto', 'producto.idProducto', 'detalle_egreso.idProducto')
-            ->where('detalle_egreso.idEgreso', $id)
+        $detalle_egresos = DB::table('detalle_compra')
+            ->join('producto', 'producto.idProducto', 'detalle_compra.idProducto')
+            ->where('detalle_compra.idEgreso', $id)
             ->get();
         $almacenes = DB::table('almacen')->get();
         $datos = [];
@@ -107,7 +108,7 @@ class EntradaPorductoAlmacen extends Controller
                     'idProducto' => $detalle_egreso->idProducto,
                     'codProducto' => $detalle_egreso->codProducto,
                     'nomProducto' => $detalle_egreso->nomProducto,
-                    'idDetalleEgreso' => $detalle_egreso->idDetalleEgreso,
+                    'detalle_compra_id' => $detalle_egreso->detalle_compra_id,
                     'idEntradaAlmacen' => $count++,
                     'idAlmacen' => 1,
                     'create_at' => $detalle_egreso->create_at,
