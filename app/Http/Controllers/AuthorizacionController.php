@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use DB;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-
-//use Validator;
+use stdClass;
+use Validator;
 
 class AuthorizacionController extends Controller
 {
@@ -103,7 +103,47 @@ class AuthorizacionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rules = array(
+            'usuario' => 'required',
+            'contraseña' => 'required'
+        );
+        $messages = [
+            'usuario.required' => "Usuario es requerido",
+            'contraseña.required' => "Contraseña es requerido"
+        ];
+        $error = Validator::make($request->all(), $rules, $messages);
+
+        if ($error->errors()->all()) {
+            return response()->json([
+                'status' => 0,
+                'message' => $error->errors()->all(),
+                'data' => [
+                    'error' => [],
+                ],
+            ]);
+        }
+        $update = DB::table('authenticacion')
+            ->where('authenticacion.authenticacion_id', $id)
+            ->update([
+                'usuario' => $request->usuario,
+                'contraseña' => $request->contraseña,
+            ]);
+
+        $eliminar = DB::table('rol_authenticacion')
+            ->where('rol_authenticacion.authenticacion_id', $id)
+            ->delete();
+        foreach ($request->roles as $key => $rol) {
+            $insert = DB::table('rol_authenticacion')->insertGetId([
+                'rol_id' => $rol,
+                'authenticacion_id' => $id,
+            ]);
+        }
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Autorizacion de usuario modificada correctamente',
+            'data' => null,
+        ]);
     }
 
     /**

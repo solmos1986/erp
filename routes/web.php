@@ -29,6 +29,8 @@ use App\Http\Controllers\SuperModuloController;
 use App\Http\Controllers\TipoPagoController;
 use App\Http\Controllers\Tipo_ComprobanteController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\SobreSistema;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -156,8 +158,6 @@ Route::prefix('roles')->group(function () {
 Route::prefix('authorizacion')->group(function () {
     Route::get('/', [AuthorizacionController::class, 'index'])->name('authorizacion.index');
     Route::get('/data-table', [AuthorizacionController::class, 'data_table'])->name('authorizacion.data_table');
-    Route::get('/create', [AuthorizacionController::class, 'create'])->name('authorizacion.create');
-    Route::post('/store', [AuthorizacionController::class, 'store'])->name('authorizacion.store');
     Route::get('/{id}', [AuthorizacionController::class, 'edit'])->name('authorizacion.edit');
     Route::put('/{id}', [AuthorizacionController::class, 'update'])->name('authorizacion.update');
     Route::delete('/{id}', [AuthorizacionController::class, 'destroy'])->name('authorizacion.destroy');
@@ -288,4 +288,8 @@ Route::prefix('libro-diario')->group(function () {
     Route::get('/data-table-movimiento/{id}', [LibroDiarioController::class, 'dataTableMovimientos']);
     Route::get('/data-table-libro-diario', [LibroDiarioController::class, 'dataTableLibroDiario']);
     Route::get('/{id}', [LibroDiarioController::class, 'show']);
+});
+
+Route::prefix('informacion-sistema')->group(function () {
+    Route::get('/', [SobreSistema::class, 'index']);
 });

@@ -10,8 +10,9 @@
         type="text/css" />
     <link href="{{ asset('/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-style" />
 @endpush
 
 @section('contenido')
@@ -115,7 +116,9 @@
     <script src="{{ asset('/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+
     <!-- Select2 js-->
     <script src="{{ asset('/libs/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('/js/authorizacion/authorizacion.js') }}"></script>
+    <script src="{{ asset('/js/authorizacion/edit.js') }}"></script>
 @endpush

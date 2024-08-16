@@ -39,7 +39,7 @@ class EstadoInscripcionTask extends Command
     {
         $this->info('Custom task executed successfully!');
         Log::info("EstadoInscripcionTask() ejecucion => " . date('Y-m-d H:i:s'));
-
+/* 
         $inscripcion_eliminar = DB::table('detalle_inscripcion')
             ->join('cliente', 'cliente.idCliente', 'detalle_inscripcion.idCliente')
             ->join('inscripcion', 'inscripcion.idInscripcion', 'detalle_inscripcion.idInscripcion')
@@ -61,15 +61,17 @@ class EstadoInscripcionTask extends Command
 
         $ejecutar_actualizacion = DB::select('CALL ACT_ESTADO_INSCRIPCIONES();');
         Log::info('EstadoInscripcionTask() SP ACT_ESTADO_INSCRIPCIONES => ' . $ejecutar_actualizacion[0]->mensaje);
-
-        $socket = new Usuario();
+ */
+       /*  $socket = new Usuario();
         $socket->eliminacion_programada([
             'eliminar' => $inscripcion_eliminar,
             'anadir' => $inscripcion_nuevas,
-        ]);
+        ]); */
 
         $contactos = DB::table('contacto_interno')->select('contacto_interno.email')->pluck('email')->toArray();
         Log::info('EstadoInscripcionTask() email contactos => ' . Utils::jsonLog($contactos));
+        $inscripcion_eliminar=[];
+        $inscripcion_nuevas=[];
 
         try {
             Mail::send([], [], function ($message) use ($inscripcion_eliminar, $inscripcion_nuevas, $contactos) {

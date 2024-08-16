@@ -45,19 +45,7 @@ var data = {
 }
 
 $(document).on("click", ".nuevo", function () {
-    const values = {
-        "idLector": 0,
-        "create_time": "Date",
-        "nomLector": "string",
-        "ipLector": "192.168.1.247",
-        "portLector": 0,
-        "userLector": "admin",
-        "passLector": "molomix654",
-        "condicionLector": 0
-    }
-    dispositivoStore(values)
 
-    data = initial;
     const btn = $(this);
     btn.prop('disabled', true);
     $('#modal_rol .modal-title').text('Nuevo rol');
